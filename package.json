@@ -1,18 +1,20 @@
 {
-  "name": "angular-electron",
-  "version": "6.2.0",
-  "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "name": "tv-browser",
+  "version": "1.0.0",
+  "description": "A tv browser with automatic switch between web pages (webshow).",
+  "homepage": "",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Max Hoffmann",
+    "email": "Max.Hoffmann@eckcellent-it.de"
   },
   "keywords": [
     "angular",
     "angular 8",
     "electron",
     "typescript",
-    "sass"
+    "sass",
+    "tv",
+    "browser"
   ],
   "main": "main.js",
   "private": true,
