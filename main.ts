@@ -2,6 +2,12 @@ import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
+import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
+
+installExtension(REDUX_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
+
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
@@ -19,6 +25,7 @@ function createWindow() {
     height: size.height,
     webPreferences: {
       nodeIntegration: true,
+      webviewTag: true
     },
   });
 

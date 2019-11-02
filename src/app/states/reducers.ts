@@ -33,3 +33,9 @@ export const getTab = (s: AppState) => {
 export const getPagesFromCurrentTab = (s: AppState) => {
   return s.tab.list[s.tab.show].pages;
 }
+
+export const getCurrentTabPage = (s: AppState,params) => {
+  console.log("params:", params);
+  
+  return s.tab.list[s.tab.show].pages[params.y][params.x];
+}

@@ -1,20 +1,4 @@
-<div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            {{page.name}}
-          </p>
-          <!-- <a href="#" class="card-header-icon" aria-label="more options">
-            <span class="icon">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </a> -->
-        </header>
-        <div class="card-content">
-          <div class="content">
-              <webview id="foo"></webview>
-          </div>
-        </div>
-        <footer class="card-footer">
-          Footer
-        </footer>
-      </div>
+<!-- <webview id="webview_{{pageId}}" style="height: 400px;"></webview> -->
+<div *ngIf="page$ | async as page">
+    <webview id="webview_{{pageX}}_{{pageY}}" src='{{page.url}}' autosize="on" [style.height.px]="height"></webview>
+</div>

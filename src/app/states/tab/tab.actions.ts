@@ -8,7 +8,8 @@ export enum TabActionTypes {
   RemoveTab = '[Tab] Remove Tab',
   ShowTab = '[Tab] Show Tab',
 
-  AddPage = '[Tab.Page] Add Page'
+  AddPage = '[Tab.Page] Add Page',
+  LoadPageFinished = '[Tab.Page] Finish Page Load'
 }
 
 export class LoadTabs implements Action {
@@ -41,6 +42,11 @@ export class AddPage implements Action {
   readonly type:TabActionTypes = TabActionTypes.AddPage;
 
   constructor(public payload: { tabIndex: number, url:string, name?:string }) { }
+}
+export class LoadPageFinished implements Action {
+  readonly type:TabActionTypes = TabActionTypes.LoadPageFinished;
+
+  constructor(public payload: { title:string, pageId:number }) { }
 }
 
 

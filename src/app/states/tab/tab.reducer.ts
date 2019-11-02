@@ -1,5 +1,5 @@
 import { Action, State } from '@ngrx/store';
-import { ShowTab, TabActions, TabActionTypes, AddTabs, ShowTabEnum, AddPage } from './tab.actions';
+import { ShowTab, TabActions, TabActionTypes, AddTabs, ShowTabEnum, AddPage, LoadPageFinished } from './tab.actions';
 import { TabState, initTab } from './tab.state'
 
 
@@ -27,7 +27,11 @@ export function reducer(state = initialTabState, action: TabActions): TabState {
       return state;
     case TabActionTypes.AddPage:
       let addPageAction:AddPage = action as AddPage;
-      state.list[addPageAction.payload.tabIndex].pages.push({url: addPageAction.payload.url, name: addPageAction.payload.name})
+      // state.list[addPageAction.payload.tabIndex].pages.push({url: addPageAction.payload.url, name: addPageAction.payload.name})
+      return state
+    case TabActionTypes.LoadPageFinished:
+        let loadPageFinishedAction:LoadPageFinished = action as LoadPageFinished;
+        // state.list[state.show].pages[loadPageFinishedAction.payload.pageId].name = loadPageFinishedAction.payload.title
     default:
       return state;
   }

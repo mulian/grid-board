@@ -5,7 +5,7 @@ export interface Page {
 
 export interface Tab {
     //url: string //later as 2d array for
-    pages: Page[]
+    pages: Page[][]
     name: string
   }
   
@@ -15,6 +15,6 @@ export interface Tab {
   }
   
  export let initTab:Tab = {
-    pages: [{name:'PageName',url:'http://www.google.de'}],
+    pages: [[{name:'PageName',url:'http://www.google.de'},{name:'Github',url:'http://www.github.com'}]],
     name:"nothing"
   }

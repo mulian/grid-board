@@ -1,3 +1,9 @@
-<div *ngIf="pages$ | async as pages">
-    <app-page *ngFor="let page of pages; let i = index" [page]="page"></app-page>
+<div *ngIf="pages$ | async as pages" >
+    <table id="pageTable" style="border: 1px;">
+            <tr *ngFor="let row of pages; let y=index; let rowCount=count">
+                <td *ngFor='let column of row; let x=index'>
+                    <app-page [pageX]=x [pageY]=y [rowCount]=rowCount></app-page>
+                </td>
+            </tr>
+        </table>
 </div>
