@@ -1,16 +1,20 @@
+export interface Page {
+  name?: string
+  url: string
+}
+
 export interface Tab {
-    url: string //later as 2d array for
-    id: string
+    //url: string //later as 2d array for
+    pages: Page[]
     name: string
   }
   
   export interface TabState {
-    show: Tab
+    show: number
     list: Tab[]
   }
   
  export let initTab:Tab = {
-    id:"0",
-    url:"nothing",
+    pages: [{name:'PageName',url:'http://www.google.de'}],
     name:"nothing"
   }

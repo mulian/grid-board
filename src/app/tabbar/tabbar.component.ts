@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { AppState, getTabs, getSelectedTab } from '../states/reducers';
-import { AddTabs, Tab, ShowTab } from '../states/tab';
+import { AppState, getTab } from '../states/reducers';
+import { AddTabs, Tab, ShowTab, ShowTabEnum } from '../states/tab';
 import { Observable } from 'rxjs';
 
 let newTab:Tab= {
-  id:"2",
-  name: "Blubb",
-  url: "bla"
+  name: "New",
+  pages: []
 }
 
 @Component({
@@ -16,18 +15,24 @@ let newTab:Tab= {
   styleUrls: ['./tabbar.component.scss']
 })
 export class TabbarComponent implements OnInit {
-  tabs$: Observable<any>;
-  selectedTab$: Observable<any>;
+  tab$: Observable<any>;
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.tabs$ = this.store.pipe(select(getTabs));
-    this.selectedTab$ = this.store.pipe(select(getSelectedTab));
+    this.tab$ = this.store.pipe(select(getTab));
   }
 
   newAction() {
     this.store.dispatch(new AddTabs({tab:newTab}));
-    this.store.dispatch(new ShowTab({tab:newTab}));
+    this.store.dispatch(new ShowTab({showTabEnum:ShowTabEnum.LastTab}));
   }
+
+  showTab(index:number) {
+    this.store.dispatch(new ShowTab({showTabId:index}));
+  }
+
+  // isActiveTab(id:number) {
+  //   if()
+  // }
 }

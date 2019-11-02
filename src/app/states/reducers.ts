@@ -25,5 +25,11 @@ export const reducers: ActionReducerMap<AppState> = {
 // ];
 
 // Selector to get banana slice of state
-export const getTabs = (s: AppState) => s.tab.list;
-export const getSelectedTab = (s: AppState) => s.tab.show;
+export const getTab = (s: AppState) => {
+  
+  return s.tab;
+}
+
+export const getPagesFromCurrentTab = (s: AppState) => {
+  return s.tab.list[s.tab.show].pages;
+}

@@ -1,11 +1,14 @@
-<p>tabbar works!</p>
-<div (click)='newAction()'>New Action</div>
-
-<div *ngIf="tabs$ | async as tabs">
-    <div *ngIf="selectedTab$ | async as selectedTab">
-        Tab Selected: {{selectedTab.name}}
-    </div>
-    <span *ngFor="let tab of tabs">
-        Tab: {{tab.name}}
-    </span>
-</div>
+<div class="tabs is-boxed" *ngIf="tab$ | async as tab">
+        <ul>
+          <li *ngFor="let tabItem of tab.list; let i = index" [class.is-active]="tab.show==i" >
+            <a (click)='showTab(i)'>
+              <span>{{tabItem.name}}</span>
+            </a>
+          </li>
+          <li>
+                <a (click)='newAction()'>
+                  <span>+</span>
+                </a>
+              </li>
+        </ul>
+      </div>

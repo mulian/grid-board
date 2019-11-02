@@ -6,7 +6,9 @@ export enum TabActionTypes {
   LoadTabs = '[Tab] Load Tabs',
   LoadTabsFinished = '[Tab] Load Tabs finished',
   RemoveTab = '[Tab] Remove Tab',
-  ShowTab = '[Tab] Show Tab'
+  ShowTab = '[Tab] Show Tab',
+
+  AddPage = '[Tab.Page] Add Page'
 }
 
 export class LoadTabs implements Action {
@@ -25,10 +27,20 @@ export class RemoveTab implements Action {
   constructor(public payload: {tab:Tab}) { }
 }
 
+export enum ShowTabEnum {
+  LastTab = "Show Last Tab"
+}
+
 export class ShowTab implements Action {
   readonly type:TabActionTypes = TabActionTypes.ShowTab;
 
-  constructor(public payload: {tab:Tab}) { }
+  constructor(public payload: { showTabEnum?: ShowTabEnum, showTabId?: number}) { }
+}
+
+export class AddPage implements Action {
+  readonly type:TabActionTypes = TabActionTypes.AddPage;
+
+  constructor(public payload: { tabIndex: number, url:string, name?:string }) { }
 }
 
 

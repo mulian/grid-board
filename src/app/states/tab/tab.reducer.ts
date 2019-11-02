@@ -1,12 +1,12 @@
-import { Action } from '@ngrx/store';
-import { ShowTab, TabActions, TabActionTypes, AddTabs } from './tab.actions';
+import { Action, State } from '@ngrx/store';
+import { ShowTab, TabActions, TabActionTypes, AddTabs, ShowTabEnum, AddPage } from './tab.actions';
 import { TabState, initTab } from './tab.state'
 
 
 export const tabFeatureKey = 'tab';
 
 export const initialTabState: TabState = {
-  show: initTab,
+  show: 0,
   list: [initTab]
 };
 
@@ -14,11 +14,20 @@ export function reducer(state = initialTabState, action: TabActions): TabState {
   switch (action.type) {
     case TabActionTypes.ShowTab: 
       let showTabAction:ShowTab = action as ShowTab;
-      return {...state, show: showTabAction.payload.tab};
+      if(showTabAction.payload.showTabEnum) {
+        switch(showTabAction.payload.showTabEnum) {
+          case ShowTabEnum.LastTab: showTabAction.payload.showTabId=state.list.length-1
+            break;
+        }
+      }
+      return {...state, show: showTabAction.payload.showTabId};
     case TabActionTypes.AddTabs:
       let addTabAction:AddTabs = action as AddTabs;
       state.list.push(addTabAction.payload.tab)
       return state;
+    case TabActionTypes.AddPage:
+      let addPageAction:AddPage = action as AddPage;
+      state.list[addPageAction.payload.tabIndex].pages.push({url: addPageAction.payload.url, name: addPageAction.payload.name})
     default:
       return state;
   }
