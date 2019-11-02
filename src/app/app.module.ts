@@ -17,6 +17,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HomeModule } from './home/home.module';
 
 import { AppComponent } from './app.component';
+import { TabbarComponent } from './tabbar/tabbar.component';
+import { StoreModule } from '@ngrx/store';
+import { initialState, reducers } from './states/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -24,7 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TabbarComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -39,7 +43,18 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+    StoreModule.forRoot(reducers, {initialState}),
+    StoreDevtoolsModule.instrument({     // Required for ReduxDevTools
+      maxAge: 25                         // Track history for 25 actions
     })
+    // StoreModule.forRoot(reducers, {
+    //   metaReducers,
+    //   runtimeChecks: {
+    //     strictStateImmutability: true,
+    //     strictActionImmutability: true
+    //   }
+    // })
   ],
   providers: [],
   bootstrap: [AppComponent]

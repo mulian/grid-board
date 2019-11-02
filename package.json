@@ -28,7 +28,7 @@
     "build:dev": "npm run build -- -c dev",
     "build:prod": "npm run build -- -c production",
     "ng:serve": "ng serve",
-    "ng:serve:web": "npm run postinstall:web && ng serve -o",
+    "ng:serve:web": "npm run postinstall:web && ng serve -o --port 4400",
     "electron:serve-tsc": "tsc -p tsconfig-serve.json",
     "electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:serve-tsc && electron . --serve",
     "electron:local": "npm run build:prod && electron .",
@@ -85,5 +85,11 @@
   },
   "engines": {
     "node": ">=10.9.0"
+  },
+  "dependencies": {
+    "@angular-devkit/schematics": "^8.3.15",
+    "@ngrx/schematics": "^8.4.0",
+    "@ngrx/store": "^8.4.0",
+    "@ngrx/store-devtools": "^8.4.0"
   }
 }

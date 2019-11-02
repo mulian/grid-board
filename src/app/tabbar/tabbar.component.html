@@ -1,0 +1,11 @@
+<p>tabbar works!</p>
+<div (click)='newAction()'>New Action</div>
+
+<div *ngIf="tabs$ | async as tabs">
+    <div *ngIf="selectedTab$ | async as selectedTab">
+        Tab Selected: {{selectedTab.name}}
+    </div>
+    <span *ngFor="let tab of tabs">
+        Tab: {{tab.name}}
+    </span>
+</div>
