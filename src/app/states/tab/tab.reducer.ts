@@ -7,7 +7,7 @@ export const tabFeatureKey = 'tab';
 
 export const initialTabState: TabState = {
   show: 0,
-  list: [initTab]
+  list: [initTab,initTab]
 };
 
 export function reducer(state = initialTabState, action: TabActions): TabState {

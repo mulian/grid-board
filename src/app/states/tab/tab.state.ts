@@ -15,6 +15,6 @@ export interface Tab {
   }
   
  export let initTab:Tab = {
-    pages: [[{name:'PageName',url:'http://www.google.de'},{name:'Github',url:'http://www.github.com'}]],
+    pages: [[{name:'PageName',url:'https://www.greifhaus.de/infos/'},{name:'Github',url:'https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp'}],[{name:'PageName',url:'https://www.greifhaus.de/infos/'},{name:'Github',url:'https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp'},{name:'Github',url:'https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp'}],[{name:'Github',url:'https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp'}]],
     name:"nothing"
   }

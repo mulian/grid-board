@@ -31,11 +31,24 @@ export const getTab = (s: AppState) => {
 }
 
 export const getPagesFromCurrentTab = (s: AppState) => {
+  console.log("Reload: getPagesFromCurrentTab");
+  
   return s.tab.list[s.tab.show].pages;
+}
+
+export const getPagesByTabId = (s:AppState,{tabId}) => {
+  console.log("Get Pages by Tab Id: "+tabId)
+  
+  return s.tab.list[tabId].pages
 }
 
 export const getCurrentTabPage = (s: AppState,params) => {
   console.log("params:", params);
   
   return s.tab.list[s.tab.show].pages[params.y][params.x];
+}
+
+export const getPagesByTabIdAndArrayIndexes = (s: AppState,{tabId,x,y}) => {
+  
+  return s.tab.list[tabId].pages[y][x];
 }

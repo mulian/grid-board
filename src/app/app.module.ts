@@ -25,13 +25,14 @@ import { MainComponent } from './main/main.component';
 import { PagesComponent } from './pages/pages.component';
 import { PageComponent } from './page/page.component';
 import { WebviewDirective } from './webview.module';
+import { ContentComponent } from './content/content.component';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective],
+  declarations: [AppComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective, ContentComponent],
   imports: [
     BrowserModule,
     FormsModule,

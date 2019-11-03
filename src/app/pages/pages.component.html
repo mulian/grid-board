@@ -2,7 +2,7 @@
     <table id="pageTable" style="border: 1px;">
             <tr *ngFor="let row of pages; let y=index; let rowCount=count">
                 <td *ngFor='let column of row; let x=index'>
-                    <app-page [pageX]=x [pageY]=y [rowCount]=rowCount></app-page>
+                    <app-page [pageX]=x [pageY]=y [rowCount]=rowCount [tabId]=tabId></app-page>
                 </td>
             </tr>
         </table>

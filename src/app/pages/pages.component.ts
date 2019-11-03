@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppState, getPagesFromCurrentTab } from '../states/reducers';
+import { AppState, getPagesFromCurrentTab, getPagesByTabId } from '../states/reducers';
 import { Store, select } from '@ngrx/store';
 
 @Component({
@@ -9,7 +9,12 @@ import { Store, select } from '@ngrx/store';
   styleUrls: ['./pages.component.scss']
 })
 export class PagesComponent implements OnInit, AfterViewInit {
+  @Input()
+  tabId:number
+
   pages$: Observable<any>;
+
+  alreadyOpen:boolean=false;
   
   constructor(private store: Store<AppState>) { }
 
@@ -18,9 +23,10 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.pages$ = this.store.pipe(select(getPagesFromCurrentTab));
+    this.pages$ = this.store.pipe(select(getPagesByTabId,{tabId:this.tabId}));
 
-    
+    console.log("ngOnInit: alreadyOpen: "+this.alreadyOpen);
+    this.alreadyOpen=true;
   }
 
 }

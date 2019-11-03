@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Page, LoadPageFinished } from '../states/tab';
-import { AppState, getCurrentTabPage } from '../states/reducers';
+import { AppState, getCurrentTabPage, getPagesByTabIdAndArrayIndexes } from '../states/reducers';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -24,13 +24,24 @@ export class PageComponent implements OnInit, AfterViewInit {
   @Input()
   rowCount:number;
 
+  @Input()
+  tabId:number;
+
   page$:Observable<any>
 
   webview:WebView;
 
   height:number;
 
+
+  alreadyOpen:boolean=false;
   constructor(private store: Store<AppState>) { }
+
+  ngOnInit() {
+    this.page$ = this.store.pipe(select(getPagesByTabIdAndArrayIndexes,{x:this.pageX,y:this.pageY,tabId:this.tabId}));
+    // console.log(this.page);
+    
+  }
 
   ngAfterViewInit() {
     // console.log("try to get webview_"+this.pageId);
@@ -41,7 +52,7 @@ export class PageComponent implements OnInit, AfterViewInit {
     
 
     this.webview.addEventListener('did-finish-load',() => this.finishLoadWebview())
-    this.height = (document.documentElement.offsetHeight * (this.rowCount/(this.pageY+1)))-50;
+    this.height = (document.documentElement.offsetHeight / this.rowCount)-50;
 
     console.log(this.rowCount,this.pageY);
     
@@ -49,14 +60,6 @@ export class PageComponent implements OnInit, AfterViewInit {
     
 
     // this.webview.src = this.page.url; 
-  }
-  ngAfterContentInit() {
-
-  }
-
-  ngOnInit() {
-    this.page$ = this.store.pipe(select(getCurrentTabPage,{x:this.pageX,y:this.pageY}));
-    // console.log(this.page);
   }
 
   finishLoadWebview() {
