@@ -1,54 +1,31 @@
-import { ActionReducerMap } from '@ngrx/store';
-// Import everything from the banana state directory
+import { ActionReducerMap, createSelector, createFeatureSelector, MetaReducer, ActionReducer } from '@ngrx/store';
 import * as tabStore from './tab';
-
-// We are bringing everything we know about the banana up to the 
-// application level. If we were creating the "fruit salad" application, 
-// we would also bring the state information for other fruits into 
-// this app level state. Each fruit would be considered a "slice" of 
-// the application level state.
+import * as pageStore from './page';
 
 export interface AppState {
-  tab: tabStore.TabState;
+  tabs: tabStore.State;
+  pages: pageStore.State;
 }
 
 export const initialState: AppState = {
-  tab: tabStore.initialTabState
+  tabs: tabStore.initialState,
+  pages: pageStore.initialState,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  tab: tabStore.reducer
+  tabs: tabStore.reducer,
+  pages: pageStore.reducer,
 }
 
-// export const effects: Array<any> = [
-//   bananaStore.BananaEffects
-// ];
+export const selectAllTabsState =
+  createFeatureSelector<tabStore.State>("tabs");
+export const selectTabOptions = createSelector(selectAllTabsState, (tabs) => tabs.options)
 
-// Selector to get banana slice of state
-export const getTab = (s: AppState) => {
-  
-  return s.tab;
-}
+export const selectAllTabs = createSelector(
+  selectAllTabsState,
+  tabStore.selectAll
+)
 
-export const getPagesFromCurrentTab = (s: AppState) => {
-  console.log("Reload: getPagesFromCurrentTab");
-  
-  return s.tab.list[s.tab.show].pages;
-}
-
-export const getPagesByTabId = (s:AppState,{tabId}) => {
-  console.log("Get Pages by Tab Id: "+tabId)
-  
-  return s.tab.list[tabId].pages
-}
-
-export const getCurrentTabPage = (s: AppState,params) => {
-  console.log("params:", params);
-  
-  return s.tab.list[s.tab.show].pages[params.y][params.x];
-}
-
-export const getPagesByTabIdAndArrayIndexes = (s: AppState,{tabId,x,y}) => {
-  
-  return s.tab.list[tabId].pages[y][x];
-}
+export const selectAllPagesFromTab = createSelector(pageStore.selectAll, (state, { tabId }) => {
+  return state.filter(page => page.tab == tabId)
+})

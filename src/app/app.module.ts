@@ -22,19 +22,29 @@ import { StoreModule } from '@ngrx/store';
 import { initialState, reducers } from './states/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MainComponent } from './main/main.component';
-import { PagesComponent } from './pages/pages.component';
-import { PageComponent } from './page/page.component';
+import { PagesComponent } from './content/pages/pages.component';
+import { PageComponent } from './content/pages/page/page.component';
 import { WebviewDirective } from './webview.module';
 import { ContentComponent } from './content/content.component';
+import { TabbarItemComponent } from './tabbar/tabbar-item/tabbar-item.component';
+import { TabbarListComponent } from './tabbar/tabbar-list/tabbar-list.component';
+import { TabbarItemEditComponent } from './tabbar/tabbar-item-edit/tabbar-item-edit.component';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { metaReducer } from './states/reducer.store';
+library.add(fas);
+
 @NgModule({
-  declarations: [AppComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective, ContentComponent],
+  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent],
   imports: [
     BrowserModule,
+    FontAwesomeModule,
     FormsModule,
     HttpClientModule,
     CoreModule,
@@ -48,7 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    StoreModule.forRoot(reducers, {initialState}),
+    StoreModule.forRoot(reducers, {metaReducers: metaReducer,initialState}),
     StoreDevtoolsModule.instrument({     // Required for ReduxDevTools
       maxAge: 25                         // Track history for 25 actions
     })

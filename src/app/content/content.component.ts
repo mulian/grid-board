@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { AppState, getTab } from '../states/reducers';
+import { AppState } from '../states/reducers';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,6 +14,6 @@ export class ContentComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.tabData$ = this.store.pipe(select(getTab));
+    // this.tabData$ = this.store.pipe(select(getTab));
   }
 }

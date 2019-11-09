@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabbarComponent } from "./tabbar.component";
+import { TabbarItemComponent } from './tabbar-item.component';
 
-describe('TabbarComponent', () => {
-  let component: TabbarComponent;
-  let fixture: ComponentFixture<TabbarComponent>;
+describe('TabbarItemComponent', () => {
+  let component: TabbarItemComponent;
+  let fixture: ComponentFixture<TabbarItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabbarComponent ]
+      declarations: [ TabbarItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabbarComponent);
+    fixture = TestBed.createComponent(TabbarItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

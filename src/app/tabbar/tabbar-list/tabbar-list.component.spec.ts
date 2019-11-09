@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabbarComponent } from "./tabbar.component";
+import { TabbarListComponent } from './tabbar-list.component';
 
 describe('TabbarComponent', () => {
-  let component: TabbarComponent;
-  let fixture: ComponentFixture<TabbarComponent>;
+  let component: TabbarListComponent;
+  let fixture: ComponentFixture<TabbarListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabbarComponent ]
+      declarations: [ TabbarListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabbarComponent);
+    fixture = TestBed.createComponent(TabbarListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

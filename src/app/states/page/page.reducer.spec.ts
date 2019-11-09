@@ -1,6 +1,6 @@
-import { reducer, initialState } from './tab.reducer';
+import { reducer, initialState } from './page.reducer';
 
-describe('Tab Reducer', () => {
+describe('Page Reducer', () => {
   describe('unknown action', () => {
     it('should return the previous state', () => {
       const action = {} as any;

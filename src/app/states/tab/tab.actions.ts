@@ -1,53 +1,128 @@
 import { Action } from '@ngrx/store';
-import { Tab } from './tab.state'
+import { Update } from '@ngrx/entity';
+import { Tab } from './tab.model';
+import * as uuid from 'uuid';
 
 export enum TabActionTypes {
-  AddTabs = '[Tab] Add Tab',
   LoadTabs = '[Tab] Load Tabs',
-  LoadTabsFinished = '[Tab] Load Tabs finished',
-  RemoveTab = '[Tab] Remove Tab',
-  ShowTab = '[Tab] Show Tab',
+  AddTab = '[Tab] Add Tab',
+  UpsertTab = '[Tab] Upsert Tab',
+  AddTabs = '[Tab] Add Tabs',
+  UpsertTabs = '[Tab] Upsert Tabs',
+  UpdateTab = '[Tab] Update Tab',
+  UpdateTabs = '[Tab] Update Tabs',
+  DeleteTab = '[Tab] Delete Tab',
+  DeleteTabs = '[Tab] Delete Tabs',
+  ClearTabs = '[Tab] Clear Tabs',
 
-  AddPage = '[Tab.Page] Add Page',
-  LoadPageFinished = '[Tab.Page] Finish Page Load'
+  SelectTab = '[Tab] Select Tab',
+  RenameTab = '[Tab] Rename Tab',
+  EditTab = "[Tab] Edit Tab",
+  NoEditTab = "[Tab] No Edit Tab"
 }
 
+export class NoEditTab implements Action {
+  readonly type = TabActionTypes.NoEditTab;
+
+  constructor(public payload: { }) {}
+}
+
+export class EditTab implements Action {
+  readonly type = TabActionTypes.EditTab;
+
+  constructor(public payload: { tabId:string }) {}
+}
+
+export class RenameTab implements Action {
+  readonly type = TabActionTypes.RenameTab;
+
+  constructor(public payload: { tabId:string, newName: string }) {}
+}
+
+export class SelectTab implements Action {
+  readonly type = TabActionTypes.SelectTab;
+
+  constructor(public payload: { selectedTab:string }) {}
+}
+
+
+
 export class LoadTabs implements Action {
-  readonly type:TabActionTypes = TabActionTypes.LoadTabs;
+  readonly type = TabActionTypes.LoadTabs;
+
+  constructor(public payload: { tabs: Tab[] }) {}
+}
+
+export class AddTab implements Action {
+  readonly type = TabActionTypes.AddTab;
+
+  constructor(public payload: { tab: Tab}) {
+    this.payload.tab.id = uuid.v4()
+  }
+}
+
+export class UpsertTab implements Action {
+  readonly type = TabActionTypes.UpsertTab;
+
+  constructor(public payload: { tab: Tab }) {}
 }
 
 export class AddTabs implements Action {
   readonly type = TabActionTypes.AddTabs;
 
-  constructor(public payload: {tab:Tab}) { }
+  constructor(public payload: { tabs: Tab[] }) {
+    for(let tab of this.payload.tabs) {
+      tab.id = uuid.v4()
+    }
+  }
 }
 
-export class RemoveTab implements Action {
-  readonly type = TabActionTypes.RemoveTab;
+export class UpsertTabs implements Action {
+  readonly type = TabActionTypes.UpsertTabs;
 
-  constructor(public payload: {tab:Tab}) { }
+  constructor(public payload: { tabs: Tab[] }) {}
 }
 
-export enum ShowTabEnum {
-  LastTab = "Show Last Tab"
+export class UpdateTab implements Action {
+  readonly type = TabActionTypes.UpdateTab;
+
+  constructor(public payload: { tab: Update<Tab> }) {}
 }
 
-export class ShowTab implements Action {
-  readonly type:TabActionTypes = TabActionTypes.ShowTab;
+export class UpdateTabs implements Action {
+  readonly type = TabActionTypes.UpdateTabs;
 
-  constructor(public payload: { showTabEnum?: ShowTabEnum, showTabId?: number}) { }
+  constructor(public payload: { tabs: Update<Tab>[] }) {}
 }
 
-export class AddPage implements Action {
-  readonly type:TabActionTypes = TabActionTypes.AddPage;
+export class DeleteTab implements Action {
+  readonly type = TabActionTypes.DeleteTab;
 
-  constructor(public payload: { tabIndex: number, url:string, name?:string }) { }
-}
-export class LoadPageFinished implements Action {
-  readonly type:TabActionTypes = TabActionTypes.LoadPageFinished;
-
-  constructor(public payload: { title:string, pageId:number }) { }
+  constructor(public payload: { id: string }) {}
 }
 
+export class DeleteTabs implements Action {
+  readonly type = TabActionTypes.DeleteTabs;
 
-export type TabActions = LoadTabs | AddTabs | RemoveTab | ShowTab;
+  constructor(public payload: { ids: string[] }) {}
+}
+
+export class ClearTabs implements Action {
+  readonly type = TabActionTypes.ClearTabs;
+}
+
+export type TabActions =
+ LoadTabs
+ | AddTab
+ | UpsertTab
+ | AddTabs
+ | UpsertTabs
+ | UpdateTab
+ | UpdateTabs
+ | DeleteTab
+ | DeleteTabs
+ | ClearTabs
+ | SelectTab
+ | RenameTab
+ | EditTab
+ | NoEditTab;

@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppState, getPagesFromCurrentTab, getPagesByTabId } from '../states/reducers';
+import { AppState } from '../../states/reducers';
 import { Store, select } from '@ngrx/store';
 
 @Component({
@@ -23,7 +23,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.pages$ = this.store.pipe(select(getPagesByTabId,{tabId:this.tabId}));
+    // this.pages$ = this.store.pipe(select(getPagesByTabId,{tabId:this.tabId}));
 
     console.log("ngOnInit: alreadyOpen: "+this.alreadyOpen);
     this.alreadyOpen=true;

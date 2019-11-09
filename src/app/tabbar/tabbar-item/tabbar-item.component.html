@@ -1,0 +1,7 @@
+<a>
+    <span (click)='clickTabTitle()'>{{tabItem.name}}</span>
+    <span (click)='clickRemoveTab()' class="icon is-small is-left has-text-black" [class.has-text-danger]="mouseOvered"
+        (mouseover)="mouseOvered=true" (mouseout)="mouseOvered=false">
+        <fa-icon icon="times"></fa-icon>
+    </span>
+</a>

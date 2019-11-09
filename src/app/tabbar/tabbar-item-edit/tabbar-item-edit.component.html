@@ -1,0 +1,5 @@
+<a>
+    <input #editItem type="text" value="{{tabItem.name}}" #box (keyup.enter)="$event.target.blur()"
+    (blur)="onBlur(box.value,$event)" >
+    {{ editItem.focus() }}
+</a>

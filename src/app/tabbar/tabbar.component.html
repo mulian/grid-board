@@ -1,14 +1,1 @@
-<div class="tabs is-boxed" *ngIf="tab$ | async as tab">
-        <ul>
-          <li *ngFor="let tabItem of tab.list; let i = index" [class.is-active]="tab.show==i" >
-            <a (click)='showTab(i)'>
-              <span>{{tabItem.name}}</span>
-            </a>
-          </li>
-          <li>
-                <a (click)='newAction()'>
-                  <span>+</span>
-                </a>
-              </li>
-        </ul>
-      </div>
+<app-tabbar-list></app-tabbar-list>
