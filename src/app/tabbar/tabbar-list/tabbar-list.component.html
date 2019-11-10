@@ -1,10 +1,12 @@
 <div class="tabs is-boxed" *ngIf="tab$ | async as tabs">
-  <ul *ngIf="options$ | async as options">
-    <li *ngFor="let tabItem of tabs" [ngClass]="{'is-active':tabItem.id==options.selectedTab}">
-      <app-tabbar-item [tabItem]="tabItem" *ngIf="options.editTab!=tabItem.id; else editItem"></app-tabbar-item>
+  <ul>
+    <li *ngFor="let tabItem of tabs" [ngClass]="{'is-active':tabItem.isSelected}">
+      {{log(tabItem)}}
+      <app-tabbar-item [tabItem]="tabItem" *ngIf="!tabItem.isEdit; else editItem"></app-tabbar-item>
       <ng-template #editItem>
         <app-tabbar-item-edit [tabItem]="tabItem"></app-tabbar-item-edit>
       </ng-template>
+
     </li>
     <li>
       <a (click)='newAction()'>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, selectAllTabs, selectTabOptions } from '../../states/reducers';
+import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab } from '../../states/reducers';
 import { AddTab } from '../../states/tab';
 
 @Component({
@@ -12,16 +12,23 @@ import { AddTab } from '../../states/tab';
 })
 export class TabbarListComponent implements OnInit {
   tab$: Observable<any>
-  options$: Observable<any>
+  // selectedTab$: Observable<any>
+  // editTab$: Observable<any>
 
   constructor(private store: Store<AppState>) { }
+
+  log(value:any) {
+    // console.log(value);
+    
+  }
   
   ngOnInit() {
-    this.options$ = this.store.pipe(select(selectTabOptions));
+    // this.editTab$ = this.store.pipe(select(selectTabOptionsEditTab))
+    // this.selectedTab$ = this.store.pipe(select(selectTabOptionsSelectTab));
     this.tab$ = this.store.pipe(select(selectAllTabs));
   }
 
   newAction() {
-    this.store.dispatch(new AddTab({tab:{name:"neu"}}))
+    this.store.dispatch(new AddTab({tab:{name:"neu",isEdit:true,isSelected:true}}))
   }
 }

@@ -1,7 +1,8 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Tab } from './tab.model';
-import { TabActions, TabActionTypes, SelectTab } from './tab.actions';
+import { TabActions, TabActionTypes } from './tab.actions';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { mapValues } from 'lodash-es'
 
 export const tabsFeatureKey = 'tabs';
 
@@ -28,17 +29,11 @@ export function reducer(
   action: TabActions
 ): State {
   switch (action.type) {
-    case TabActionTypes.NoEditTab: {
-      return { ...state, options: { ...state.options, editTab: null } }
-    }
-    case TabActionTypes.EditTab: {
-      return { ...state, options: { ...state.options, editTab: action.payload.tabId } }
-    }
-    case TabActionTypes.SelectTab: {
-      return { ...state, options: { ...state.options, selectedTab: action.payload.selectedTab } }
-    }
     case TabActionTypes.AddTab: {
-      return adapter.addOne(action.payload.tab, { ...state, options: { ...state.options, editTab: action.payload.tab.id, selectedTab: action.payload.tab.id } });
+      return adapter.addOne(action.payload.tab, {...state, entities: mapValues(state.entities,(tab:Tab) => {
+        return {...tab,isSelected:false}
+      })})
+      // return adapter.addOne(action.payload.tab, { ...state, options: { ...state.options, editTab: action.payload.tab.id, selectedTab: action.payload.tab.id } });
     }
     case TabActionTypes.UpsertTab: {
       return adapter.upsertOne(action.payload.tab, state);
@@ -50,18 +45,32 @@ export function reducer(
       return adapter.upsertMany(action.payload.tabs, state);
     }
     case TabActionTypes.UpdateTab: {
-      return adapter.updateOne(action.payload.tab, { ...state, options: { ...state.options, editTab: null } });
+      if (action.payload.tab.changes.isSelected) {
+        return adapter.updateOne(action.payload.tab, {
+          ...state, entities: mapValues(state.entities, (tab: Tab) => {
+            return { ...tab, isSelected: false }
+          })
+        });
+      } else if(action.payload.tab.changes.isEdit) {
+        return adapter.updateOne(action.payload.tab, {
+          ...state, entities: mapValues(state.entities, (tab: Tab) => {
+            return { ...tab, isEdit: false }
+          })
+        });
+      } else {
+        return adapter.updateOne(action.payload.tab, state);
+      }
     }
     case TabActionTypes.UpdateTabs: {
       return adapter.updateMany(action.payload.tabs, state);
     }
     case TabActionTypes.DeleteTab: {
-      if(action.payload.id==state.options.selectedTab) { //is selectedTab the removed tab?
-        if(state.ids.length>1) { //if there is more then one tab (bevore remove)
-          let firstTabId:string = state.ids[0].toString();
-          return adapter.removeOne(action.payload.id, {...state, options: {...state.options, selectedTab: firstTabId}});
+      if (action.payload.id == state.options.selectedTab) { //is selectedTab the removed tab?
+        if (state.ids.length > 1) { //if there is more then one tab (bevore remove)
+          let firstTabId: string = state.ids[0].toString();
+          return adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: firstTabId } });
         } else { //There are more then one tabs left, set selectedTab to first entry
-          return adapter.removeOne(action.payload.id, {...state, options: {...state.options, selectedTab: null}});
+          return adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: null } });
         }
       } else { //selectedTab is not removed tab
         return adapter.removeOne(action.payload.id, state);

@@ -6,48 +6,30 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 export const pagesFeatureKey = 'pages';
 
 export interface State extends EntityState<Page> {
-  // additional entities state properties
-  
+  options: {
+    editPages: boolean
+    editPageId: string
+  }
 }
 
 export const adapter: EntityAdapter<Page> = createEntityAdapter<Page>({
-  selectId: (page) => page.id
+  selectId: (page) => page.id + "_" + page.x + "-"+page.y
 });
 
 export const initialState: State = adapter.getInitialState({
-  
+  options: {
+    editPages: true,
+    editPageId: null
+  }
 });
 
 export function reducer(
   state = initialState,
   action: PageActions
 ): State {
-  function gotStateAlreadyPageSOnColumn(newPages:Page[]):boolean {
-    for(let newPageId in newPages) {
-      let newPage:Page = newPages[newPageId]
-      if(gotStateAlreadyPageOnColumn(newPage)) {
-        return true
-      }
-    }
-    return false;
-  }
-  function gotStateAlreadyPageOnColumn(newPage:Page):boolean {
-    for(let pageId in state.entities) {
-      let page:Page = state.entities[pageId]
-      if(page.tab==newPage.tab && page.x == newPage.x && page.y==newPage.y) {
-        return true;
-      }
-    }
-    return false;
-  }
   switch (action.type) {
     case PageActionTypes.AddPage: {
-      if(!gotStateAlreadyPageOnColumn(action.payload.page)) {
-        return adapter.addOne(action.payload.page, state);
-      } else {
-        //TODO: Raise error
-        return state
-      }
+      return adapter.addOne(action.payload.page, state);
     }
 
     case PageActionTypes.UpsertPage: {
@@ -55,12 +37,7 @@ export function reducer(
     }
 
     case PageActionTypes.AddPages: {
-      if(!gotStateAlreadyPageSOnColumn(action.payload.pages)) {
-        return adapter.addMany(action.payload.pages, state);
-      } else {
-        //TODO: Raise error
-        return state
-      }
+      return adapter.addMany(action.payload.pages, state);
     }
 
     case PageActionTypes.UpsertPages: {

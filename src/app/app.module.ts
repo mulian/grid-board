@@ -23,7 +23,7 @@ import { initialState, reducers } from './states/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MainComponent } from './main/main.component';
 import { PagesComponent } from './content/pages/pages.component';
-import { PageComponent } from './content/pages/page/page.component';
+import { PageComponent } from './content/page/page.component';
 import { WebviewDirective } from './webview.module';
 import { ContentComponent } from './content/content.component';
 import { TabbarItemComponent } from './tabbar/tabbar-item/tabbar-item.component';
@@ -38,11 +38,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { metaReducer } from './states/reducer.store';
+import { PagesEditComponent } from './content/pages-edit/pages-edit.component';
 library.add(fas);
 
+import { GridsterModule } from 'angular-gridster2';
+import { PagesContentComponent } from './pages-content/pages-content.component';
+
 @NgModule({
-  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent],
+  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, PagesComponent, PageComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, PagesEditComponent, PagesContentComponent],
   imports: [
+    GridsterModule,
     BrowserModule,
     FontAwesomeModule,
     FormsModule,

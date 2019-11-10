@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-// import { Page, LoadPageFinished } from '../../../states/tab';
-import { AppState } from '../../../states/reducers';
+import { AppState } from '../../states/reducers';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 

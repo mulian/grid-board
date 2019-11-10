@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Tab, NoEditTab, UpdateTab, DeleteTab } from '../../states/tab';
+import { Tab, UpdateTab, DeleteTab } from '../../states/tab';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -19,11 +19,12 @@ export class TabbarItemEditComponent implements OnInit {
 
   }
 
-  changeName(name: string) {
+  changeName(name: string,isEdit:boolean=false) {
       const update: Update<Tab> = {
         id: this.tabItem.id,
         changes: {
-          name: name
+          name: name,
+          isEdit: isEdit
         }
       }
       this.store.dispatch(new UpdateTab({ tab: update }))
@@ -31,10 +32,6 @@ export class TabbarItemEditComponent implements OnInit {
 
   //Booth onEnter and onBlur will be fired with this function
   onBlur(value: string,event:any) {
-    if (value && value.length > 0) {
-      this.changeName(value)
-    } else {
-      this.store.dispatch(new NoEditTab({}))
-    }
+    this.changeName(value)
   }
 }
