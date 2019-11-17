@@ -1,0 +1,33 @@
+.title {
+    background-color: #CCC;;
+}
+
+.drag-handle {
+    padding-right: 5px;
+}
+.invisibleFullScreen {
+    display: block;
+    position: absolute;
+    top:0px; bottom: 0px;
+    left: 0px; right: 0px;
+    opacity: 0.2;
+    background-color: white;
+}
+
+.pageView {
+    height: 100%;
+    width: 100%;
+}
+
+.title {
+    display: none;
+}
+  
+.pageView:hover .title {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
+}

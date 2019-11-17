@@ -1,13 +1,1 @@
-<ng-container *ngIf="tabData$ | async as tabs">
-    <ng-container *ngIf="tabSelected$ | async as tabSelected">
-        <ng-container *ngIf="pageOptions$ | async as pageOptions">
-            <!-- {{log(pageOptions)}} -->
-            <div class="content" *ngFor="let tab of tabs" [hidden]="tab.id!=tabSelected">
-                <ng-container *ngIf="tab.id==tabSelected">
-                    {{log("WORKS_"+tab.id)}}
-                </ng-container>
-                <app-pages [tab]=tab [pageOptions]=pageOptions></app-pages>
-            </div>
-        </ng-container>
-    </ng-container>
-</ng-container>
+<app-grids></app-grids>

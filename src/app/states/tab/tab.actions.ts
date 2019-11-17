@@ -21,6 +21,18 @@ export enum TabActionTypes {
   NoEditTab = "[Tab] No Edit Tab"
 }
 
+export class EditTab implements Action {
+  readonly type = TabActionTypes.EditTab
+
+  constructor(public payload: {tabId: string}) {}
+}
+
+export class SelectTab implements Action {
+  readonly type = TabActionTypes.SelectTab
+
+  constructor(public payload: {tabId: string}) {}
+}
+
 export class LoadTabs implements Action {
   readonly type = TabActionTypes.LoadTabs;
 
@@ -95,4 +107,6 @@ export type TabActions =
  | UpdateTabs
  | DeleteTab
  | DeleteTabs
- | ClearTabs;
+ | ClearTabs
+ | SelectTab
+ | EditTab;

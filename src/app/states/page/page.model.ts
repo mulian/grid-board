@@ -1,8 +1,8 @@
-export interface Page {
-  id: string;
+import { GridsterItem } from "angular-gridster2";
+
+export interface Page extends GridsterItem {
   name?: string;
+  id?: string;
   url: string;
   tab: string; //The referenced tab id, there is currently no check that tab exists
-  x: number; //the x axis of tab table
-  y: number;//the y axis of tab table
 }

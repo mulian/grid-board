@@ -1,7 +1,21 @@
+<!-- <mat-tab-group animationDuration="2000ms" *ngIf="tab$ | async as tabs">
+  <mat-tab *ngFor="let tabItem of tabs" label="{{tabItem.title}}"></mat-tab>
+  <a mat-tab-link *ngFor="let tabItem of tabs" [active]="tabItem.isSelected">
+    <app-tabbar-item [tabItem]="tabItem" *ngIf="!tabItem.isEdit; else editItem"></app-tabbar-item>
+    <ng-template #editItem>
+      <app-tabbar-item-edit [tabItem]="tabItem"></app-tabbar-item-edit>
+    </ng-template>
+  </a>
+  <a mat-tab-link (click)='newAction()'>
+    <i class="material-icons">
+      add
+    </i>
+  </a>
+</mat-tab-group> -->
+
 <div class="tabs is-boxed" *ngIf="tab$ | async as tabs">
   <ul>
     <li *ngFor="let tabItem of tabs" [ngClass]="{'is-active':tabItem.isSelected}">
-      {{log(tabItem)}}
       <app-tabbar-item [tabItem]="tabItem" *ngIf="!tabItem.isEdit; else editItem"></app-tabbar-item>
       <ng-template #editItem>
         <app-tabbar-item-edit [tabItem]="tabItem"></app-tabbar-item-edit>

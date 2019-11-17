@@ -6,7 +6,7 @@ import { mapValues } from 'lodash-es'
 
 export const tabsFeatureKey = 'tabs';
 
-export interface State extends EntityState<Tab> {
+export interface TabState extends EntityState<Tab> {
   options: {
     selectedTab: string
     editTab: string
@@ -17,23 +17,27 @@ export const adapter: EntityAdapter<Tab> = createEntityAdapter<Tab>({
   selectId: (tab) => tab.id
 });
 
-export const initialState: State = adapter.getInitialState({
+export const tabInitialState: TabState = adapter.getInitialState({
   options: {
     selectedTab: null,
     editTab: null
   }
 });
 
-export function reducer(
-  state = initialState,
+export function tabReducer(
+  state = tabInitialState,
   action: TabActions
-): State {
+): TabState {
   switch (action.type) {
+    case TabActionTypes.SelectTab: {
+      return {...state, options: { ...state.options, selectedTab: action.payload.tabId}}
+    }
+    case TabActionTypes.EditTab: {
+      return {...state, options: { ...state.options, editTab: action.payload.tabId}}
+    }
+
     case TabActionTypes.AddTab: {
-      return adapter.addOne(action.payload.tab, {...state, entities: mapValues(state.entities,(tab:Tab) => {
-        return {...tab,isSelected:false}
-      })})
-      // return adapter.addOne(action.payload.tab, { ...state, options: { ...state.options, editTab: action.payload.tab.id, selectedTab: action.payload.tab.id } });
+      return adapter.addOne(action.payload.tab, { ...state, options: { ...state.options, editTab: action.payload.tab.id, selectedTab: action.payload.tab.id } });
     }
     case TabActionTypes.UpsertTab: {
       return adapter.upsertOne(action.payload.tab, state);
@@ -91,9 +95,14 @@ export function reducer(
   }
 }
 
-export const {
+const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
 } = adapter.getSelectors();
+
+export const tabSelectedIds = selectIds;
+export const tabSelectedEntities = selectEntities;
+export const tabSelectedAll = selectAll;
+export const tabSelectedTotal = selectTotal;

@@ -1,6 +1,6 @@
 export interface Tab {
   id?: string
   name: string
-  isSelected: boolean
+  isSelected: boolean //todo: remove
   isEdit: boolean
 }

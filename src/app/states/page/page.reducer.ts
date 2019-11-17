@@ -13,7 +13,7 @@ export interface State extends EntityState<Page> {
 }
 
 export const adapter: EntityAdapter<Page> = createEntityAdapter<Page>({
-  selectId: (page) => page.id + "_" + page.x + "-"+page.y
+  selectId: (page) => page.id
 });
 
 export const initialState: State = adapter.getInitialState({

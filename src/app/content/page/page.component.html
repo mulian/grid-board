@@ -1,4 +1,0 @@
-<!-- <webview id="webview_{{pageId}}" style="height: 400px;"></webview> -->
-<div *ngIf="page$ | async as page">
-    <webview id="webview_{{pageX}}_{{pageY}}" src='{{page.url}}' autosize="on" [style.height.px]="height"></webview>
-</div>

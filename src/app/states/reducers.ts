@@ -1,20 +1,21 @@
-import { ActionReducerMap, createSelector, createFeatureSelector, MetaReducer, ActionReducer } from '@ngrx/store';
-import * as tabStore from './tab';
+import { ActionReducerMap, createFeatureSelector, MetaReducer, ActionReducer } from '@ngrx/store';
 import * as pageStore from './page';
-import {pick} from 'lodash-es'
+
+import { createSelector } from 'reselect'
+import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds } from './tab';
 
 export interface AppState {
-  tabs: tabStore.State;
+  tabs: TabState;
   pages: pageStore.State;
 }
 
 export const initialState: AppState = {
-  tabs: tabStore.initialState,
+  tabs: tabInitialState,
   pages: pageStore.initialState,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  tabs: tabStore.reducer,
+  tabs: tabReducer,
   pages: pageStore.reducer,
 }
 
@@ -22,9 +23,14 @@ export const reducers: ActionReducerMap<AppState> = {
 export const selectAllPagesState =
   createFeatureSelector<pageStore.State>("pages");
 export const selectPagesOptions = createSelector(selectAllPagesState, (pages) => pages.options)
+export const selectPagesById = (pageId) => createSelector(selectAllPagesState, (pages) => pages.entities[pageId])
 export const selectAllPages = createSelector(
   selectAllPagesState,
   pageStore.selectAll
+)
+export const selectAllPagesEntitities = createSelector(
+  selectAllPagesState,
+  pageStore.selectEntities
 )
 
 // export const selectAllPagges = createSelector(
@@ -34,27 +40,33 @@ export const selectUserEntities = createSelector(
   selectAllPagesState,
   pageStore.selectAll
 );
-export const selectAllPagesFromTab = createSelector(
-  selectUserEntities,
-  (state, props) => {
-    
-    // console.log("selectAllPagesFromTab", props,state);
-    // console.log(state.filter(page => page.tab == props.tabId));
-    
-    return state.filter(page => page.tab == props.tabId)
-    // console.log(state.filter(page => page.tab == tabId));
+// export const selectAllPagesFromTab = (tabId) => createSelector(
+//   selectAllPagesState,
+//   (state) => {
+//     state.entities
+//   }
+// )
 
-    // return state.filter(page => page.tab == tabId)
-  })
+// export const selectAllPagesFromTab = (tabId) => createSelector(
+//   selectAllPagesState,
+//   pageStore.selectEntities,(state, pages) => {
+//     pages
+//   }
+// )
 
 //Tabs select
 export const selectAllTabsState =
-  createFeatureSelector<tabStore.State>("tabs");
+  createFeatureSelector<TabState>("tabs");
 export const selectTabOptions = createSelector(selectAllTabsState, (tabs) => tabs.options)
 export const selectTabOptionsSelectTab = createSelector(selectAllTabsState, (tabs) => tabs.options.selectedTab)
 export const selectTabOptionsEditTab = createSelector(selectAllTabsState, (tabs) => tabs.options.editTab)
 
 export const selectAllTabs = createSelector(
   selectAllTabsState,
-  tabStore.selectAll
+  tabSelectedAll
+)
+
+export const selectAllTabIds = createSelector(
+  selectAllTabsState,
+  tabSelectedIds
 )

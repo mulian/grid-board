@@ -15,19 +15,19 @@ function getSavedState(): any {
 export function reduceWithStore(reducer: ActionReducer<any>): ActionReducer<any> {
   return function (state, action) {
     let nextState = reducer(state, action);
-    // if (action.type == "@ngrx/store/init") {
-    //   console.log("restore last state");
-    //   let savedState: any = getSavedState();
-    //   if (savedState) {
-    //     nextState = savedState
-    //   }
-    // } else {
-    //   setSavedState(nextState)
-    // }
-    // if (DEBUG) {
-    //   console.log('state', state);
-    //   console.log('action', action);
-    // }
+    if (action.type == "@ngrx/store/init") {
+      console.log("restore last state");
+      let savedState: any = getSavedState();
+      if (savedState) {
+        nextState = savedState
+      }
+    } else {
+      setSavedState(nextState)
+    }
+    if (DEBUG) {
+      console.log('state', state);
+      console.log('action', action);
+    }
 
     return nextState
   };

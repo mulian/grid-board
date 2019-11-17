@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tab,  UpdateTab, DeleteTab } from '../../states/tab';
+import { Tab,  UpdateTab, DeleteTab, SelectTab, EditTab } from '../../states/tab';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -30,6 +30,7 @@ export class TabbarItemComponent implements OnInit {
       }
     }
     this.store.dispatch(new UpdateTab({ tab: update }))
+    this.store.dispatch(new EditTab({tabId: this.tabItem.id}))
   }
 
   showTab() {
@@ -40,11 +41,12 @@ export class TabbarItemComponent implements OnInit {
       }
     }
     this.store.dispatch(new UpdateTab({ tab: update }))
+    this.store.dispatch(new SelectTab({tabId: this.tabItem.id}))
   }
 
   clicked:number=0
   clickTimeOut=null
-  clickTabTitle(index:string) { //TODO: Make this smarter
+  clickTabTitle() { //TODO: Make this smarter
     this.clicked++
     if(this.clickTimeOut==null) {
       this.clickTimeOut = setTimeout(() => {

@@ -1,0 +1,13 @@
+.content {
+    height: calc(100% - 42px);
+    min-width: 100%;
+}
+.subContent {
+    height: 100%;
+    min-width: 100%;
+}
+.hide {
+    position: absolute;
+    top:-200%;
+    left:-200%;
+}

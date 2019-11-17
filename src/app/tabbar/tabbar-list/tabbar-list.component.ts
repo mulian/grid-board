@@ -12,19 +12,10 @@ import { AddTab } from '../../states/tab';
 })
 export class TabbarListComponent implements OnInit {
   tab$: Observable<any>
-  // selectedTab$: Observable<any>
-  // editTab$: Observable<any>
 
   constructor(private store: Store<AppState>) { }
-
-  log(value:any) {
-    // console.log(value);
-    
-  }
   
   ngOnInit() {
-    // this.editTab$ = this.store.pipe(select(selectTabOptionsEditTab))
-    // this.selectedTab$ = this.store.pipe(select(selectTabOptionsSelectTab));
     this.tab$ = this.store.pipe(select(selectAllTabs));
   }
 

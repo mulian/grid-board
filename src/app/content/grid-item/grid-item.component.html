@@ -1,0 +1,25 @@
+<div class="invisibleFullScreen" *ngIf="item.setDrag"></div>
+<div #container class="pageView">
+    <div class="title" >
+        <div class="field is-horizontal">
+            <a class="drag-handle">
+                <fa-icon icon="expand-arrows-alt"></fa-icon>
+            </a>
+            <!-- <div class="field-label is-normal">
+            <label class="label">{{item.name}}</label>
+        </div> -->
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-small rounded" type="text" value="{{item.url}}" #box
+                            (keyup.enter)="$event.target.blur()" (blur)="onBlur(box.value,$event)">
+                    </p>
+                </div>
+            </div>
+            <a (click)="removePage($event)">
+                <fa-icon class="" icon="times"></fa-icon>
+            </a>
+        </div>
+    </div>
+    <webview src='{{item.url}}' autosize="on" style="height: 100%;" #webview></webview>
+</div>
