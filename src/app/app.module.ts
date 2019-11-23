@@ -43,12 +43,14 @@ import { GridsComponent } from './content/grids/grids.component';
 import { GridItemComponent } from './content/grid-item/grid-item.component';
 
 import {MatTabsModule} from '@angular/material/tabs';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent],
   imports: [
     MatTabsModule,
+    DragDropModule,
     GridsterModule,
     BrowserModule,
     FontAwesomeModule,

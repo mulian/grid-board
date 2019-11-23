@@ -1,3 +1,15 @@
+
+<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+    <div (click)='newAction()' class="add-box">
+        <i class="material-icons">menu</i>
+      </div>
+    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>{{timePeriod}}</div>
+    <div (click)='newAction()' class="add-box">
+        <i class="material-icons">add</i>
+      </div>
+      
+  </div>
+
 <!-- <mat-tab-group animationDuration="2000ms" *ngIf="tab$ | async as tabs">
   <mat-tab *ngFor="let tabItem of tabs" label="{{tabItem.title}}"></mat-tab>
   <a mat-tab-link *ngFor="let tabItem of tabs" [active]="tabItem.isSelected">
@@ -13,7 +25,7 @@
   </a>
 </mat-tab-group> -->
 
-<div class="tabs is-boxed" *ngIf="tab$ | async as tabs">
+<!-- <div class="tabs is-boxed" *ngIf="tab$ | async as tabs">
   <ul>
     <li *ngFor="let tabItem of tabs" [ngClass]="{'is-active':tabItem.isSelected}">
       <app-tabbar-item [tabItem]="tabItem" *ngIf="!tabItem.isEdit; else editItem"></app-tabbar-item>
@@ -30,4 +42,4 @@
       </a>
     </li>
   </ul>
-</div>
+</div> -->
