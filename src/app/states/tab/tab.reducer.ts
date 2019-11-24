@@ -40,7 +40,7 @@ function removeSortNumberOfTabId(state,removedTab) {
   for(let tabId in state.entities) {
     let tab:Tab = state.entities[tabId]
     if(tab.sortNumber>deleteTab.sortNumber) {
-      tab.sortNumber=tab.sortNumber-1
+      tab.sortNumber=tab.sortNumber-1 //TODO: dont write frome here... use update :(
     }
   }
 }
@@ -50,7 +50,7 @@ export function tabReducer(
 ): TabState {
   switch (action.type) {
     case TabActionTypes.SortTab: {
-      let updateTabs: Update<Tab>[] = []
+      let updateTabs: Update<Tab>[] = [] //TODO: dont replace, new sort!
       let tab: Tab = findSortNumber(state, action.payload.prevSortIndex)
       let replaceTab: Tab = findSortNumber(state, action.payload.toNewSortIndex)
       

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { AppState, selectAllPages, selectAllTabs, selectTabOptions, selectPagesOptions, selectTabOptionsSelectTab } from '../states/reducers';
+import { AppState, selectAllPages, selectAllTabs, selectTabOptions, selectPagesOptions, selectTabOptionsSelectTab, selectAllTabsEntitys } from '../states/reducers';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class ContentComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.tabData$ = this.store.pipe(select(selectAllTabs));
+    this.tabData$ = this.store.pipe(select(selectAllTabsEntitys)); //TODO: dont care of sort order! use a subscription
     this.tabSelected$ = this.store.pipe(select(selectTabOptionsSelectTab));
     this.pageOptions$ = this.store.pipe(select(selectPagesOptions))
   }

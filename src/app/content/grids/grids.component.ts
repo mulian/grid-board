@@ -149,6 +149,7 @@ export class GridsComponent implements OnInit {
     if (!(tabId in this.options)) {
       // console.log("create tab", tabId);
       this.options[tabId] = {
+        
         gridType: GridType.Fit,
         compactType: CompactType.None,
         margin: 5,
@@ -212,6 +213,7 @@ export class GridsComponent implements OnInit {
         disableWindowResize: false,
         disableWarnings: false,
         scrollToNewItems: false,
+
 
         itemChangeCallback: (item, itemComponent) => this.itemChangeCallback(item, itemComponent),
         itemResizeCallback: (item, itemComponent) => this.itemResizeCallback(item, itemComponent),
