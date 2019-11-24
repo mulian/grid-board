@@ -35,6 +35,15 @@ function findSortNumber(state, sortNumber: number) {
     }
   }
 }
+function removeSortNumberOfTabId(state,removedTab) {
+  let deleteTab:Tab = state.entities[removedTab]
+  for(let tabId in state.entities) {
+    let tab:Tab = state.entities[tabId]
+    if(tab.sortNumber>deleteTab.sortNumber) {
+      tab.sortNumber=tab.sortNumber-1
+    }
+  }
+}
 export function tabReducer(
   state = tabInitialState,
   action: TabActions
@@ -86,6 +95,7 @@ export function tabReducer(
       return adapter.updateMany(action.payload.tabs, state);
     }
     case TabActionTypes.DeleteTab: {
+      removeSortNumberOfTabId(state,action.payload.id)
       if (action.payload.id == state.options.selectedTab) { //is selectedTab the removed tab?
         if (state.ids.length > 1) { //if there is more then one tab (bevore remove)
           let firstTabId: string = state.ids[0].toString();

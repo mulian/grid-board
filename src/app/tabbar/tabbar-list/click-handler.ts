@@ -3,7 +3,7 @@ export default class ClickHandler<PayLoadType> {
     private callbackClick;
     private callbackDoubleClick;
     private payload:PayLoadType;
-    private time:number = 400;
+    private time:number = 200;
     private clickInc:number=0
 
     constructor() { }

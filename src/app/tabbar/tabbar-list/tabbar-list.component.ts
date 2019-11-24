@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab, selectAllTabsEntitys } from '../../states/reducers';
-import { AddTab, SelectTab, Tab, EditTab, SortTab } from '../../states/tab';
+import { AddTab, SelectTab, Tab, EditTab, SortTab, DeleteTab } from '../../states/tab';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import ChromeTabs from 'chrome-tabs'
@@ -40,12 +40,23 @@ export class TabbarListComponent implements OnInit {
     event.preventDefault();
     this.clickHandler.click(item);
   }
+  closeTab(item,event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.store.dispatch(new DeleteTab({id: item.id}))
+  }
   drop(event: CdkDragDrop<string[]>) {
     this.store.dispatch( new SortTab({prevSortIndex: event.previousIndex, toNewSortIndex:event.currentIndex}))
-    // moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
   }
 
   constructor(private store: Store<AppState>) {
+  }
+
+  maxSortNumber:number=0
+  setMaxSortNumber(newSortNumber) {
+    if(this.maxSortNumber<newSortNumber) {
+      this.maxSortNumber=newSortNumber
+    }
   }
 
   ngOnInit() {
@@ -53,13 +64,7 @@ export class TabbarListComponent implements OnInit {
     this.tabOptions$ = this.store.pipe(select(selectTabOptions));
   }
 
-  newAction(countTabs:number) {
-    console.log(countTabs);
-    
-    this.store.dispatch(new AddTab({ tab: { name: "neu", sortNumber:countTabs } }))
-  }
-  log(val) {
-    console.log("log",val);
-    
+  newAction(tabLength) {
+    this.store.dispatch(new AddTab({ tab: { name: "neu", sortNumber:tabLength } }))
   }
 }

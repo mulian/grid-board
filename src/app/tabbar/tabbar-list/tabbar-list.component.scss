@@ -85,8 +85,11 @@
     width: 12px;
     height: 15px;
   }
-  .example-box .close:hover {
+  .example-box.is-active .close:hover {
     background-color: #e8eaed;
+  }
+  .example-box .close:hover {
+    background-color: #fff;
   }
   .cdk-drag-placeholder {
     cursor: move;
