@@ -1,14 +1,29 @@
+<div *ngIf="tabOptions$ | async as tabOptions">
+  <div cdkDropList cdkDropListOrientation="horizontal" *ngIf="tab$ | async as tabs" class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div (click)='menu()' class="menu-box">
+      <i class="material-icons">menu</i>
+    </div>
+    <div class="example-box" *ngFor="let tabItem of tabs; let i = index; let length = count"
+      [ngClass]="{'is-active':tabOptions.selectedTab==tabItem.id}" (click)="click(tabItem,$event)" [cdkDragStartDelay]="200"
+      cdkDrag>
+      <div class="divider"></div>
+      <div class="title" *ngIf="tabOptions.editTab!=tabItem.id; else edit">
+        {{tabItem.name}}
+      </div>
+      <ng-template #edit>
+        <app-tabbar-item-edit [tabItem]="tabItem"></app-tabbar-item-edit>
+      </ng-template>
+      <mat-icon class="close" inline="true">close</mat-icon>
+      <!-- <mat-icon svgIcon="close" aria-hidden="false" aria-label="close tab"></mat-icon> -->
+      <!-- <i class="material-icons">close</i> -->
+    </div>
+    <div (click)='newAction(tabs.length)' class="add-box">
+      <i class="material-icons">add</i>
+    </div>
 
-<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div (click)='newAction()' class="add-box">
-        <i class="material-icons">menu</i>
-      </div>
-    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>{{timePeriod}}</div>
-    <div (click)='newAction()' class="add-box">
-        <i class="material-icons">add</i>
-      </div>
-      
   </div>
+</div>
 
 <!-- <mat-tab-group animationDuration="2000ms" *ngIf="tab$ | async as tabs">
   <mat-tab *ngFor="let tabItem of tabs" label="{{tabItem.title}}"></mat-tab>

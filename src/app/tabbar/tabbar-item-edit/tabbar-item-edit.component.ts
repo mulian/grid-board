@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Tab, UpdateTab, DeleteTab } from '../../states/tab';
+import { Tab, UpdateTab, DeleteTab, EditTab } from '../../states/tab';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -24,10 +24,10 @@ export class TabbarItemEditComponent implements OnInit {
         id: this.tabItem.id,
         changes: {
           name: name,
-          isEdit: isEdit
         }
       }
       this.store.dispatch(new UpdateTab({ tab: update }))
+      this.store.dispatch(new EditTab({tabId:null}))
   }
 
   //Booth onEnter and onBlur will be fired with this function

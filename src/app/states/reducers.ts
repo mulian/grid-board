@@ -2,7 +2,7 @@ import { ActionReducerMap, createFeatureSelector, MetaReducer, ActionReducer } f
 import * as pageStore from './page';
 
 import { createSelector } from 'reselect'
-import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds } from './tab';
+import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds, tabSelectedEntities } from './tab';
 
 export interface AppState {
   tabs: TabState;
@@ -61,6 +61,10 @@ export const selectTabOptions = createSelector(selectAllTabsState, (tabs) => tab
 export const selectTabOptionsSelectTab = createSelector(selectAllTabsState, (tabs) => tabs.options.selectedTab)
 export const selectTabOptionsEditTab = createSelector(selectAllTabsState, (tabs) => tabs.options.editTab)
 
+export const selectAllTabsEntitys = createSelector(
+  selectAllTabsState,
+  tabSelectedAll
+)
 export const selectAllTabs = createSelector(
   selectAllTabsState,
   tabSelectedAll

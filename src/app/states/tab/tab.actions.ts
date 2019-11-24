@@ -18,7 +18,14 @@ export enum TabActionTypes {
   SelectTab = '[Tab] Select Tab',
   RenameTab = '[Tab] Rename Tab',
   EditTab = "[Tab] Edit Tab",
-  NoEditTab = "[Tab] No Edit Tab"
+  NoEditTab = "[Tab] No Edit Tab",
+  SortTab = "[Tab] Sort Tab"
+}
+
+export class SortTab implements Action {
+  readonly type = TabActionTypes.SortTab
+
+  constructor(public payload: {prevSortIndex: number, toNewSortIndex:number}) {}
 }
 
 export class EditTab implements Action {
@@ -109,4 +116,5 @@ export type TabActions =
  | DeleteTabs
  | ClearTabs
  | SelectTab
- | EditTab;
+ | EditTab
+ | SortTab;

@@ -1,4 +1,4 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
 import { Tab } from './tab.model';
 import { TabActions, TabActionTypes } from './tab.actions';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
@@ -14,26 +14,57 @@ export interface TabState extends EntityState<Tab> {
 }
 
 export const adapter: EntityAdapter<Tab> = createEntityAdapter<Tab>({
-  selectId: (tab) => tab.id
+  selectId: (tab) => tab.id,
+  sortComparer: (a: Tab, b: Tab) => {
+    return a.sortNumber - b.sortNumber;
+  }
 });
 
 export const tabInitialState: TabState = adapter.getInitialState({
   options: {
-    selectedTab: null,
+    selectedTab: "no_selection",
     editTab: null
   }
 });
 
+function findSortNumber(state, sortNumber: number) {
+  for (let tabId in state.entities) {
+    let tab = state.entities[tabId]
+    if (tab.sortNumber == sortNumber) {
+      return tab;
+    }
+  }
+}
 export function tabReducer(
   state = tabInitialState,
   action: TabActions
 ): TabState {
   switch (action.type) {
+    case TabActionTypes.SortTab: {
+      let updateTabs: Update<Tab>[] = []
+      let tab: Tab = findSortNumber(state, action.payload.prevSortIndex)
+      let replaceTab: Tab = findSortNumber(state, action.payload.toNewSortIndex)
+      
+      updateTabs.push({
+        id: tab.id,
+        changes: {
+          sortNumber: replaceTab.sortNumber
+        }
+      })
+      updateTabs.push({
+        id: replaceTab.id,
+        changes: {
+          sortNumber: tab.sortNumber
+        }
+      })
+
+      return adapter.updateMany(updateTabs, state);
+    }
     case TabActionTypes.SelectTab: {
-      return {...state, options: { ...state.options, selectedTab: action.payload.tabId}}
+      return { ...state, options: { ...state.options, selectedTab: action.payload.tabId } }
     }
     case TabActionTypes.EditTab: {
-      return {...state, options: { ...state.options, editTab: action.payload.tabId}}
+      return { ...state, options: { ...state.options, editTab: action.payload.tabId } }
     }
 
     case TabActionTypes.AddTab: {
@@ -49,21 +80,7 @@ export function tabReducer(
       return adapter.upsertMany(action.payload.tabs, state);
     }
     case TabActionTypes.UpdateTab: {
-      if (action.payload.tab.changes.isSelected) {
-        return adapter.updateOne(action.payload.tab, {
-          ...state, entities: mapValues(state.entities, (tab: Tab) => {
-            return { ...tab, isSelected: false }
-          })
-        });
-      } else if(action.payload.tab.changes.isEdit) {
-        return adapter.updateOne(action.payload.tab, {
-          ...state, entities: mapValues(state.entities, (tab: Tab) => {
-            return { ...tab, isEdit: false }
-          })
-        });
-      } else {
-        return adapter.updateOne(action.payload.tab, state);
-      }
+      return adapter.updateOne(action.payload.tab, state);
     }
     case TabActionTypes.UpdateTabs: {
       return adapter.updateMany(action.payload.tabs, state);

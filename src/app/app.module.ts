@@ -45,10 +45,14 @@ import { GridItemComponent } from './content/grid-item/grid-item.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent],
   imports: [
+    MatIconModule,
+    MatButtonModule,
     MatTabsModule,
     DragDropModule,
     GridsterModule,

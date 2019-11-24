@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab } from '../../states/reducers';
-import { AddTab } from '../../states/tab';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab, selectAllTabsEntitys } from '../../states/reducers';
+import { AddTab, SelectTab, Tab, EditTab, SortTab } from '../../states/tab';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import ChromeTabs from 'chrome-tabs'
+import ClickHandler from './click-handler';
 
 @Component({
   selector: 'app-tabbar-list',
@@ -15,7 +16,16 @@ import ChromeTabs from 'chrome-tabs'
 })
 export class TabbarListComponent implements OnInit {
   tab$: Observable<any>
-  tabId: string
+  tabOptions$: Observable<any>
+  
+  clickHandler: ClickHandler<Tab> = new ClickHandler<Tab>()
+    .onClick((item: Tab) => {
+      console.log("Click: ", item);
+      this.store.dispatch(new SelectTab({ tabId: item.id }))
+    }).onDoubleClick((item: Tab) => {
+      console.log("double click", item);
+      this.store.dispatch(new EditTab({tabId:item.id}))
+    })
 
   timePeriods = [
     'Bronze age',
@@ -25,21 +35,31 @@ export class TabbarListComponent implements OnInit {
     'Long nineteenth century'
   ];
 
+  click(item,event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.clickHandler.click(item);
+  }
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
+    this.store.dispatch( new SortTab({prevSortIndex: event.previousIndex, toNewSortIndex:event.currentIndex}))
+    // moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
   }
 
-  constructor(private store: Store<AppState>) { }
-  
+  constructor(private store: Store<AppState>) {
+  }
+
   ngOnInit() {
-    this.tab$ = this.store.pipe(select(selectAllTabs));
-    this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((tabId) => {
-      this.tabId = tabId
-    })
-    
+    this.tab$ = this.store.pipe(select(selectAllTabsEntitys));
+    this.tabOptions$ = this.store.pipe(select(selectTabOptions));
   }
 
-  newAction() {
-    this.store.dispatch(new AddTab({tab:{name:"neu",isEdit:true,isSelected:true}}))
+  newAction(countTabs:number) {
+    console.log(countTabs);
+    
+    this.store.dispatch(new AddTab({ tab: { name: "neu", sortNumber:countTabs } }))
+  }
+  log(val) {
+    console.log("log",val);
+    
   }
 }
