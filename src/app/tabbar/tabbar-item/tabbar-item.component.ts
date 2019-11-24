@@ -23,24 +23,10 @@ export class TabbarItemComponent implements OnInit {
   }
 
   editTab() {
-    const update: Update<Tab> = {
-      id: this.tabItem.id,
-      changes: {
-        isEdit: true
-      }
-    }
-    this.store.dispatch(new UpdateTab({ tab: update }))
     this.store.dispatch(new EditTab({tabId: this.tabItem.id}))
   }
 
   showTab() {
-    const update: Update<Tab> = {
-      id: this.tabItem.id,
-      changes: {
-        isSelected: true
-      }
-    }
-    this.store.dispatch(new UpdateTab({ tab: update }))
     this.store.dispatch(new SelectTab({tabId: this.tabItem.id}))
   }
 

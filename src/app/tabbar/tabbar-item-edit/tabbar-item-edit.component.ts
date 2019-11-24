@@ -19,7 +19,7 @@ export class TabbarItemEditComponent implements OnInit {
 
   }
 
-  changeName(name: string,isEdit:boolean=false) {
+  changeName(name: string) {
       const update: Update<Tab> = {
         id: this.tabItem.id,
         changes: {
