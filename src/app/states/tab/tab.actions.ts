@@ -25,7 +25,7 @@ export enum TabActionTypes {
 export class SortTab implements Action {
   readonly type = TabActionTypes.SortTab
 
-  constructor(public payload: {prevSortIndex: number, toNewSortIndex:number}) {}
+  constructor(public payload: {selectedIndex: number, targetIndex:number}) {}
 }
 
 export class EditTab implements Action {

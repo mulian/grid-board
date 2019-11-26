@@ -68,14 +68,15 @@
     
     border-radius: 7px 7px 0px 0px;
     
-    border: solid white 1px;
+    // border: solid white 1px;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     flex-direction: row;
     align-items: left;
     justify-content: space-between;
     box-sizing: border-box;
-    background: white;
+    background: #ccc;
+
     font-size: 14px;
   }
   .example-box .close {

@@ -46,7 +46,7 @@ export class TabbarListComponent implements OnInit {
     this.store.dispatch(new DeleteTab({id: item.id}))
   }
   drop(event: CdkDragDrop<string[]>) {
-    this.store.dispatch( new SortTab({prevSortIndex: event.previousIndex, toNewSortIndex:event.currentIndex}))
+    this.store.dispatch( new SortTab({selectedIndex: event.previousIndex, targetIndex:event.currentIndex}))
   }
 
   constructor(private store: Store<AppState>) {

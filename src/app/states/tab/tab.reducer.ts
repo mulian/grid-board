@@ -2,7 +2,7 @@ import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/e
 import { Tab } from './tab.model';
 import { TabActions, TabActionTypes } from './tab.actions';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { mapValues } from 'lodash-es'
+import * as _ from 'lodash-es'
 
 export const tabsFeatureKey = 'tabs';
 
@@ -27,47 +27,69 @@ export const tabInitialState: TabState = adapter.getInitialState({
   }
 });
 
-function findSortNumber(state, sortNumber: number) {
+function removeSortNumberOfTabId(state, removedTab) {
+  let deleteTab: Tab = state.entities[removedTab]
   for (let tabId in state.entities) {
-    let tab = state.entities[tabId]
-    if (tab.sortNumber == sortNumber) {
-      return tab;
+    let tab: Tab = state.entities[tabId]
+    if (tab.sortNumber > deleteTab.sortNumber) {
+      tab.sortNumber = tab.sortNumber - 1 //TODO: dont write frome here... use update :(
     }
   }
 }
-function removeSortNumberOfTabId(state,removedTab) {
-  let deleteTab:Tab = state.entities[removedTab]
-  for(let tabId in state.entities) {
-    let tab:Tab = state.entities[tabId]
-    if(tab.sortNumber>deleteTab.sortNumber) {
-      tab.sortNumber=tab.sortNumber-1 //TODO: dont write frome here... use update :(
-    }
-  }
-}
+
 export function tabReducer(
   state = tabInitialState,
   action: TabActions
 ): TabState {
   switch (action.type) {
     case TabActionTypes.SortTab: {
-      let updateTabs: Update<Tab>[] = [] //TODO: dont replace, new sort!
-      let tab: Tab = findSortNumber(state, action.payload.prevSortIndex)
-      let replaceTab: Tab = findSortNumber(state, action.payload.toNewSortIndex)
-      
-      updateTabs.push({
-        id: tab.id,
-        changes: {
-          sortNumber: replaceTab.sortNumber
+      let source: Tab = state.entities[state.ids[action.payload.selectedIndex]]
+      let target: Tab = state.entities[state.ids[action.payload.targetIndex]]
+
+      let updates: Update<Tab>[] = []
+      //Get all affectedEntitites to update sort
+      if (action.payload.selectedIndex > action.payload.targetIndex) { //Source is now lower then Target => all effected entitities sortNumber+1
+        let affectedEntities: Tab[] = _.filter(
+          state.entities,
+          (filterTab: Tab) => filterTab.sortNumber < source.sortNumber && filterTab.sortNumber >= target.sortNumber
+        )
+        _.forEach(affectedEntities, (o) => console.log(o));
+
+        updates = _.map(affectedEntities, (tab: Tab): Update<Tab> => {
+          return {
+            id: tab.id,
+            changes: {
+              sortNumber: tab.sortNumber + 1
+            }
+          }
         }
-      })
-      updateTabs.push({
-        id: replaceTab.id,
+        )
+      } else {  //Source is now greater then Target => all effected entitities sort-1
+        let affectedEntities: Tab[] = _.filter(
+          state.entities,
+          (filterTab: Tab) => filterTab.sortNumber > source.sortNumber && filterTab.sortNumber <= target.sortNumber
+        )
+        _.forEach(affectedEntities, (o) => console.log(o));
+        updates = _.map(affectedEntities, (tab: Tab): Update<Tab> => {
+          return {
+            id: tab.id,
+            changes: {
+              sortNumber: tab.sortNumber - 1
+            }
+          }
+        }
+        )
+      }
+      //Update source, source.sort will be everytime target.sort
+      updates.push({
+        id: source.id,
         changes: {
-          sortNumber: tab.sortNumber
+          sortNumber: target.sortNumber
         }
       })
 
-      return adapter.updateMany(updateTabs, state);
+      return adapter.updateMany(updates, state)
+
     }
     case TabActionTypes.SelectTab: {
       return { ...state, options: { ...state.options, selectedTab: action.payload.tabId } }
@@ -95,17 +117,42 @@ export function tabReducer(
       return adapter.updateMany(action.payload.tabs, state);
     }
     case TabActionTypes.DeleteTab: {
-      removeSortNumberOfTabId(state,action.payload.id)
+      let willDeletedTab:Tab = state.entities[action.payload.id]
+      let updates:Update<Tab>[] = _.map(_.filter(state.entities,(tab:Tab) => {
+        return tab.sortNumber>willDeletedTab.sortNumber
+      }),(tab:Tab):Update<Tab> => {
+        return {
+          id: tab.id,
+          changes: {
+            sortNumber: tab.sortNumber-1
+          }
+        }
+      })
+
+      // removeSortNumberOfTabId(state, action.payload.id)
+      // let deletedTab: Tab = state.entities[action.payload.id]
+      // let newState = state
       if (action.payload.id == state.options.selectedTab) { //is selectedTab the removed tab?
         if (state.ids.length > 1) { //if there is more then one tab (bevore remove)
           let firstTabId: string = state.ids[0].toString();
-          return adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: firstTabId } });
+          return adapter.updateMany(updates,adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: firstTabId } }))
         } else { //There are more then one tabs left, set selectedTab to first entry
-          return adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: null } });
+          return adapter.updateMany(updates,adapter.removeOne(action.payload.id, { ...state, options: { ...state.options, selectedTab: null } }));
         }
       } else { //selectedTab is not removed tab
-        return adapter.removeOne(action.payload.id, state);
+        return adapter.updateMany(updates,adapter.removeOne(action.payload.id, state));
       }
+      // let updates: Update<Tab>[] = _.map(
+      //   _.filter(state.entities, (tab: Tab) => tab.sortNumber > deletedTab.sortNumber),
+      //   (tab: Tab): Update<Tab> => {
+      //     return {
+      //       id: tab.id,
+      //       changes: {
+      //         sortNumber: tab.sortNumber - 1
+      //       }
+      //     }
+      //   })
+      // return adapter.updateMany(updates, newState)
     }
     case TabActionTypes.DeleteTabs: {
       return adapter.removeMany(action.payload.ids, state);
