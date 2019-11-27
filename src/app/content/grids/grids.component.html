@@ -1,15 +1,15 @@
-<div *ngIf="tabs$ | async as tabs" class="content">
-    <gridster *ngFor="let tabId of tabs" [options]="getOption(tabId)" [class.hide]="selectedTabId!=tabId">
+<div class="content">
+    <gridster *ngFor="let tab of syncedTabData.getSyncedData()" [options]="getOption(tab.id)" [class.hide]="selectedTabId!=tab.id">
         <!-- <div *ngIf="pages$[tabId] | async as pages">
             {{log(pages)}}
             <gridster-item *ngFor="let item of pages | keyvalue" [item]=item.value>
                 <app-grid-item [item]=item.value></app-grid-item>
             </gridster-item>
         </div> -->
-        <div *ngFor="let item of items[tabId] | keyvalue">
-            <gridster-item [item]="item.value" *ngIf="!item.value.isDeleted">
+        <div *ngFor="let item of syncedPageData.getSyncedData()">
+            <gridster-item [item]="item" *ngIf="item.tab==tab.id">
                 <!-- <gridster-item *ngFor="let item of items[tabId]" [item]=item> -->
-                <app-grid-item [item]=item.value></app-grid-item>
+                <app-grid-item [item]=item></app-grid-item>
             </gridster-item>
         </div>
     </gridster>

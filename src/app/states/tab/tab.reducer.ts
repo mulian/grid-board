@@ -43,12 +43,12 @@ export function tabReducer(
 ): TabState {
   switch (action.type) {
     case TabActionTypes.SortTab: {
-      let source: Tab = state.entities[state.ids[action.payload.selectedIndex]]
+      let source: Tab = state.entities[state.ids[action.payload.sourceIndex]]
       let target: Tab = state.entities[state.ids[action.payload.targetIndex]]
 
       let updates: Update<Tab>[] = []
       //Get all affectedEntitites to update sort
-      if (action.payload.selectedIndex > action.payload.targetIndex) { //Source is now lower then Target => all effected entitities sortNumber+1
+      if (action.payload.sourceIndex > action.payload.targetIndex) { //Source is now lower then Target => all effected entitities sortNumber+1
         let affectedEntities: Tab[] = _.filter(
           state.entities,
           (filterTab: Tab) => filterTab.sortNumber < source.sortNumber && filterTab.sortNumber >= target.sortNumber

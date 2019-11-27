@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
-import { AppState, selectAllTabIds, selectTabOptionsSelectTab, selectAllPagesEntitities, selectAllPagesState } from '../../states/reducers';
+import { AppState, selectAllTabIds, selectTabOptionsSelectTab, selectAllPagesEntitities, selectAllPagesState, selectAllTabsEntities } from '../../states/reducers';
 import { GridsterConfig, GridType, CompactType, DisplayGrid, GridsterItem, GridsterItemComponentInterface } from 'angular-gridster2';
 import { AddPage, Page, UpdatePage } from '../../states/page';
 import { Update } from '@ngrx/entity';
+import NgrxEntitySync from '../../ngrx-entity-sync';
+import { Tab } from '../../states/tab';
+import * as _ from 'lodash-es'
 
 export interface PageCheck extends Page {
   isDeleted?:boolean
@@ -17,10 +20,11 @@ export interface PageCheck extends Page {
   styleUrls: ['./grids.component.scss']
 })
 export class GridsComponent implements OnInit {
-  tabs$: Observable<any>
   pages$: { [key:string]: Observable<any>} = {}
   // selectedTab$: Observable<any>
   selectedTabId: string
+  syncedTabData: NgrxEntitySync<Tab>;
+  syncedPageData: NgrxEntitySync<Page>;
   constructor(private store: Store<AppState>) { }
 
   log(value:any) {
@@ -31,59 +35,13 @@ export class GridsComponent implements OnInit {
   ngOnInit() {
     console.log("init");
 
-    this.tabs$ = this.store.pipe(select(selectAllTabIds));
-    this.store.pipe(select(selectAllPagesEntitities)).subscribe((pages: { [key: string]: Page }) => {
-      console.log("Triggered!");
-
-      let pagesWasChanged:{ [key:string]: boolean} = {}
-      for (let pageId in pages) {
-        let page: Page = pages[pageId]
-        if(!(page.tab in pagesWasChanged)) { pagesWasChanged[page.tab]=false }
-        // console.log(page);
-        if(this.updatePage(page)) {
-          pagesWasChanged[page.tab]=true
-        }
-      }
-      for(let tabId in pagesWasChanged) {
-        if(pagesWasChanged[tabId]) {
-          this.optionsChanged(tabId)
-        }
-      }
-    });
+    this.syncedTabData = new NgrxEntitySync<Tab>(this.store,selectAllTabsEntities,(tab) => tab.id)
+    this.syncedPageData = new NgrxEntitySync<Page>(this.store,selectAllPagesEntitities,(page) => page.id)
+  
     this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((tabId: string) => this.selectedTabId = tabId)
   }
-
-  items: { [key: string]: { [key: string]: PageCheck } } = {}
-  updatePage(newPage: PageCheck):boolean {
-    let pagesWasChanged:boolean = false
-    if (!(newPage.tab in this.items)) { this.items[newPage.tab] = {} }
-
-    if(!(newPage.id in this.items[newPage.tab])) { 
-      newPage.isDeleted=false
-      this.items[newPage.tab][newPage.id] = newPage 
-    } else { //update
-      let currentPage:Page = this.items[newPage.tab][newPage.id]
-      console.log("update",currentPage,newPage);
-      // this.updateOnValueChange
-
-      for(let key in currentPage) {
-        if(currentPage[key] != newPage[key]) {
-          pagesWasChanged=true
-          console.log("update...",key);
-
-          this.items[newPage.tab][newPage.id][key] = newPage[key]
-        }
-      }
-    }
-    return pagesWasChanged
-    // console.log(this.items[page.tab][page.id]);
-
-  }
-  updateOnValueChange(objectStore: object, key: string, newValue: any) {
-    let oldValue: any = objectStore[key]
-    if (oldValue != newValue) {
-      objectStore[key] = newValue;
-    }
+  getPagesFromTabId(tabId:string) {
+    return _.filter(this.syncedPageData.getSyncedData(),{tab:tabId})
   }
 
   emptyCellClickCallback(event, item: GridsterItem) {

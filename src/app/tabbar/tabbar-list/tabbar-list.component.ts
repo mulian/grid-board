@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab, selectAllTabsEntitys } from '../../states/reducers';
+import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab, selectAllTabsEntitys, selectAllTabsEntities } from '../../states/reducers';
 import { AddTab, SelectTab, Tab, EditTab, SortTab, DeleteTab } from '../../states/tab';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import ChromeTabs from 'chrome-tabs'
 import ClickHandler from './click-handler';
+import NgrxEntitySync from '../../ngrx-entity-sync';
 
 @Component({
   selector: 'app-tabbar-list',
@@ -17,6 +18,7 @@ import ClickHandler from './click-handler';
 export class TabbarListComponent implements OnInit {
   tab$: Observable<any>
   tabOptions$: Observable<any>
+  syncedTabData: NgrxEntitySync<Tab>
   
   clickHandler: ClickHandler<Tab> = new ClickHandler<Tab>()
     .onClick((item: Tab) => {
@@ -46,7 +48,7 @@ export class TabbarListComponent implements OnInit {
     this.store.dispatch(new DeleteTab({id: item.id}))
   }
   drop(event: CdkDragDrop<string[]>) {
-    this.store.dispatch( new SortTab({selectedIndex: event.previousIndex, targetIndex:event.currentIndex}))
+    this.store.dispatch( new SortTab({sourceIndex: event.previousIndex, targetIndex:event.currentIndex}))
   }
 
   constructor(private store: Store<AppState>) {
@@ -62,6 +64,7 @@ export class TabbarListComponent implements OnInit {
   ngOnInit() {
     this.tab$ = this.store.pipe(select(selectAllTabsEntitys));
     this.tabOptions$ = this.store.pipe(select(selectTabOptions));
+    
   }
 
   newAction(tabLength) {

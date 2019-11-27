@@ -61,6 +61,10 @@ export const selectTabOptions = createSelector(selectAllTabsState, (tabs) => tab
 export const selectTabOptionsSelectTab = createSelector(selectAllTabsState, (tabs) => tabs.options.selectedTab)
 export const selectTabOptionsEditTab = createSelector(selectAllTabsState, (tabs) => tabs.options.editTab)
 
+export const selectAllTabsEntities = createSelector(
+  selectAllTabsState,
+  tabSelectedEntities
+)
 export const selectAllTabsEntitys = createSelector(
   selectAllTabsState,
   tabSelectedAll
