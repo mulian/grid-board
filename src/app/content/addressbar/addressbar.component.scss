@@ -1,0 +1,125 @@
+.background {
+    // filter: blur(20px);
+    position: absolute;
+    left: 0px;
+    width: 90px;
+    top: 0px;
+    height: 40px;
+    // z-index: -1;
+    background-color: #fff;
+    opacity: 0.8;
+    border-bottom-right-radius: 5px;
+}
+
+.hideAdressbar {
+    background-color: transparent !important;
+    width: 90px !important;
+    filter: alpha(opacity=50) !important;
+    .controlls {
+        border-bottom: none !important;
+        .controlls-right {
+            filter: alpha(opacity=50) !important;
+            display: none !important;
+        }
+        .title {
+            display: none !important;
+        } 
+    }
+    .urlBar {
+        display: none !important;
+    }
+}
+
+.addressbarContainer {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
+    background: #f0f0f0;
+    cursor: default;
+
+    .controlls {
+        display: flex;
+        flex-wrap : nowrap;
+        justify-content: space-between;
+        border-bottom: 1px solid #d1d1d1;
+        position: relative;
+
+        .controlls-left {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            width: 60px;
+
+            .showbar {
+                transform:rotate(-90deg);
+                transition: transform 0.5s ease-out;
+            }
+            .showbar.show {
+                transform:rotate(0deg)
+            } 
+        }
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding: 0 6px;
+        } 
+        .controlls-right {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding: 0 6px;
+            width: 40px;
+        }     
+    }
+
+
+    .urlBar {
+        display: flex;
+        border-bottom: 1px solid #d1d1d1;
+        position: relative;
+        
+        box-shadow: -1px 1px 2px rgba(0,0,0,0.1);
+    
+        .controlls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            width: 120px;
+        }
+        .adressWrapper {
+            width: 100%;
+            position: relative;
+            height: 34px;
+            margin-right: 6px;
+            .urlField {
+                position: absolute;
+                margin: 4px 0;
+                background: #fff;
+                border: 1px solid #ccc;
+                color: #888;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, Arial, Helvetica, sans-serif;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 400;
+                height: 27px;
+                overflow: hidden;
+                width: 100%;
+                min-width: 50px;
+                .adresse {
+                    cursor: text;
+                    display: flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    position: relative;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}

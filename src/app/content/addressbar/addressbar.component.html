@@ -1,0 +1,45 @@
+<div class="background"></div>
+<div class="addressbarContainer" *ngIf="item.isHover" [ngClass]="{'hideAdressbar':!showAddressbar}">
+    <div class="controlls">
+        <div class="controlls-left">
+            <button mat-icon-button class="drag-handle" aria-label="Drag this page.">
+                <mat-icon>drag_indicator</mat-icon>
+            </button>
+            <button mat-icon-button class="showbar" (click)="toggleAddressbar()" aria-label="Show Addressbar." [ngClass]="{'show':showAddressbar}">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+        </div>
+        <div class="title">
+            {{item.name}}
+        </div>
+        <div class="controlls-right">
+            <button mat-icon-button (click)="removePage($event)" aria-label="Remove Page.">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- <div class="field-label is-normal">
+        <label class="label">{{item.name}}</label>
+    </div> -->
+    <div class="urlBar">
+        <div class="controlls">
+            <button (click)="back()" mat-icon-button aria-label="Example icon-button with a heart icon">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <button (click)="forward()" mat-icon-button aria-label="Example icon-button with a heart icon">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+            <button (click)="reloadPage()" mat-icon-button aria-label="Example icon-button with a heart icon">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </div>
+        <div class="adressWrapper">
+            <div class="urlField">
+                <div contenteditable="true" class="adresse" #box (keydown.enter)="keypress($event)"
+                    (blur)="onBlur(box.value,$event)">
+                    {{item.url}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
