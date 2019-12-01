@@ -3,6 +3,7 @@ import { AppState } from '../states/reducers';
 import { Store } from '@ngrx/store';
 import { AddPage } from '../states/page';
 import { AddTab, DeleteTab } from '../states/tab';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
@@ -11,7 +12,7 @@ import { AddTab, DeleteTab } from '../states/tab';
 })
 export class MenuComponent implements OnInit {
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>,private translate: TranslateService) { }
 
   ngOnInit() {
   }
@@ -44,6 +45,13 @@ export class MenuComponent implements OnInit {
          sortNumber: null
       }
     }))
+  }
+  showHelp() {
+    console.log("show help");
+    
+  }
+  setLang(lang:string) {
+    this.translate.setDefaultLang(lang)
   }
   removeTab() {
     this.store.dispatch(new DeleteTab({

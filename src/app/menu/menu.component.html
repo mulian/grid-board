@@ -2,38 +2,45 @@
     <mat-icon>menu</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-    <button mat-menu-item [matMenuTriggerFor]="tab">Tab</button>
-    <button mat-menu-item [matMenuTriggerFor]="slide">Slide</button>
-    <button mat-menu-item [matMenuTriggerFor]="history">History</button>
-    <button mat-menu-item>Quit</button>
+    <button mat-menu-item [matMenuTriggerFor]="tab">{{ 'Menu.Tab.name' | translate }}</button>
+    <button mat-menu-item [matMenuTriggerFor]="slide">{{ 'Menu.Slide.name' | translate }}</button>
+    <button mat-menu-item [matMenuTriggerFor]="history">{{ 'Menu.History.name' | translate }}</button>
+    <button mat-menu-item [matMenuTriggerFor]="lang">{{ 'Menu.Lang.name' | translate }}</button>
+    <button mat-menu-item (click)="showHelp()">{{ 'Menu.help' | translate }}</button>
+    <button mat-menu-item>{{ 'Menu.quit' | translate }}</button>
 </mat-menu>
 
 <mat-menu #slide="matMenu">
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-slide-toggle >Enable Slide mode</mat-slide-toggle>
+        <mat-slide-toggle>{{ 'Menu.Slide.slideMode' | translate }}</mat-slide-toggle>
     </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
         <mat-form-field>
-            <input matInput placeholder="Next slide in ... minutes." value="5">
+            <input matInput placeholder="{{ 'Menu.Slide.nextSlideTime' | translate }}" value="5">
         </mat-form-field>
     </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
         <mat-form-field>
-            <input matInput placeholder="Activate slide mode after ... minutes inactivity." value="5">
+            <input matInput placeholder="{{ 'Menu.Slide.afterInactivity' | translate }}" value="5">
         </mat-form-field>
     </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-slide-toggle >Show slide progress</mat-slide-toggle>
+        <mat-slide-toggle >{{ 'Menu.Slide.slideProgress' | translate }}</mat-slide-toggle>
     </button>
 </mat-menu>
 
 <mat-menu #tab="matMenu">
-    <button mat-menu-item (click)="addPage()">Add Page</button>
-    <button mat-menu-item (click)="addTab()">Add Tab</button>
-    <button mat-menu-item (click)="removeTab()">Remove Tab</button>
+    <button mat-menu-item (click)="addPage()">{{ 'Menu.Tab.addPage' | translate }}</button>
+    <button mat-menu-item (click)="addTab()">{{ 'Menu.Tab.addTab' | translate }}</button>
+    <button mat-menu-item (click)="removeTab()">{{ 'Menu.Tab.removeTab' | translate }}</button>
+</mat-menu>
+
+<mat-menu #lang="matMenu">
+    <button mat-menu-item (click)="setLang('en')">{{ 'Menu.Lang.en' | translate }}</button>
+    <button mat-menu-item (click)="setLang('de')">{{ 'Menu.Lang.de' | translate }}</button>
 </mat-menu>
 
 <mat-menu #history="matMenu">
-    <button mat-menu-item>Back</button>
-    <button mat-menu-item>Next</button>
+    <button mat-menu-item>{{ 'Menu.History.back' | translate }}</button>
+    <button mat-menu-item>{{ 'Menu.History.next' | translate }}</button>
 </mat-menu>
