@@ -1,0 +1,39 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="tab">Tab</button>
+    <button mat-menu-item [matMenuTriggerFor]="slide">Slide</button>
+    <button mat-menu-item [matMenuTriggerFor]="history">History</button>
+    <button mat-menu-item>Quit</button>
+</mat-menu>
+
+<mat-menu #slide="matMenu">
+    <button mat-menu-item (click)="$event.stopPropagation();">
+        <mat-slide-toggle >Enable Slide mode</mat-slide-toggle>
+    </button>
+    <button mat-menu-item (click)="$event.stopPropagation();">
+        <mat-form-field>
+            <input matInput placeholder="Next slide in ... minutes." value="5">
+        </mat-form-field>
+    </button>
+    <button mat-menu-item (click)="$event.stopPropagation();">
+        <mat-form-field>
+            <input matInput placeholder="Activate slide mode after ... minutes inactivity." value="5">
+        </mat-form-field>
+    </button>
+    <button mat-menu-item (click)="$event.stopPropagation();">
+        <mat-slide-toggle >Show slide progress</mat-slide-toggle>
+    </button>
+</mat-menu>
+
+<mat-menu #tab="matMenu">
+    <button mat-menu-item (click)="addPage()">Add Page</button>
+    <button mat-menu-item (click)="addTab()">Add Tab</button>
+    <button mat-menu-item (click)="removeTab()">Remove Tab</button>
+</mat-menu>
+
+<mat-menu #history="matMenu">
+    <button mat-menu-item>Back</button>
+    <button mat-menu-item>Next</button>
+</mat-menu>
