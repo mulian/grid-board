@@ -13,7 +13,7 @@ export enum PageActionTypes {
   UpdatePages = '[Page] Update Pages',
   DeletePage = '[Page] Delete Page',
   DeletePages = '[Page] Delete Pages',
-  ClearPages = '[Page] Clear Pages'
+  ClearPages = '[Page] Clear Pages',
 }
 
 export class LoadPages implements Action {

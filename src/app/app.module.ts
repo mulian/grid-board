@@ -19,7 +19,7 @@ import { HomeModule } from './home/home.module';
 import { AppComponent } from './app.component';
 import { TabbarComponent } from './tabbar/tabbar.component';
 import { StoreModule } from '@ngrx/store';
-import { initialState, reducers } from './states/reducers';
+import { reducers } from './states/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MainComponent } from './main/main.component';
 import { WebviewDirective } from './webview.module';
@@ -42,15 +42,29 @@ import { GridsterModule } from 'angular-gridster2';
 import { GridsComponent } from './content/grids/grids.component';
 import { GridItemComponent } from './content/grid-item/grid-item.component';
 
-import {MatTabsModule} from '@angular/material/tabs';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AddressbarComponent } from './content/addressbar/addressbar.component';
+import { MenuComponent } from './menu/menu.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
+import { HelpComponent } from './help/help.component';
+import { SlideProgressComponent } from './slide/slide-progress/slide-progress.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
-  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent],
+  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent, AddressbarComponent, MenuComponent, HelpComponent, SlideProgressComponent],
   imports: [
+    MatProgressBarModule,
+    MatDialogModule,
+    MatInputModule,
+    MatSlideToggleModule,
+    MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatTabsModule,

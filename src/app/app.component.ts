@@ -13,6 +13,7 @@ export class AppComponent {
     public electronService: ElectronService,
     private translate: TranslateService
   ) {
+    translate.addLangs(["de","en"])
     translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
 

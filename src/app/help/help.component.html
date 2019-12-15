@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>{{ 'Help.title' | translate }}</h1>
+<div mat-dialog-content>
+    <!-- <div>
+        {{ 'Help.content' | translate }}
+    </div> -->
+    <div>
+        <div class="author">
+            {{ 'Help.author' | translate }}: <a href="https://github.com/mulian">Max Hoffmann</a>
+        </div>
+        <div class="repo">
+            {{ 'Help.repo' | translate }}: <a href="https://github.com/mulian">github.com/mulian</a>
+        </div>
+        <div class="lib title">
+            {{ 'Help.basedOnLib' | translate }}:
+        </div>
+        <div class="lib">
+            <span class="title">Angular gridster 2</span>
+            <span class="url"><a href="https://github.com/tiberiuzuld/angular-gridster2">https://github.com/tiberiuzuld/angular-gridster2</a></span>
+        </div>
+        <div class="lib">
+            <span class="title">Angular</span>
+            <span class="url"><a href="https://angular.io/">https://angular.io/</a></span>
+        </div>
+        <div class="lib">
+            <span class="title">Electron</span>
+            <span class="url"><a href="https://electronjs.org/">https://electronjs.org/</a></span>
+        </div>
+        <div class="lib">
+            <span class="title">Angular Material</span>
+            <span class="url"><a href="https://material.angular.io/">https://material.angular.io/</a></span>
+        </div>
+
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button cdkFocusInitial>{{ 'Help.close' | translate }}</button>
+</div>

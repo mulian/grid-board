@@ -25,6 +25,9 @@ export class GridsComponent implements OnInit {
   selectedTabId: string
   syncedTabData: NgrxEntitySync<Tab>;
   syncedPageData: NgrxEntitySync<Page>;
+
+  
+
   constructor(private store: Store<AppState>) { }
 
   log(value:any) {

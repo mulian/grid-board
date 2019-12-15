@@ -1,36 +1,36 @@
 import { ActionReducerMap, createFeatureSelector, MetaReducer, ActionReducer } from '@ngrx/store';
-import * as pageStore from './page';
 
 import { createSelector } from 'reselect'
 import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds, tabSelectedEntities } from './tab';
+import { PageState, pageInitialState, pageReducer, pageSelectedAll, pageSelectedEntities } from './page';
 
 export interface AppState {
   tabs: TabState;
-  pages: pageStore.State;
+  pages: PageState;
 }
 
 export const initialState: AppState = {
   tabs: tabInitialState,
-  pages: pageStore.initialState,
+  pages: pageInitialState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   tabs: tabReducer,
-  pages: pageStore.reducer,
+  pages: pageReducer,
 }
 
 //Page select
 export const selectAllPagesState =
-  createFeatureSelector<pageStore.State>("pages");
+  createFeatureSelector<PageState>("pages");
 export const selectPagesOptions = createSelector(selectAllPagesState, (pages) => pages.options)
 export const selectPagesById = (pageId) => createSelector(selectAllPagesState, (pages) => pages.entities[pageId])
 export const selectAllPages = createSelector(
   selectAllPagesState,
-  pageStore.selectAll
+  pageSelectedAll
 )
 export const selectAllPagesEntitities = createSelector(
   selectAllPagesState,
-  pageStore.selectEntities
+  pageSelectedEntities
 )
 
 // export const selectAllPagges = createSelector(
@@ -38,7 +38,7 @@ export const selectAllPagesEntitities = createSelector(
 //  )
 export const selectUserEntities = createSelector(
   selectAllPagesState,
-  pageStore.selectAll
+  pageSelectedAll
 );
 // export const selectAllPagesFromTab = (tabId) => createSelector(
 //   selectAllPagesState,
@@ -60,6 +60,8 @@ export const selectAllTabsState =
 export const selectTabOptions = createSelector(selectAllTabsState, (tabs) => tabs.options)
 export const selectTabOptionsSelectTab = createSelector(selectAllTabsState, (tabs) => tabs.options.selectedTab)
 export const selectTabOptionsEditTab = createSelector(selectAllTabsState, (tabs) => tabs.options.editTab)
+
+export const selectTabSlide = createSelector(selectAllTabsState, (tabs) => tabs.slide)
 
 export const selectAllTabsEntities = createSelector(
   selectAllTabsState,

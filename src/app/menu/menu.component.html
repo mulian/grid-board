@@ -1,4 +1,4 @@
-<button mat-icon-button [matMenuTriggerFor]="menu">
+<button class="menu-btn" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
@@ -11,22 +11,25 @@
 </mat-menu>
 
 <mat-menu #slide="matMenu">
+    {{log(slideOptions)}}
+    <!-- <ng-template *ngIf="slideOptions!=null"> -->
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-slide-toggle>{{ 'Menu.Slide.slideMode' | translate }}</mat-slide-toggle>
-    </button>
+            <mat-slide-toggle [checked]="slideOptions.isActive">{{ 'Menu.Slide.slideMode' | translate }}</mat-slide-toggle>
+        </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-form-field>
-            <input matInput placeholder="{{ 'Menu.Slide.nextSlideTime' | translate }}" value="5">
-        </mat-form-field>
-    </button>
+                <mat-slide-toggle [checked]="slideOptions.isShowProgress">{{ 'Menu.Slide.slideProgress' | translate }}</mat-slide-toggle>
+            </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-form-field>
-            <input matInput placeholder="{{ 'Menu.Slide.afterInactivity' | translate }}" value="5">
-        </mat-form-field>
-    </button>
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Menu.Slide.nextSlideTime' | translate }}" value="{{slideOptions.nextSlideInSec}}">
+            </mat-form-field>
+        </button>
     <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-slide-toggle >{{ 'Menu.Slide.slideProgress' | translate }}</mat-slide-toggle>
-    </button>
+            <mat-form-field>
+                <input matInput placeholder="{{ 'Menu.Slide.afterInactivity' | translate }}" value="{{slideOptions.startAfterInactiveTimeInSec}}">
+            </mat-form-field>
+        </button>
+    <!-- </ng-template> -->
 </mat-menu>
 
 <mat-menu #tab="matMenu">
@@ -36,8 +39,11 @@
 </mat-menu>
 
 <mat-menu #lang="matMenu">
-    <button mat-menu-item (click)="setLang('en')">{{ 'Menu.Lang.en' | translate }}</button>
-    <button mat-menu-item (click)="setLang('de')">{{ 'Menu.Lang.de' | translate }}</button>
+    <button mat-menu-item *ngFor="let lang of translate.getLangs()" [attr.disabled]="translate.currentLang==lang ? '' : null" (click)="translate.use(lang)">
+        {{ 'Menu.Lang.'+lang | translate }}
+    </button>
+    <!-- <button mat-menu-item (click)="setLang('en')">{{ 'Menu.Lang.en' | translate }}</button>
+    <button mat-menu-item (click)="setLang('de')">{{ 'Menu.Lang.de' | translate }}</button> -->
 </mat-menu>
 
 <mat-menu #history="matMenu">

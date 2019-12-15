@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '../states/reducers';
-import { Store } from '@ngrx/store';
+import { AppState, selectTabSlide } from '../states/reducers';
+import { Store, select } from '@ngrx/store';
 import { AddPage } from '../states/page';
 import { AddTab, DeleteTab } from '../states/tab';
 import { TranslateService } from '@ngx-translate/core';
+import { SlideService } from '../slide/slide.service';
+import { Observable } from 'rxjs';
+import { TabSlide } from '../states/tab/tab.slide.model';
 
 @Component({
   selector: 'app-menu',
@@ -11,10 +14,19 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
+  // slideOptions$: Observable<any>
+  slideOptions: TabSlide
 
-  constructor(private store: Store<AppState>,private translate: TranslateService) { }
+  constructor(private store: Store<AppState>,public translate: TranslateService,private slideService:SlideService) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+    this.store.pipe(select(selectTabSlide)).subscribe((slideOption:TabSlide) => {
+      this.slideOptions = slideOption
+    })
+  }
+  log(value) {
+    console.log(value);
+    
   }
 
   //Tab Menu
@@ -52,6 +64,7 @@ export class MenuComponent implements OnInit {
   }
   setLang(lang:string) {
     this.translate.setDefaultLang(lang)
+    // this.translate.langs
   }
   removeTab() {
     this.store.dispatch(new DeleteTab({

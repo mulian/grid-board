@@ -5,9 +5,9 @@ import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, s
 import { AddTab, SelectTab, Tab, EditTab, SortTab, DeleteTab } from '../../states/tab';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
-import ChromeTabs from 'chrome-tabs'
 import ClickHandler from './click-handler';
 import NgrxEntitySync from '../../ngrx-entity-sync';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tabbar-list',
@@ -51,7 +51,7 @@ export class TabbarListComponent implements OnInit {
     this.store.dispatch( new SortTab({sourceIndex: event.previousIndex, targetIndex:event.currentIndex}))
   }
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>,private translate: TranslateService) {
   }
 
   maxSortNumber:number=0
@@ -68,6 +68,6 @@ export class TabbarListComponent implements OnInit {
   }
 
   newAction(tabLength) {
-    this.store.dispatch(new AddTab({ tab: { name: "neu", sortNumber:tabLength } }))
+    this.store.dispatch(new AddTab({ tab: { name: null, sortNumber:tabLength } },this.translate))
   }
 }

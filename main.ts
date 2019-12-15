@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, session, Menu } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -13,6 +13,8 @@ const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
 function createWindow() {
+  session.defaultSession.allowNTLMCredentialsForDomains('*')
+  Menu.setApplicationMenu(null)
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;

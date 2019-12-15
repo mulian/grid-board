@@ -5,4 +5,8 @@ export interface Page extends GridsterItem {
   id?: string;
   url: string;
   tab: string; //The referenced tab id, there is currently no check that tab exists
+  reload?:boolean
+  back?:boolean
+  forward?:boolean
+  urlChangeFromWebview?: boolean
 }

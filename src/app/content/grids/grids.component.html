@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content slideBarActive">
     <gridster *ngFor="let tab of syncedTabData.getSyncedData()" [options]="getOption(tab.id)" [class.hide]="selectedTabId!=tab.id">
         <!-- <div *ngIf="pages$[tabId] | async as pages">
             {{log(pages)}}

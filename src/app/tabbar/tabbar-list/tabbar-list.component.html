@@ -1,9 +1,7 @@
 <div *ngIf="tabOptions$ | async as tabOptions">
   <div cdkDropList cdkDropListOrientation="horizontal" *ngIf="tab$ | async as tabs" class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <div (click)='menu()' class="menu-box">
-      <i class="material-icons">menu</i>
-    </div>
+    <app-menu></app-menu>
     <div class="example-box" *ngFor="let tabItem of tabs; let i = index; let length = count"
       [ngClass]="{'is-active':tabOptions.selectedTab==tabItem.id}" (click)="click(tabItem,$event)" [cdkDragStartDelay]="10"
       cdkDrag>

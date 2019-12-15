@@ -1,7 +1,47 @@
 {
-  "PAGES": {
-      "HOME": {
-          "TITLE": "App works !"
-      }
-  }
+    "PAGES": {
+        "HOME": {
+            "TITLE": "App works !"
+        }
+    },
+    "Tab": {
+        "NewTabPlaceHolder": "new tab",
+        "Descriptions": {
+            "newTab": "Add a new Tab"
+        }
+    },
+    "Menu": {
+        "Tab": {
+            "name": "Tab",
+            "addTab": "Add Tab",
+            "addPage": "Add Page",
+            "removeTab": "Remove Tab"
+        },
+        "Slide": {
+            "name": "Slide",
+            "slideMode": "Slide mode",
+            "nextSlideTime": "Next slide in ... minutes.",
+            "afterInactivity": "Activate slide mode after ... minutes inactivity.",
+            "slideProgress": "Show slide progress"
+        },
+        "History": {
+            "name": "History",
+            "back": "Back",
+            "next": "Next"
+        },
+        "Lang": {
+            "name": "Language",
+            "de": "German",
+            "en": "English"
+        },
+        "help": "Help",
+        "quit": "Quit"
+    },
+    "Help": {
+        "title": "Help for Gridler",
+        "author": "Author",
+        "repo": "Repository",
+        "basedOnLib": "Based on Libraries",
+        "close": "Close"
+    }
 }
