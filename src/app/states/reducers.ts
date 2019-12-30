@@ -5,26 +5,32 @@ import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds, 
 import { PageState, pageInitialState, pageReducer, pageSelectedAll, pageSelectedEntities } from './page';
 import { DialogModel, dialogInitialState, dialogReducer } from './dialog';
 import { GeneralModel, generalInitialState, generalReducer } from './general';
+import { KeyboardModel, KeyboardState } from './keyboard';
+import { keyboardInitialState } from './keyboard/keyboard.initial.state'
+import { keyboardReducer } from './keyboard/keyboard.reducer'
 
 export interface AppState {
   tabs: TabState
   pages: PageState
   dialog: DialogModel
   general: GeneralModel
+  keyboard: KeyboardState
 }
 
 export const initialState: AppState = {
   tabs: tabInitialState,
   pages: pageInitialState,
   dialog: dialogInitialState,
-  general: generalInitialState
+  general: generalInitialState,
+  keyboard: keyboardInitialState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   tabs: tabReducer,
   pages: pageReducer,
   dialog: dialogReducer,
-  general: generalReducer
+  general: generalReducer,
+  keyboard: keyboardReducer
 }
 
 //Page select
