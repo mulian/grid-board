@@ -8,6 +8,7 @@ import { SlideService } from '../slide/slide.service';
 import { Observable } from 'rxjs';
 import { TabSlide } from '../states/tab/tab.slide.model';
 import { ShowDialog, DialogType } from '../states/dialog';
+import { IpcService } from '../dialogs/dialog-settings/settings-history/ipc.service';
 
 @Component({
   selector: 'app-menu',
@@ -17,7 +18,7 @@ import { ShowDialog, DialogType } from '../states/dialog';
 export class MenuComponent implements OnInit {
   slideOptions: TabSlide
 
-  constructor(private store: Store<AppState>,public translate: TranslateService) { }
+  constructor(private store: Store<AppState>,public translate: TranslateService, private ipcRenderer:IpcService) { }
 
   ngOnInit() { 
 
@@ -50,6 +51,9 @@ export class MenuComponent implements OnInit {
       }
     });
     
+  }
+  closeApp() {
+    this.ipcRenderer.send("close-app",null)
   }
   addTab() {
     this.store.dispatch(new AddTab({ tab: { name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"), sortNumber: null, isSlideConsidered:true} }))

@@ -20,6 +20,10 @@ function createWindow() {
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
 
+  ipcMain.on("close-app",(event,arg) => {
+    app.exit(0)
+  })
+
   ipcMain.on("save-json",(event,arg) => {
     console.log(arg);
     dialog.showSaveDialog(win,{

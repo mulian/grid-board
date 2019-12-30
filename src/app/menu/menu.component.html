@@ -5,7 +5,7 @@
     <button mat-menu-item [matMenuTriggerFor]="actions">{{ 'MENU.ACTIONS.MENU_NAME' | translate }}</button>
     <button mat-menu-item (click)="showSettings()">{{ 'MENU.SETTINGS' | translate }}</button>
     <button mat-menu-item (click)="showHelp()">{{ 'MENU.HELP' | translate }}</button>
-    <button mat-menu-item>{{ 'MENU.QUIT' | translate }}</button>
+    <button mat-menu-item (click)="closeApp()">{{ 'MENU.QUIT' | translate }}</button>
 </mat-menu>
 
 <mat-menu #actions="matMenu">
