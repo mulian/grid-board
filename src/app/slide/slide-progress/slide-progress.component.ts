@@ -4,6 +4,7 @@ import { SlideService } from '../slide.service';
 import { Store, select } from '@ngrx/store';
 import { AppState, selectTabSlide } from '../../states/reducers';
 import { TabSlide } from '../../states/tab/tab.slide.model';
+import { tabSlideInitialState } from '../../states/tab/tab.initial.state'
 
 @Component({
   selector: 'app-slide-progress',
@@ -16,8 +17,9 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
   progressValue: number = 0
   sumTime: number;
   color:string = 'primary';
+  isSlideModeVisible: boolean = true
 
-  slideOptions: TabSlide = null
+  slideOptions: TabSlide = tabSlideInitialState
 
   constructor(private store: Store<AppState>) { }
 
@@ -29,6 +31,8 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
       this.setSlideOptions(slide)
     })
   }
+
+  
 
   setSlideOptions(newSlideOptions: TabSlide) {
     if (this.slideOptions == null) {
@@ -52,6 +56,11 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
       }
     }
 
+    if(newSlideOptions.isActive && newSlideOptions.isShowProgress) {
+      this.isSlideModeVisible = true
+    } else {
+      this.isSlideModeVisible = false
+    }
     this.slideOptions = newSlideOptions
   }
 

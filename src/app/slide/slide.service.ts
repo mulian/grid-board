@@ -39,6 +39,7 @@ export class SlideService implements AfterContentInit {
         this.deactivateNextSlideTimer()
         activateNextSlideTimer = true
       }
+      if(!slideOptions.isActive) activateNextSlideTimer=false
     }
 
     this.slideOptions = slideOptions
