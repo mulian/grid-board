@@ -1,20 +1,18 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Page } from './page.model';
 import { PageActions, PageActionTypes } from './page.actions';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { PageState } from './page.state'
 import { pageAdapter } from './page.adapter';
 import { pageInitialState } from './page.initial.state';
 
+/** The Page reducer */
 export function pageReducer(
   state = pageInitialState,
   action: PageActions
 ): PageState {
   switch (action.type) {
-    case PageActionTypes.AddPage: {
+    case PageActionTypes.AddPage: { //Add Page
       return pageAdapter.addOne(action.payload.page, state);
     }
-    case PageActionTypes.UpsertPage: {
+    case PageActionTypes.UpsertPage: { 
       return pageAdapter.upsertOne(action.payload.page, state);
     }
 

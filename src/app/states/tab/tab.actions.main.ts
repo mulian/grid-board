@@ -3,10 +3,11 @@
  */
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Tab } from './tab.model';
+import { TabModel } from './tab.model';
 import * as uuid from 'uuid';
 import { TranslateService } from '@ngx-translate/core';
 
+/** The ActionTypes for Tab */
 export enum TabActionTypes {
   LoadTabs = '[Tab] Load Tabs',
   AddTab = '[Tab] Add Tab',
@@ -74,7 +75,7 @@ export class NavigateSelectTab implements Action {
    * @param payload.navigationType - Set the Navigation type
    * @param payload.sortOrder - Have to set if navigationType is BySortNumber, the given sortOrder number will be selected
    */
-  constructor(public payload: { navigationType: NavigationSelectTabType, sortOrder?: number }) {}
+  constructor(public payload: { navigationType: NavigationSelectTabType, sortOrder?: number, exceptSlideNotConsidered:boolean }) {}
 }
 
 export class SelectTab implements Action {
@@ -95,25 +96,23 @@ export class AddTab implements Action {
    * @param payload.tab - The tab how will be added
    * @param payload.tab.id - Will be override with new uuid.v4
    * @param payload.tab.name - If null use default name, else use given name 
+   * @param payload.tab.sortNumber if null it will be automaticly set
    */
-  constructor(public payload: { tab: Tab }, translate?: TranslateService) {
+  constructor(public payload: { tab: TabModel }) {
     this.payload.tab.id = uuid.v4()
-    if (this.payload.tab.name == null && translate!=null) {
-      this.payload.tab.name = translate.instant("Tab.NewTabPlaceHolder")
-    }
   }
 }
 
 export class UpdateTab implements Action {
   readonly type = TabActionTypes.UpdateTab;
 
-  constructor(public payload: { tab: Update<Tab> }) { }
+  constructor(public payload: { tab: Update<TabModel> }) { }
 }
 
 export class UpdateTabs implements Action {
   readonly type = TabActionTypes.UpdateTabs;
 
-  constructor(public payload: { tabs: Update<Tab>[] }) { }
+  constructor(public payload: { tabs: Update<TabModel>[] }) { }
 }
 
 export class DeleteTab implements Action {

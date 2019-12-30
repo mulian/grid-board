@@ -1,13 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState, selectAllTabs, selectTabOptions, selectTabOptionsSelectTab, selectTabOptionsEditTab, selectAllTabsEntitys, selectAllTabsEntities } from '../../states/reducers';
-import { AddTab, SelectTab, Tab, EditTab, SortTab, DeleteTab } from '../../states/tab';
+import { AddTab, SelectTab, TabModel, EditTab, SortTab, DeleteTab, UpdateTab } from '../../states/tab';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import ClickHandler from './click-handler';
 import NgrxEntitySync from '../../ngrx-entity-sync';
 import { TranslateService } from '@ngx-translate/core';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-tabbar-list',
@@ -18,24 +20,16 @@ import { TranslateService } from '@ngx-translate/core';
 export class TabbarListComponent implements OnInit {
   tab$: Observable<any>
   tabOptions$: Observable<any>
-  syncedTabData: NgrxEntitySync<Tab>
+  syncedTabData: NgrxEntitySync<TabModel>
   
-  clickHandler: ClickHandler<Tab> = new ClickHandler<Tab>()
-    .onClick((item: Tab) => {
+  clickHandler: ClickHandler<TabModel> = new ClickHandler<TabModel>()
+    .onClick((item: TabModel) => {
       console.log("Click: ", item);
       this.store.dispatch(new SelectTab({ tabId: item.id }))
-    }).onDoubleClick((item: Tab) => {
+    }).onDoubleClick((item: TabModel) => {
       console.log("double click", item);
       this.store.dispatch(new EditTab({tabId:item.id}))
     })
-
-  timePeriods = [
-    'Bronze age',
-    'Iron age',
-    'Middle ages',
-    'Early modern period',
-    'Long nineteenth century'
-  ];
 
   click(item,event) {
     event.stopPropagation();
@@ -43,8 +37,10 @@ export class TabbarListComponent implements OnInit {
     this.clickHandler.click(item);
   }
   closeTab(item,event) {
-    event.stopPropagation();
-    event.preventDefault();
+    if(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
     this.store.dispatch(new DeleteTab({id: item.id}))
   }
   drop(event: CdkDragDrop<string[]>) {
@@ -54,6 +50,10 @@ export class TabbarListComponent implements OnInit {
   constructor(private store: Store<AppState>,private translate: TranslateService) {
   }
 
+  contextMenuPosition = { x: '0px', y: '0px' };
+  
+  @ViewChild(MatMenuTrigger,{static:false,read:false}) contextMenu: MatMenuTrigger;
+  
   maxSortNumber:number=0
   setMaxSortNumber(newSortNumber) {
     if(this.maxSortNumber<newSortNumber) {
@@ -67,7 +67,33 @@ export class TabbarListComponent implements OnInit {
     
   }
 
-  newAction(tabLength) {
-    this.store.dispatch(new AddTab({ tab: { name: null, sortNumber:tabLength } },this.translate))
+  onRightClick(tabItem:TabModel,event) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'item': tabItem };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  private updateSlide(tab:TabModel,isSlideConsidered:boolean) {
+    let update:Update<TabModel> = {
+      id: tab.id,
+      changes: {
+        isSlideConsidered
+      }
+    }
+    this.store.dispatch(new UpdateTab({ tab: update }))
+  }
+
+  addToSlide(tab:TabModel) {
+    this.updateSlide(tab,false)
+  }
+  removeFromSlide(tab:TabModel) {
+    this.updateSlide(tab,true)
+  }
+
+  addNewTab() {
+    this.store.dispatch(new AddTab({ tab: { name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"), sortNumber:null, isSlideConsidered:true} }))
   }
 }

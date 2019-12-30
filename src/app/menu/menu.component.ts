@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SlideService } from '../slide/slide.service';
 import { Observable } from 'rxjs';
 import { TabSlide } from '../states/tab/tab.slide.model';
+import { ShowDialog, DialogType } from '../states/dialog';
 
 @Component({
   selector: 'app-menu',
@@ -14,19 +15,19 @@ import { TabSlide } from '../states/tab/tab.slide.model';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-  // slideOptions$: Observable<any>
   slideOptions: TabSlide
 
-  constructor(private store: Store<AppState>,public translate: TranslateService,private slideService:SlideService) { }
+  constructor(private store: Store<AppState>,public translate: TranslateService) { }
 
   ngOnInit() { 
-    this.store.pipe(select(selectTabSlide)).subscribe((slideOption:TabSlide) => {
-      this.slideOptions = slideOption
-    })
+
   }
-  log(value) {
-    console.log(value);
-    
+
+  showHelp() {
+    this.store.dispatch(new ShowDialog({dialog: DialogType.HELP}))
+  }
+  showSettings() {
+    this.store.dispatch(new ShowDialog({dialog: DialogType.SETTINGS}))
   }
 
   //Tab Menu
@@ -51,21 +52,9 @@ export class MenuComponent implements OnInit {
     
   }
   addTab() {
-    this.store.dispatch(new AddTab({
-      tab: {
-         name: null,
-         sortNumber: null
-      }
-    }))
+    this.store.dispatch(new AddTab({ tab: { name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"), sortNumber: null, isSlideConsidered:true} }))
   }
-  showHelp() {
-    console.log("show help");
-    
-  }
-  setLang(lang:string) {
-    this.translate.setDefaultLang(lang)
-    // this.translate.langs
-  }
+
   removeTab() {
     this.store.dispatch(new DeleteTab({
       id: null

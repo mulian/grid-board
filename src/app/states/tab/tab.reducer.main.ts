@@ -1,90 +1,126 @@
 /**
  * Tab reducer
  */
-import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
-import { Tab } from './tab.model';
+import { EntityState, EntityAdapter, createEntityAdapter, Update, Dictionary } from '@ngrx/entity';
+import { TabModel } from './tab.model';
 import { TabActions, TabActionTypes, NavigationSelectTabType } from './tab.actions.main';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as _ from 'lodash-es'
 import { TabState } from './tab.state';
 import { tabInitialState } from './tab.initial.state'
-import { adapter } from './tab.adapter';
+import { adapter, sortBySortNumber } from './tab.adapter';
 import { tabSlideReducer } from './tab.reducer.slide'
 
-function getTabWithSortNumber(state:TabState,sortNumber:number) {
-  return _.find(state.entities, {sortNumber})
+
+
+function getAllTabsWithIsSlideConsidered(tabEntitys:Dictionary<TabModel>):string[] {
+  return _.map(_.filter(tabEntitys,{'isSlideConsidered':true}).sort(sortBySortNumber),(tab:TabModel) => tab.id)
 }
+
+function getTabWithSortNumber(tabEntitys:Dictionary<TabModel>,sortNumber:number):TabModel {
+  return _.find(tabEntitys, {sortNumber})
+}
+// function getNextTab(tabEntitys:Dictionary<TabModel>,currentSortNumber:number,withRotation:boolean, isSlodeConsidered:boolean) {
+//   let tab: TabModel = getTabWithSortNumber(tabEntitys,currentSortNumber+1)
+//   if(tab==undefined) {
+//     let tabs:Dictionary<TabModel>
+//     if(isSlodeConsidered) {
+//       tabs = getAllTabsWithIsSlideConsidered(tabEntitys)
+//     } else {
+//       tabs = tabEntitys
+//     }
+    
+//   }
+// }
 
 export function tabReducer(
   state = tabInitialState,
   action: TabActions
 ): TabState {
-  let currentTab:Tab = state.entities[state.options.selectedTab]
-  let nextTab:Tab = null
+  let currentTab:TabModel = state.entities[state.options.selectedTab]
+  let nextTab:string = null
   switch (action.type) {
+    /** Case: NavigateSelectTab */
     case TabActionTypes.NavigateSelectTab: {
+      let possibleTabs: string[] = null //The possible tabs
+      if(action.payload.exceptSlideNotConsidered) {
+        possibleTabs = getAllTabsWithIsSlideConsidered(state.entities)
+      } else {
+        possibleTabs = state.ids as string[]
+      }
+      let currentIndex:number = _.findIndex(possibleTabs,(id:string) => currentTab.id==id)
       switch(action.payload.navigationType) {
         case NavigationSelectTabType.TabRotationRight: {
-          nextTab = getTabWithSortNumber(state,currentTab.sortNumber+1)
-          if(nextTab==null) {
-            nextTab = getTabWithSortNumber(state,0)
+          if(currentIndex==(possibleTabs.length - 1)) { //when current tab is last tab
+            nextTab = possibleTabs[0]
+          } else { //wehn curren tab is not last tab
+            nextTab = possibleTabs[currentIndex+1]
           }
-          console.log("jo",currentTab,getTabWithSortNumber(state,currentTab.sortNumber+1));
           break
         }
         case NavigationSelectTabType.TabRotationLeft: {
-          console.error("TabRotationLeft is not yet implemented");
-          
+          if(currentIndex==0) { //when current tab is first tab
+            nextTab = possibleTabs[possibleTabs.length - 1]
+          } else { //wehn curren tab is not first tab
+            nextTab = possibleTabs[currentIndex-1]
+          }
           break
         }
         case NavigationSelectTabType.Right: {
-          
-          
-          nextTab = getTabWithSortNumber(state,currentTab.sortNumber+1)
+          if(currentIndex==(possibleTabs.length - 1)) { //when current tab is last tab
+            nextTab = currentTab.id
+          } else { //wehn curren tab is not last tab
+            nextTab = possibleTabs[currentIndex+1]
+          }
           break
         }
         case NavigationSelectTabType.First: {
-          nextTab = getTabWithSortNumber(state,0)
+          nextTab = possibleTabs[0]
           break
         }
         case NavigationSelectTabType.Last: {
-          console.error("Last tab is not jet implemented");
+          nextTab = possibleTabs[possibleTabs.length - 1]
           break
         }
         case NavigationSelectTabType.Left: {
-          nextTab = getTabWithSortNumber(state,currentTab.sortNumber-1)
+          if(currentIndex==0) { //when current tab is first tab
+            nextTab = currentTab.id //select first tab
+          } else { //wehn curren tab is not first tab
+            nextTab = possibleTabs[currentIndex-1]
+          }
           break
         }
         case NavigationSelectTabType.BySortNumber: {
-          nextTab = getTabWithSortNumber(state,action.payload.sortOrder)
+          nextTab = getTabWithSortNumber(state.entities,action.payload.sortOrder).id
           break
         }
       }
       if(nextTab==null) { 
-        console.error("There is no next tab, do nothing");
+        console.error("NavigationSelectTab: There is no next tab, do nothing");
         return state
       }
       else {
         return {...state, options: {
           ...state.options,
-          selectedTab: nextTab.id
+          selectedTab: nextTab
         }}
       }
     }
+    /** Case: SortTab */
     case TabActionTypes.SortTab: {
-      let source: Tab = state.entities[state.ids[action.payload.sourceIndex]]
-      let target: Tab = state.entities[state.ids[action.payload.targetIndex]]
+      let source: TabModel = state.entities[state.ids[action.payload.sourceIndex]]
+      let target: TabModel = state.entities[state.ids[action.payload.targetIndex]]
 
-      let updates: Update<Tab>[] = []
+      let updates: Update<TabModel>[] = []
       //Get all affectedEntitites to update sort
       if (action.payload.sourceIndex > action.payload.targetIndex) { //Source is now lower then Target => all effected entitities sortNumber+1
-        let affectedEntities: Tab[] = _.filter(
+        let affectedEntities: TabModel[] = _.filter(
           state.entities,
-          (filterTab: Tab) => filterTab.sortNumber < source.sortNumber && filterTab.sortNumber >= target.sortNumber
+          (filterTab: TabModel) => filterTab.sortNumber < source.sortNumber && filterTab.sortNumber >= target.sortNumber
         )
         _.forEach(affectedEntities, (o) => console.log(o));
 
-        updates = _.map(affectedEntities, (tab: Tab): Update<Tab> => {
+        updates = _.map(affectedEntities, (tab: TabModel): Update<TabModel> => {
           return {
             id: tab.id,
             changes: {
@@ -94,12 +130,12 @@ export function tabReducer(
         }
         )
       } else {  //Source is now greater then Target => all effected entitities sort-1
-        let affectedEntities: Tab[] = _.filter(
+        let affectedEntities: TabModel[] = _.filter(
           state.entities,
-          (filterTab: Tab) => filterTab.sortNumber > source.sortNumber && filterTab.sortNumber <= target.sortNumber
+          (filterTab: TabModel) => filterTab.sortNumber > source.sortNumber && filterTab.sortNumber <= target.sortNumber
         )
         _.forEach(affectedEntities, (o) => console.log(o));
-        updates = _.map(affectedEntities, (tab: Tab): Update<Tab> => {
+        updates = _.map(affectedEntities, (tab: TabModel): Update<TabModel> => {
           return {
             id: tab.id,
             changes: {
@@ -128,10 +164,11 @@ export function tabReducer(
     }
 
     case TabActionTypes.AddTab: {
-      if(action.payload.tab.sortNumber==null) {
-        action.payload.tab.sortNumber = _.reduce(state.entities,(sum, entity) => sum+1,0)
+      let tab:TabModel = action.payload.tab
+      if(tab.sortNumber==null) { //When  sortNumber is null add to last right tab sortNumber
+        tab.sortNumber = state.ids.length //_.reduce(state.entities,(sum, entity) => sum+1,0)
       }
-      return adapter.addOne(action.payload.tab, { ...state, options: { ...state.options, editTab: action.payload.tab.id, selectedTab: action.payload.tab.id } });
+      return adapter.addOne(tab, { ...state, options: { ...state.options, editTab: tab.id, selectedTab: tab.id } });
     }
     case TabActionTypes.UpdateTab: {
       return adapter.updateOne(action.payload.tab, state);
@@ -144,10 +181,10 @@ export function tabReducer(
         action.payload.id=state.options.selectedTab
       }
 
-      let willDeletedTab:Tab = state.entities[action.payload.id]
-      let updates:Update<Tab>[] = _.map(_.filter(state.entities,(tab:Tab) => {
+      let willDeletedTab:TabModel = state.entities[action.payload.id]
+      let updates:Update<TabModel>[] = _.map(_.filter(state.entities,(tab:TabModel) => {
         return tab.sortNumber>willDeletedTab.sortNumber
-      }),(tab:Tab):Update<Tab> => {
+      }),(tab:TabModel):Update<TabModel> => {
         return {
           id: tab.id,
           changes: {

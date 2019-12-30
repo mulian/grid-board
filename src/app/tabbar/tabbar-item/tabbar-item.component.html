@@ -1,6 +1,9 @@
 <a>
+    <span *ngIf="tabItem.isSlideConsidered==false" class="icon is-small is-left has-text-black">
+        <fa-icon icon="label_off"></fa-icon>
+    </span>
     <span (click)='clickTabTitle()'>{{tabItem.name}}</span>
-    <span (click)='clickRemoveTab()' class="icon is-small is-left has-text-black" >
+    <span (click)='clickRemoveTab()' class="icon is-small is-left has-text-black">
         <fa-icon icon="times"></fa-icon>
     </span>
 </a>

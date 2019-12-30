@@ -1,5 +1,6 @@
 import { pageAdapter } from "./page.adapter";
 
+/** Select Page Entity */
 const {
     selectIds,
     selectEntities,

@@ -1,9 +1,9 @@
 /**
- * Tab entity definition.
+ * Tab model
  */
-
-export interface Tab {
+export interface TabModel {
   id?: string
   name: string
   sortNumber: number
+  isSlideConsidered: boolean
 }

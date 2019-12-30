@@ -1,4 +1,10 @@
 .settings-main {
-    height: calc(100% - 98px);
+    height: 100%;
     width: 100%;
+    overflow: hidden;
+}
+
+.tab-content {
+    height: 100vh;
+    overflow-y: auto;
 }

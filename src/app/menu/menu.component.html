@@ -2,51 +2,14 @@
     <mat-icon>menu</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-    <button mat-menu-item [matMenuTriggerFor]="tab">{{ 'Menu.Tab.name' | translate }}</button>
-    <button mat-menu-item [matMenuTriggerFor]="slide">{{ 'Menu.Slide.name' | translate }}</button>
-    <button mat-menu-item [matMenuTriggerFor]="history">{{ 'Menu.History.name' | translate }}</button>
-    <button mat-menu-item [matMenuTriggerFor]="lang">{{ 'Menu.Lang.name' | translate }}</button>
-    <button mat-menu-item (click)="showHelp()">{{ 'Menu.help' | translate }}</button>
-    <button mat-menu-item>{{ 'Menu.quit' | translate }}</button>
+    <button mat-menu-item [matMenuTriggerFor]="actions">{{ 'MENU.ACTIONS.MENU_NAME' | translate }}</button>
+    <button mat-menu-item (click)="showSettings()">{{ 'MENU.SETTINGS' | translate }}</button>
+    <button mat-menu-item (click)="showHelp()">{{ 'MENU.HELP' | translate }}</button>
+    <button mat-menu-item>{{ 'MENU.QUIT' | translate }}</button>
 </mat-menu>
 
-<mat-menu #slide="matMenu">
-    {{log(slideOptions)}}
-    <!-- <ng-template *ngIf="slideOptions!=null"> -->
-    <button mat-menu-item (click)="$event.stopPropagation();">
-            <mat-slide-toggle [checked]="slideOptions.isActive">{{ 'Menu.Slide.slideMode' | translate }}</mat-slide-toggle>
-        </button>
-    <button mat-menu-item (click)="$event.stopPropagation();">
-                <mat-slide-toggle [checked]="slideOptions.isShowProgress">{{ 'Menu.Slide.slideProgress' | translate }}</mat-slide-toggle>
-            </button>
-    <button mat-menu-item (click)="$event.stopPropagation();">
-            <mat-form-field>
-                <input matInput placeholder="{{ 'Menu.Slide.nextSlideTime' | translate }}" value="{{slideOptions.nextSlideInSec}}">
-            </mat-form-field>
-        </button>
-    <button mat-menu-item (click)="$event.stopPropagation();">
-            <mat-form-field>
-                <input matInput placeholder="{{ 'Menu.Slide.afterInactivity' | translate }}" value="{{slideOptions.startAfterInactiveTimeInSec}}">
-            </mat-form-field>
-        </button>
-    <!-- </ng-template> -->
-</mat-menu>
-
-<mat-menu #tab="matMenu">
-    <button mat-menu-item (click)="addPage()">{{ 'Menu.Tab.addPage' | translate }}</button>
-    <button mat-menu-item (click)="addTab()">{{ 'Menu.Tab.addTab' | translate }}</button>
-    <button mat-menu-item (click)="removeTab()">{{ 'Menu.Tab.removeTab' | translate }}</button>
-</mat-menu>
-
-<mat-menu #lang="matMenu">
-    <button mat-menu-item *ngFor="let lang of translate.getLangs()" [attr.disabled]="translate.currentLang==lang ? '' : null" (click)="translate.use(lang)">
-        {{ 'Menu.Lang.'+lang | translate }}
-    </button>
-    <!-- <button mat-menu-item (click)="setLang('en')">{{ 'Menu.Lang.en' | translate }}</button>
-    <button mat-menu-item (click)="setLang('de')">{{ 'Menu.Lang.de' | translate }}</button> -->
-</mat-menu>
-
-<mat-menu #history="matMenu">
-    <button mat-menu-item>{{ 'Menu.History.back' | translate }}</button>
-    <button mat-menu-item>{{ 'Menu.History.next' | translate }}</button>
+<mat-menu #actions="matMenu">
+    <button mat-menu-item (click)="addPage()">{{ 'MENU.ACTIONS.ADD_PAGE' | translate }}</button>
+    <button mat-menu-item (click)="addTab()">{{ 'MENU.ACTIONS.ADD_TAB' | translate }}</button>
+    <button mat-menu-item (click)="removeTab()">{{ 'MENU.ACTIONS.REMOVE_TAB' | translate }}</button>
 </mat-menu>

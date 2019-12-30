@@ -15,17 +15,19 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
   primaryValueBar: ElementRef;
   progressValue: number = 0
   sumTime: number;
-  color = 'primary';
+  color:string = 'primary';
 
   slideOptions: TabSlide = null
 
-  constructor(private slideService: SlideService, private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    // setInterval(() => {
-    //   this.progressValue = 0;
-    //   this.progressValue = 100;
-    // }, 100000)
+  }
+  ngAfterViewInit(): void {
+    this.primaryValueBar = this.progressbar._primaryValueBar
+    this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
+      this.setSlideOptions(slide)
+    })
   }
 
   setSlideOptions(newSlideOptions: TabSlide) {
@@ -53,32 +55,8 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
     this.slideOptions = newSlideOptions
   }
 
-  ngAfterViewInit(): void {
-    this.primaryValueBar = this.progressbar._primaryValueBar
-
-    console.log(this.primaryValueBar.nativeElement)
-
-
-    this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
-      this.setSlideOptions(slide)
-    })
-    // setTimeout(() => {
-    //   this.setTime(60);
-    // }, 6000)
-
-    // setTimeout(() => {
-    //   this.break();
-    // }, 12000)
-
-    // setTimeout(() => {
-    //   this.setTime(100);
-    // }, 20000)
-
-    // setTimeout(() => {
-    //   this.break();
-    // }, 25000)
-
-    // this.removeTransition()
+  isSlideShow() {
+    return this.slideOptions.isActive && this.slideOptions.isShowProgress
   }
 
   public break() {
@@ -98,7 +76,7 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
       this.color = "primary"
       this.setTransitionTime(time)
       this.setTransformScaleX(1)
-    }, 100)
+    }, 200)
 
     this.nextSlideInTimer = setTimeout(() => {
       this.setTime(time)

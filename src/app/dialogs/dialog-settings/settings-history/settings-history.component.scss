@@ -1,0 +1,8 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-toolbar {
+    overflow-y: auto;
+    max-height: calc(100% - 50px);
+}

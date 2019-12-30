@@ -1,10 +1,10 @@
-<h1 mat-dialog-title>Settings</h1>
+<h1 mat-dialog-title>{{ 'SETTING.TITLE' | translate}}</h1>
 <div mat-dialog-content class="settings-main">
     <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">computer</mat-icon>
-                General
+                {{ 'SETTING.GENERAL.TAB_NAME' | translate}}
             </ng-template>
             <app-settings-general></app-settings-general>
         </mat-tab>
@@ -12,33 +12,39 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">play_circle_filled</mat-icon>
-                Slide
+                {{ 'SETTING.SLIDE.TAB_NAME' | translate}}
             </ng-template>
             <app-settings-slide></app-settings-slide>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">history</mat-icon>
-                History
+                {{ 'SETTING.HISTORY.TAB_NAME' | translate}}
             </ng-template>
-            <app-settings-history></app-settings-history>
+            <div class="tab-content">
+                <app-settings-history></app-settings-history>
+            </div>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">keyboard</mat-icon>
-                Keyboard
+                {{ 'SETTING.KEYBOARD.TAB_NAME' | translate}}
             </ng-template>
-            <app-settings-keyboard></app-settings-keyboard>
+            <div class="tab-content">
+                <app-settings-keyboard></app-settings-keyboard>
+            </div>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">build</mat-icon>
-                JS-Injections
+                {{ 'SETTING.JSINJECTIONS.TAB_NAME' | translate}}
             </ng-template>
-            <app-settings-jsinjections></app-settings-jsinjections>
+            <div class="tab-content">
+                <app-settings-jsinjections></app-settings-jsinjections>
+            </div>
         </mat-tab>
     </mat-tab-group>
 </div>
 <div mat-dialog-actions>
-    <button mat-button cdkFocusInitial mat-dialog-close>Close</button>
+    <button mat-button cdkFocusInitial mat-dialog-close>{{ 'SETTING.ACTIONS.CLOSE' | translate}}</button>
 </div>

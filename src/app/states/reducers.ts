@@ -3,20 +3,28 @@ import { ActionReducerMap, createFeatureSelector, MetaReducer, ActionReducer } f
 import { createSelector } from 'reselect'
 import { TabState, tabInitialState, tabReducer, tabSelectedAll, tabSelectedIds, tabSelectedEntities } from './tab';
 import { PageState, pageInitialState, pageReducer, pageSelectedAll, pageSelectedEntities } from './page';
+import { DialogModel, dialogInitialState, dialogReducer } from './dialog';
+import { GeneralModel, generalInitialState, generalReducer } from './general';
 
 export interface AppState {
-  tabs: TabState;
-  pages: PageState;
+  tabs: TabState
+  pages: PageState
+  dialog: DialogModel
+  general: GeneralModel
 }
 
 export const initialState: AppState = {
   tabs: tabInitialState,
-  pages: pageInitialState
+  pages: pageInitialState,
+  dialog: dialogInitialState,
+  general: generalInitialState
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   tabs: tabReducer,
   pages: pageReducer,
+  dialog: dialogReducer,
+  general: generalReducer
 }
 
 //Page select

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Tab, UpdateTab, DeleteTab, EditTab } from '../../states/tab';
+import { TabModel, UpdateTab, DeleteTab, EditTab } from '../../states/tab';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -11,7 +11,7 @@ import { Update } from '@ngrx/entity';
 })
 export class TabbarItemEditComponent implements OnInit {
   @Input()
-  tabItem: Tab
+  tabItem: TabModel
 
   constructor(private store: Store<AppState>) { }
 
@@ -20,7 +20,7 @@ export class TabbarItemEditComponent implements OnInit {
   }
 
   changeName(name: string) {
-      const update: Update<Tab> = {
+      const update: Update<TabModel> = {
         id: this.tabItem.id,
         changes: {
           name: name,

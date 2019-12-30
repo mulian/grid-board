@@ -6,6 +6,7 @@ import { dialogInitialStateSettings } from '../../states/dialog/dialog.initial.s
 import { SettingsTab } from '../../states/dialog/dialog.model'
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dialog-settings',
@@ -17,7 +18,7 @@ export class DialogSettingsComponent implements OnInit, OnDestroy {
   dialogSettings: DialogModelSettings = dialogInitialStateSettings
   selected = new FormControl(0);
   settingsSubscription:Subscription = null
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, public translate: TranslateService) { }
 
 
   ngOnInit() {

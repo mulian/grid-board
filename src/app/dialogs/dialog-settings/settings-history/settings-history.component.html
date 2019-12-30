@@ -1,1 +1,57 @@
-<p>settings-history works!</p>
+<!-- <mat-toolbar color="">
+    <mat-toolbar-row *ngFor="let stateId of reducerStore.getStateMap().reverse(); let i = index; let length = count">
+        <span>{{getItem(stateId).action.type}}</span>
+        <span class="example-spacer"></span>
+        <span>{{getItem(stateId).state}}</span>
+    </mat-toolbar-row>
+</mat-toolbar> -->
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                History Settings
+            </mat-panel-title>
+            <mat-panel-description>
+                Adjust History settings
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+            <input matInput placeholder="Save last ... history entries." value="{{historyLimitNumber}}" (keyup.enter)="$event.target.blur()" (blur)="sethistoryLimit(historyLimitInput.value,$event)" #historyLimitInput>
+        </mat-form-field>
+        <button mat-button (click)="saveCurrentStateToJson()">
+            Save State to file
+        </button>
+        <button mat-button (click)="loadStateFromJson()">
+            Load State from file
+        </button>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                History
+            </mat-panel-title>
+            <mat-panel-description>
+                Show History
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let stateId of reducerStore.getStateMap().reverse(); let i = index; let length = count">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{getItem(stateId).action.type}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Open History Item to show state
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <span>
+                {{getStringify(getItem(stateId).state)}}
+                <button mat-button (click)="loadState(getItem(stateId).state)">Load State</button>
+            </span>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+    </mat-expansion-panel>
+</mat-accordion>

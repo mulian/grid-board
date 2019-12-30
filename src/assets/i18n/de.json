@@ -1,40 +1,65 @@
 {
-    "PAGES": {
-        "HOME": {
-            "TITLE": "Die Applikation funktioniert"
+    "TAB": {
+        "NEW_TAB_PLACE_HOLDER": "Neuer Tab",
+        "MENU": {
+            "REMOVE_SLIDE": "berücksichtigen beim Slidemode",
+            "ADD_SLIDE": "nicht berücksichtigen beim Slidemode"
+        },
+        "DESCRIPTIONS": {
+            "NEW_TAB": "Neuer Tab Hinzufügen"
         }
     },
-    "Tab": {
-        "NewTabPlaceHolder": "Neuer Tab",
-        "Descriptions": {
-            "newTab": "Neuer Tab hinzufügen"
+    "MENU": {
+        "ACTIONS": {
+            "MENU_NAME": "Aktionen",
+            "ADD_TAB": "Tab Hinzufügen",
+            "ADD_PAGE": "Seite Hinzufügen",
+            "REMOVE_TAB": "Tab Schließen"
+        },
+        "HISTORY": {
+            "MENU_NAME": "History",
+            "BACK": "Zurück",
+            "NEXT": "Nächster"
+        },
+        "SETTINGS": "Einstellungen",
+        "HELP": "Hilfe",
+        "QUIT": "Schließen"
+    },
+    "SETTING": {
+        "TITLE": "Einstellungen",
+        "GENERAL": {
+            "TAB_NAME": "Allgemein",
+            "LANG_TITLE": "Sprache",
+            "LANG": {
+                "DE": "Deutsch",
+                "EN": "Englisch"
+            }
+        },
+        "SLIDE": {
+            "TAB_NAME": "Slide",
+            "SLIDE_MODE": "Slide modus",
+            "NEXT_SLIDE_TIME": "Nächster slide in ... sec.",
+            "AFTER_INACTIVITY": "Aktiviere slide mode nach ... minuten inaktivität.",
+            "SLIDE_PROGRESS": "Zeige den Slide Progress an"
+        },
+        "HISTORY": {
+            "TAB_NAME": "App Status"
+        },
+        "KEYBOARD": {
+            "TAB_NAME": "Tastatur"
+        },
+        "JSINJECTIONS": {
+            "TAB_NAME": "JS-Injections"
+        },
+        "ACTIONS": {
+            "CLOSE": "Schließen"
         }
     },
-    "Menu": {
-        "Tab": {
-            "name": "Tab",
-            "addTab": "Tab Hinzufügen",
-            "addPage": "Seite Hinzufügen",
-            "removeTab": "Tab Löschen"
-        },
-        "Slide": {
-            "name": "Slide",
-            "slideMode": "Slide modus",
-            "nextSlideTime": "Nexter slide in ... minuten.",
-            "afterInactivity": "Aktiviere slide mode nach ... minuten inaktivität.",
-            "slideProgress": "Zeige den Slide Progress an"
-        },
-        "History": {
-            "name": "Vergangenheit",
-            "back": "Zurück",
-            "next": "Weiter"
-        },
-        "Lang": {
-            "name": "Sprache",
-            "de": "Deutsch",
-            "en": "Englisch"
-        },
-        "help": "Hilfe",
-        "quit": "Beenden"
+    "Help": {
+        "title": "Help for Gridler",
+        "author": "Author",
+        "repo": "Repository",
+        "basedOnLib": "Based on Libraries",
+        "close": "Close"
     }
 }

@@ -1,11 +1,21 @@
 <div class="example-container">
-    <mat-form-field>
-        <mat-label>Language</mat-label>
-        <mat-select [(value)]="selected">
-            <mat-option value="option1">English</mat-option>
-            <mat-option value="option2">German</mat-option>
-        </mat-select>
-    </mat-form-field>
+
+    <mat-card>
+        <mat-card-title>{{ 'SETTING.GENERAL.LANG_TITLE' | translate }}</mat-card-title>
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>{{ 'SETTING.GENERAL.LANG_TITLE' | translate }}</mat-label>
+                <!-- <button mat-menu-item *ngFor="let lang of translate.getLangs()" [attr.disabled]="translate.currentLang==lang ? '' : null" (click)="translate.use(lang)">
+            {{ 'Menu.Lang.'+lang | translate }}
+        </button> -->
+                <mat-select [(value)]="selectedLang" (selectionChange)="onChangeLang($event.value)">
+                    <mat-option *ngFor="let lang of translate.getLangs()" value="{{lang}}">
+                        {{ 'SETTING.GENERAL.LANG.'+lang.toUpperCase() | translate }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
 
     <!-- <mat-form-field>
         <button mat-button>Reset State</button>

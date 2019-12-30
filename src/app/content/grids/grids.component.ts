@@ -7,7 +7,7 @@ import { GridsterConfig, GridType, CompactType, DisplayGrid, GridsterItem, Grids
 import { AddPage, Page, UpdatePage } from '../../states/page';
 import { Update } from '@ngrx/entity';
 import NgrxEntitySync from '../../ngrx-entity-sync';
-import { Tab } from '../../states/tab';
+import { TabModel } from '../../states/tab';
 import * as _ from 'lodash-es'
 
 export interface PageCheck extends Page {
@@ -23,7 +23,7 @@ export class GridsComponent implements OnInit {
   pages$: { [key:string]: Observable<any>} = {}
   // selectedTab$: Observable<any>
   selectedTabId: string
-  syncedTabData: NgrxEntitySync<Tab>;
+  syncedTabData: NgrxEntitySync<TabModel>;
   syncedPageData: NgrxEntitySync<Page>;
 
   
@@ -38,7 +38,7 @@ export class GridsComponent implements OnInit {
   ngOnInit() {
     console.log("init");
 
-    this.syncedTabData = new NgrxEntitySync<Tab>(this.store,selectAllTabsEntities,(tab) => tab.id)
+    this.syncedTabData = new NgrxEntitySync<TabModel>(this.store,selectAllTabsEntities,(tab) => tab.id)
     this.syncedPageData = new NgrxEntitySync<Page>(this.store,selectAllPagesEntitities,(page) => page.id)
   
     this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((tabId: string) => this.selectedTabId = tabId)

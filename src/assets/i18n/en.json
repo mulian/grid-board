@@ -1,41 +1,59 @@
 {
-    "PAGES": {
-        "HOME": {
-            "TITLE": "App works !"
+    "TAB": {
+        "NEW_TAB_PLACE_HOLDER": "new tab",
+        "MENU": {
+            "REMOVE_SLIDE": "don't consider on slidemode",
+            "ADD_SLIDE": "consider on slidemode"
+        },
+        "DESCRIPTIONS": {
+            "NEW_TAB": "Add a new Tab"
         }
     },
-    "Tab": {
-        "NewTabPlaceHolder": "new tab",
-        "Descriptions": {
-            "newTab": "Add a new Tab"
-        }
+    "MENU": {
+        "ACTIONS": {
+            "MENU_NAME": "Actions",
+            "ADD_TAB": "Add Tab",
+            "ADD_PAGE": "Add Page",
+            "REMOVE_TAB": "Remove Tab"
+        },
+        "HISTORY": {
+            "MENU_NAME": "History",
+            "BACK": "Back",
+            "NEXT": "Next"
+        },
+        "SETTINGS": "settings",
+        "HELP": "Help",
+        "QUIT": "Quit"
     },
-    "Menu": {
-        "Tab": {
-            "name": "Tab",
-            "addTab": "Add Tab",
-            "addPage": "Add Page",
-            "removeTab": "Remove Tab"
+    "SETTING": {
+        "TITLE": "Settings",
+        "GENERAL": {
+            "TAB_NAME": "General",
+            "LANG_TITLE": "Language",
+            "LANG": {
+                "DE": "German",
+                "EN": "English"
+            }
         },
-        "Slide": {
-            "name": "Slide",
-            "slideMode": "Slide mode",
-            "nextSlideTime": "Next slide in ... minutes.",
-            "afterInactivity": "Activate slide mode after ... minutes inactivity.",
-            "slideProgress": "Show slide progress"
+        "SLIDE": {
+            "TAB_NAME": "Slide",
+            "SLIDE_MODE": "Slide mode",
+            "NEXT_SLIDE_TIME": "Next slide in ... minutes.",
+            "AFTER_INACTIVITY": "Activate slide mode after ... minutes inactivity.",
+            "SLIDE_PROGRESS": "Show slide progress"
         },
-        "History": {
-            "name": "History",
-            "back": "Back",
-            "next": "Next"
+        "HISTORY": {
+            "TAB_NAME": "History"
         },
-        "Lang": {
-            "name": "Language",
-            "de": "German",
-            "en": "English"
+        "KEYBOARD": {
+            "TAB_NAME": "Keyboard"
         },
-        "help": "Help",
-        "quit": "Quit"
+        "JSINJECTIONS": {
+            "TAB_NAME": "JS-Injections"
+        },
+        "ACTIONS": {
+            "CLOSE": "Close"
+        }
     },
     "Help": {
         "title": "Help for Gridler",

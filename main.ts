@@ -1,4 +1,5 @@
-import { app, BrowserWindow, screen, session, Menu } from 'electron';
+import { app, BrowserWindow, screen, session, Menu, ipcMain, dialog } from 'electron';
+import * as fs from 'fs'
 import * as path from 'path';
 import * as url from 'url';
 
@@ -19,6 +20,51 @@ function createWindow() {
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
 
+  ipcMain.on("save-json",(event,arg) => {
+    console.log(arg);
+    dialog.showSaveDialog(win,{
+      
+    }).then((value) => {
+      console.log(value);
+      if(!value.canceled) {
+        fs.writeFile(value.filePath,JSON.stringify(arg),(err) => {
+          if(err) {
+            console.log("Error on save file.");
+          }
+          else {
+            console.log("file was saved to "+value.filePath);
+            
+          }
+        })
+      }
+    })
+  })
+
+  ipcMain.on("load-json",(event,arg) => {
+    dialog.showOpenDialog({ 
+      properties: ['openFile'], 
+      filters: [ {
+        name: "JSON",
+        extensions: ['json']
+      } ]
+    }).then( (value) => {
+      fs.readFile(value.filePaths[0], 'utf-8', (err, data) => {
+        if(err){
+            alert("An error ocurred reading the file :" + err.message);
+            event.returnValue = null
+        }
+  
+        // Change how to handle the file content
+        console.log("The file content is : " + data);
+        event.returnValue = data
+        
+    });
+    }).catch((reason) => {
+      console.error(reason)
+      event.returnValue = null
+    })
+  })
+
   // Create the browser window.
   win = new BrowserWindow({
     x: 0,
@@ -29,6 +75,7 @@ function createWindow() {
       nodeIntegration: true,
       webviewTag: true
     },
+    title: "Gridler"
   });
 
   if (serve) {

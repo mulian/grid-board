@@ -53,13 +53,36 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
-import { HelpComponent } from './help/help.component';
+import { HelpComponent } from './dialogs/help/help.component';
 import { SlideProgressComponent } from './slide/slide-progress/slide-progress.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { SlideService } from './slide/slide.service';
+import { DialogSettingsComponent } from './dialogs/dialog-settings/dialog-settings.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { SettingsGeneralComponent } from './dialogs/dialog-settings/settings-general/settings-general.component';
+import { SettingsSlideComponent } from './dialogs/dialog-settings/settings-slide/settings-slide.component';
+import { SettingsHistoryComponent } from './dialogs/dialog-settings/settings-history/settings-history.component';
+import { SettingsKeyboardComponent } from './dialogs/dialog-settings/settings-keyboard/settings-keyboard.component';
+import { SettingsJsinjectionsComponent } from './dialogs/dialog-settings/settings-jsinjections/settings-jsinjections.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTreeModule} from '@angular/material/tree';
 
 @NgModule({
-  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent, AddressbarComponent, MenuComponent, HelpComponent, SlideProgressComponent],
+  declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent, AddressbarComponent, MenuComponent, HelpComponent, SlideProgressComponent, DialogSettingsComponent, SettingsGeneralComponent, SettingsSlideComponent, SettingsHistoryComponent, SettingsKeyboardComponent, SettingsJsinjectionsComponent],
   imports: [
+    MatTreeModule,
+    MatExpansionModule,
+    MatSliderModule,
+    MatListModule,
+    MatCardModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatGridListModule,
     MatProgressBarModule,
     MatDialogModule,
     MatInputModule,
@@ -98,7 +121,10 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     //   }
     // })
   ],
-  providers: [],
+  entryComponents: [
+    HelpComponent, DialogSettingsComponent
+  ],
+  providers: [SlideService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

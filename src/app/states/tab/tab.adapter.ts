@@ -1,9 +1,16 @@
 import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
-import { Tab } from './tab.model'
+import { TabModel } from './tab.model'
 
-export const adapter: EntityAdapter<Tab> = createEntityAdapter<Tab>({
+export function sortBySortNumber(a: TabModel, b: TabModel):number {
+    return a.sortNumber - b.sortNumber;
+}
+
+/** 
+ * The EntityAdapter for Tab model with
+ * * sort: to change the sort of tabs in tabbar
+ * * selectId: the id of tab
+ */
+export const adapter: EntityAdapter<TabModel> = createEntityAdapter<TabModel>({
     selectId: (tab) => tab.id,
-    sortComparer: (a: Tab, b: Tab) => {
-        return a.sortNumber - b.sortNumber;
-    }
+    sortComparer: sortBySortNumber
 });

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tab,  UpdateTab, DeleteTab, SelectTab, EditTab } from '../../states/tab';
+import { TabModel,  UpdateTab, DeleteTab, SelectTab, EditTab } from '../../states/tab';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -11,7 +11,7 @@ import { Update } from '@ngrx/entity';
 })
 export class TabbarItemComponent implements OnInit {
   @Input()
-  tabItem:Tab
+  tabItem:TabModel
 
   constructor(private store: Store<AppState>) { }
 

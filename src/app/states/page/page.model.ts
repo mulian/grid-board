@@ -1,5 +1,6 @@
 import { GridsterItem } from "angular-gridster2";
 
+/** The Page information with GridsterItem cause every page is a gridster item */
 export interface Page extends GridsterItem {
   name?: string;
   id?: string;
