@@ -14,11 +14,11 @@ export class SettingsSlideComponent implements OnInit {
   slideOptions:TabSlide
   constructor(private store: Store<AppState>,public translate: TranslateService) { }
 
-  setAfterInactivity(time:number) {
+  setAfterInactivity(time:number,event) {
     if(time!=this.slideOptions.startAfterInactiveTimeInSec) this.store.dispatch(new SetStartAfterInactiveTime({timeInSec:time}))
   }
 
-  setNextSlideTime(time:number) {
+  setNextSlideTime(time:number,event) {
     if(time!=this.slideOptions.nextSlideInSec) this.store.dispatch(new SetNextSlideTime({timeInSec:time}))
   }
 

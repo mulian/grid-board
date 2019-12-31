@@ -46,7 +46,7 @@ export class SettingsHistoryComponent implements OnInit {
     }
   }
 
-  sethistoryLimit(newLimit:number) {
+  sethistoryLimit(newLimit:number,event) {
     this.store.dispatch(new ChangeHistoryLimit({historyLimit:newLimit}))
   }
 

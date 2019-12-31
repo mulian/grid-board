@@ -1,4 +1,6 @@
 import { keyboardAdapter } from "./keyboard.adapter";
+import { KeyboardState } from "./keyboard.state";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 /** Select Page Entity */
 const {
@@ -12,3 +14,10 @@ export const keyboardSelectedIds = selectIds;
 export const keyboardSelectedEntities = selectEntities;
 export const keyboardSelectedAll = selectAll;
 export const keyboardSelectedTotal = selectTotal;
+
+export const selectAllKeyboardState = createFeatureSelector<KeyboardState>("keyboard");
+
+export const selectAllKeyboardEntities = createSelector(
+    selectAllKeyboardState,
+    selectEntities
+  )

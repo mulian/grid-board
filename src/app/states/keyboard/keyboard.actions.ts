@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { KeyboardModel } from './keyboard.model';
-import * as uuid from 'uuid';
 
 /** The KeyboardActionTypes */
 export enum KeyboardActionTypes {

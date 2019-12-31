@@ -118,6 +118,10 @@ export class UpdateTabs implements Action {
 export class DeleteTab implements Action {
   readonly type = TabActionTypes.DeleteTab;
 
+  /**
+   * Delte a tab
+   * @param payload if null use current selected tab id
+   */
   constructor(public payload: { id: string }) { }
 }
 

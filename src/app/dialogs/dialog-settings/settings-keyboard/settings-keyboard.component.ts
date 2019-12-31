@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { KeyboardService } from './keyboard.service';
+import { KeyboardModel, selectAllKeyboardEntities } from '../../../states/keyboard';
+import { KeyboardAction } from '../../../states/keyboard/keyboard.model'
+import { AppState } from '../../../states/reducers';
+import { Store, select } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
+import * as _ from 'lodash-es'
 
 export interface PeriodicElement {
   name: string;
@@ -22,17 +28,46 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
 ];
 
+let tmp:KeyboardModel = {
+  action: KeyboardAction.NEXT_TAB_RIGHT,
+  active: false,
+  key: {
+    isAlt: false,
+    isCtrl: false,
+    isMeta: false,
+    isShift: false,
+    key: 'a'
+  }
+}
+
 @Component({
   selector: 'app-settings-keyboard',
   templateUrl: './settings-keyboard.component.html',
   styleUrls: ['./settings-keyboard.component.scss']
 })
 export class SettingsKeyboardComponent implements OnInit {
-  dataSource = ELEMENT_DATA
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  constructor(public translate: TranslateService, public keyboard:KeyboardService) { }
+  dataSource:KeyboardModel[] = [tmp]
+  displayedColumns: string[] = ['key', 'action', 'active'];
+  constructor(public translate: TranslateService, public keyboard:KeyboardService,private store: Store<AppState>) {
+
+   }
+
+   stringify(obj:any) {
+     return JSON.stringify(obj)
+   }
 
   ngOnInit() {
+    this.store.pipe(select(selectAllKeyboardEntities)).subscribe((keyboardData: Dictionary<KeyboardModel>) => {
+      console.log("keyboardData",keyboardData);
+      this.dataSource = _.values(keyboardData)
+      this.dataSource.push(tmp)
+    })
+  }
+
+  addNewKey() {
+    console.log("add new key");
+    //TODO: create new stepped dialog for add key + action
+    
   }
 
 }

@@ -1,12 +1,12 @@
 /**
  * Export all Page Information
  */
-export const pagesFeatureKey = 'pages';
+export const pagesFeatureKey = 'keyboard';
 
-export * from './page.reducer';
-export * from './page.model';
-export * from './page.actions';
-export * from './page.adapter'
-export * from './page.initial.state'
-export * from './page.selector'
-export * from './page.state'
+export * from './keyboard.reducer';
+export * from './keyboard.model';
+export * from './keyboard.actions';
+export * from './keyboard.adapter'
+export * from './keyboard.initial.state'
+export * from './keyboard.selector'
+export * from './keyboard.state'

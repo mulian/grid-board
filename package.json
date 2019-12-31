@@ -1,6 +1,6 @@
 {
     "name": "tv-browser",
-    "version": "1.0.0",
+    "version": "0.0.2",
     "description": "A tv browser with automatic switch between web pages (webshow).",
     "homepage": "",
     "author": {
@@ -32,6 +32,7 @@
         "electron:serve-tsc": "tsc -p tsconfig-serve.json",
         "electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:serve-tsc && electron . --serve",
         "electron:local": "npm run build:prod && electron .",
+        "electron:buildallos": "npm run build:prod && electron-builder build --linux && electron-builder build --windows && electron-builder build --mac",
         "electron:linux": "npm run build:prod && electron-builder build --linux",
         "electron:windows": "npm run build:prod && electron-builder build --windows",
         "electron:mac": "npm run build:prod && electron-builder build --mac",
