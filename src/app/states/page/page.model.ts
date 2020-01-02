@@ -1,7 +1,12 @@
 import { GridsterItem } from "angular-gridster2";
 
+export interface WebviewData {
+  zoomLevel: number
+  zoomFactor: number
+}
+
 /** The Page information with GridsterItem cause every page is a gridster item */
-export interface Page extends GridsterItem {
+export interface PageModel extends GridsterItem {
   name?: string;
   id?: string;
   url: string;
@@ -9,5 +14,8 @@ export interface Page extends GridsterItem {
   reload?:boolean
   back?:boolean
   forward?:boolean
+  addressbarOpen: boolean
+  isAdditionAddressbarOptionsOpen: boolean
+  webviewData: WebviewData
   urlChangeFromWebview?: boolean
 }

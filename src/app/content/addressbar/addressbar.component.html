@@ -1,11 +1,11 @@
-<div class="background"></div>
-<div class="addressbarContainer" *ngIf="item.isHover" [ngClass]="{'hideAdressbar':!showAddressbar}">
+<div class="background" *ngIf="isPageActiv"></div>
+<div class="addressbarContainer" *ngIf="isPageActiv" [ngClass]="{'hideAdressbar':!item.addressbarOpen}">
     <div class="controlls">
         <div class="controlls-left">
             <button mat-icon-button class="drag-handle" aria-label="Drag this page.">
                 <mat-icon>drag_indicator</mat-icon>
             </button>
-            <button mat-icon-button class="showbar" (click)="toggleAddressbar()" aria-label="Show Addressbar." [ngClass]="{'show':showAddressbar}">
+            <button mat-icon-button class="showbar" (click)="toggleAddressbar()" aria-label="Show Addressbar." [ngClass]="{'show':item.addressbarOpen}">
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
         </div>
@@ -23,6 +23,9 @@
     </div> -->
     <div class="urlBar">
         <div class="controlls">
+            <button mat-icon-button (click)="showAdditionalOptions()" aria-label="Show additional options">
+                <mat-icon>more_vert</mat-icon>
+            </button>
             <button (click)="back()" mat-icon-button aria-label="Example icon-button with a heart icon">
                 <mat-icon>arrow_back</mat-icon>
             </button>
@@ -35,11 +38,30 @@
         </div>
         <div class="adressWrapper">
             <div class="urlField">
-                <div contenteditable="true" class="adresse" #box (keydown.enter)="keypress($event)"
-                    (blur)="onBlur(box.value,$event)">
-                    {{item.url}}
-                </div>
+                <div contenteditable="true" class="adresse" #box (keydown.enter)="changePageWithEvent($event.target.innerHTML,$event)"
+                    (blur)="changePageWithEvent($event.target.innerHTML,$event)" (focus)="selectAll($event.target)">{{item.url}}</div>
             </div>
+        </div>
+    </div>
+    <div class="controlls" *ngIf="item.addressbarOpen && item.isAdditionAddressbarOptionsOpen">
+        <div class="controlls-left">
+            <button mat-icon-button class="zoom-in" (click)="zoomIn()">
+                <mat-icon>zoom_in</mat-icon>
+            </button>
+            <button mat-icon-button class="zoom-out" (click)="zoomOut()">
+                <mat-icon>zoom_out</mat-icon>
+            </button>
+            <button mat-icon-button class="zoom-reset" (click)="zoomReset()">
+                <mat-icon>settings_overscan</mat-icon>
+            </button>
+        </div>
+        <div class="title">
+            
+        </div>
+        <div class="controlls-right">
+            <button mat-icon-button (click)="openDev($event)">
+                <mat-icon>developer_board</mat-icon>
+            </button>
         </div>
     </div>
 </div>

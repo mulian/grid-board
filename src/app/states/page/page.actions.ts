@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Page } from './page.model';
+import { PageModel } from './page.model';
 import * as uuid from 'uuid';
 
 /** The PageActionTypes */
@@ -15,6 +15,19 @@ export enum PageActionTypes {
   DeletePage = '[Page] Delete Page',
   DeletePages = '[Page] Delete Pages',
   ClearPages = '[Page] Clear Pages',
+
+  SetActivePage = "[Page] Set Page Activ State",
+}
+
+export class SetActivePage implements Action {
+  readonly type = PageActionTypes.SetActivePage;
+
+  /**
+   * Set Page active (only one page could be active at the same time)
+   * @param payload.pageId the page id
+   * @param payload.active set active (true) or deactive (false)
+   */
+  constructor(public payload: { pageId: string, active: boolean }) {}
 }
 
 export class LoadPages implements Action {
@@ -24,7 +37,7 @@ export class LoadPages implements Action {
    * Add more then one Page
    * @param payload.page the pages for add
    */
-  constructor(public payload: { pages: Page[] }) {}
+  constructor(public payload: { pages: PageModel[] }) {}
 }
 
 export class AddPage implements Action {
@@ -34,7 +47,7 @@ export class AddPage implements Action {
    * Add one Page
    * @param payload.page the page for add
    */
-  constructor(public payload: { page: Page }) {
+  constructor(public payload: { page: PageModel }) {
     this.payload.page.id = uuid.v4()
   }
 }
@@ -46,7 +59,7 @@ export class UpsertPage implements Action {
    * Add or update a page
    * @param payload.page the added or updated page
    */
-  constructor(public payload: { page: Page }) {}
+  constructor(public payload: { page: PageModel }) {}
 }
 
 export class AddPages implements Action {
@@ -56,7 +69,7 @@ export class AddPages implements Action {
    * Add Pages and set uuid
    * @param payload.pages the added pages
    */
-  constructor(public payload: { pages: Page[] }) {
+  constructor(public payload: { pages: PageModel[] }) {
     for(let tab of this.payload.pages) {
       tab.id = uuid.v4()
     }
@@ -70,7 +83,7 @@ export class UpsertPages implements Action {
    * Add or update Pages
    * @param payload.pages the add or update pages
    */
-  constructor(public payload: { pages: Page[] }) {}
+  constructor(public payload: { pages: PageModel[] }) {}
 }
 
 export class UpdatePage implements Action {
@@ -80,7 +93,7 @@ export class UpdatePage implements Action {
    * Update one Page
    * @param payload.page the update page
    */
-  constructor(public payload: { page: Update<Page> }) {}
+  constructor(public payload: { page: Update<PageModel> }) {}
 }
 
 export class UpdatePages implements Action {
@@ -90,7 +103,7 @@ export class UpdatePages implements Action {
    * Update pages
    * @param payload.pages the updated pages
    */
-  constructor(public payload: { pages: Update<Page>[] }) {}
+  constructor(public payload: { pages: Update<PageModel>[] }) {}
 }
 
 export class DeletePage implements Action {
@@ -131,4 +144,5 @@ export type PageActions =
  | UpdatePages
  | DeletePage
  | DeletePages
- | ClearPages;
+ | ClearPages
+ | SetActivePage;

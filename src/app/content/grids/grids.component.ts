@@ -4,13 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
 import { AppState, selectAllTabIds, selectTabOptionsSelectTab, selectAllPagesEntitities, selectAllPagesState, selectAllTabsEntities } from '../../states/reducers';
 import { GridsterConfig, GridType, CompactType, DisplayGrid, GridsterItem, GridsterItemComponentInterface } from 'angular-gridster2';
-import { AddPage, Page, UpdatePage } from '../../states/page';
+import { AddPage, PageModel, UpdatePage } from '../../states/page';
 import { Update } from '@ngrx/entity';
 import NgrxEntitySync from '../../ngrx-entity-sync';
 import { TabModel } from '../../states/tab';
 import * as _ from 'lodash-es'
 
-export interface PageCheck extends Page {
+export interface PageCheck extends PageModel {
   isDeleted?:boolean
 }
 
@@ -24,7 +24,7 @@ export class GridsComponent implements OnInit {
   // selectedTab$: Observable<any>
   selectedTabId: string
   syncedTabData: NgrxEntitySync<TabModel>;
-  syncedPageData: NgrxEntitySync<Page>;
+  syncedPageData: NgrxEntitySync<PageModel>;
 
   
 
@@ -39,7 +39,7 @@ export class GridsComponent implements OnInit {
     console.log("init");
 
     this.syncedTabData = new NgrxEntitySync<TabModel>(this.store,selectAllTabsEntities,(tab) => tab.id)
-    this.syncedPageData = new NgrxEntitySync<Page>(this.store,selectAllPagesEntitities,(page) => page.id)
+    this.syncedPageData = new NgrxEntitySync<PageModel>(this.store,selectAllPagesEntitities,(page) => page.id)
   
     this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((tabId: string) => this.selectedTabId = tabId)
   }
@@ -53,7 +53,13 @@ export class GridsComponent implements OnInit {
       page: {
         ...item,
         url: "http://google.de",
-        tab: this.selectedTabId
+        tab: this.selectedTabId,
+        addressbarOpen: true,
+        isAdditionAddressbarOptionsOpen: false,
+        webviewData: {
+          zoomFactor: 0,
+          zoomLevel: 0
+        }
       }
     }))
   }
@@ -61,7 +67,7 @@ export class GridsComponent implements OnInit {
   itemChangeCallback(item, component) {
     console.log("itemChangeCallback", item, component);
 
-    const updatedPage: Update<Page> = {
+    const updatedPage: Update<PageModel> = {
       id: item.id,
       changes: item
     }

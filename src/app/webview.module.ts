@@ -25,4 +25,9 @@ export class WebviewDirective implements OnInit, OnChanges {
         this.el.nativeElement.src = this.src;
         if(this.el.nativeElement.useragent!=null) this.el.nativeElement.useragent = this.useragent;
     }
+
+    setZoomFactor(factor:number) {
+        console.log("factor:",factor);
+        
+    }
 }

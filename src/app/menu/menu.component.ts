@@ -44,7 +44,13 @@ export class MenuComponent implements OnInit {
             tab: s.tabs.options.selectedTab,
             x: 0,
             y: 0,
-            rows: 1
+            rows: 1,
+            addressbarOpen: true,
+            isAdditionAddressbarOptionsOpen: false,
+            webviewData: {
+              zoomFactor: 0,
+              zoomLevel: 0
+            }
           }
         }))
         subscribe.unsubscribe();

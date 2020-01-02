@@ -1,7 +1,7 @@
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { Page } from "./page.model";
+import { PageModel } from "./page.model";
 
 /** The EntityAdapter for Page with select id */
-export const pageAdapter: EntityAdapter<Page> = createEntityAdapter<Page>({
+export const pageAdapter: EntityAdapter<PageModel> = createEntityAdapter<PageModel>({
     selectId: (page) => page.id
   });

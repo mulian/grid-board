@@ -19,16 +19,16 @@
     width: 100%;
 }
 app-addressbar {
-    display: none;
+    display: block;
     position: absolute;
     top: 2px;
     left: 2px;
     right: 2px;
 }
-.pageView:hover app-addressbar {
-    display: block;
-}
+//.pageView:hover app-addressbar {
+//    display: block;
+//}
 
-.webview:hover app-addressbar {
-    display: block;
-}
+// .webview:hover app-addressbar {
+//     display: block;
+// }

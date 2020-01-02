@@ -5,6 +5,7 @@ import { pageAdapter } from "./page.adapter";
 export const pageInitialState: PageState = pageAdapter.getInitialState({
   options: {
     editPages: true,
-    editPageId: null
+    editPageId: null,
+    activePage: null
   }
 });
