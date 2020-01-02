@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { KeyboardService } from './keyboard.service';
 import { KeyboardModel, selectAllKeyboardEntities } from '../../../states/keyboard';
-import { KeyboardAction } from '../../../states/keyboard/keyboard.model'
+import { KeyboardAction, TypeInput } from '../../../states/keyboard/keyboard.model'
 import { AppState } from '../../../states/reducers';
 import { Store, select } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 import * as _ from 'lodash-es'
+import { keyboardTranslation } from './keyboard.translation';
+import { elementAt } from 'rxjs/operators';
 
 export interface PeriodicElement {
   name: string;
@@ -48,20 +50,66 @@ let tmp:KeyboardModel = {
 export class SettingsKeyboardComponent implements OnInit {
   dataSource:KeyboardModel[] = [tmp]
   displayedColumns: string[] = ['key', 'action', 'active'];
-  constructor(public translate: TranslateService, public keyboard:KeyboardService,private store: Store<AppState>) {
 
+  keyEditOnAction:number = null
+
+  constructor(public translate: TranslateService, public keyboard:KeyboardService,private store: Store<AppState>) {
+    this.dataSource = this.initAllPossibleKeyboardActions()
+   }
+   initAllPossibleKeyboardActions():KeyboardModel[] {
+     console.log(KeyboardAction);
+     
+     let keyboardModels: KeyboardModel[] = []
+    for(let actionKey in KeyboardAction) {
+      if((typeof actionKey) == 'string') {
+        console.log(actionKey);
+        
+        let actionValue: string = KeyboardAction[actionKey]
+        keyboardModels.push({
+          action: KeyboardAction[actionValue],
+          active: false,
+          key: null
+        })
+      }
+    }
+    console.log(keyboardModels);
+    
+    return keyboardModels
+   }
+
+   actionToString(actionNumber: number) {
+     return KeyboardAction[actionNumber]
    }
 
    stringify(obj:any) {
      return JSON.stringify(obj)
    }
+  keyboardTranslation(typeInput:TypeInput) {
+    return keyboardTranslation(typeInput)
+  }
+
+  
 
   ngOnInit() {
     this.store.pipe(select(selectAllKeyboardEntities)).subscribe((keyboardData: Dictionary<KeyboardModel>) => {
       console.log("keyboardData",keyboardData);
-      this.dataSource = _.values(keyboardData)
-      this.dataSource.push(tmp)
+      // this.dataSource = _.values(keyboardData)
+      // this.dataSource.push(tmp)
+      this.updateDataSourcWithStoreData(keyboardData)
     })
+  }
+
+  updateDataSourcWithStoreData(keyboardData:Dictionary<KeyboardModel>) {
+    for(let keyboardModelKey in keyboardData) {
+      let keyboardModel:KeyboardModel = keyboardData[keyboardModelKey]
+
+      for(let dataItem of this.dataSource) {
+        if(dataItem.action==keyboardModel.action) {
+          dataItem.active = keyboardModel.active
+          dataItem.key = keyboardModel.key
+        }
+      }
+    }
   }
 
   addNewKey() {

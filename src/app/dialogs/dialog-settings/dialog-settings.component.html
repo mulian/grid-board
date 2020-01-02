@@ -1,3 +1,6 @@
+<!-- <div mat-dialog-actions>
+    <button mat-button cdkFocusInitial mat-dialog-close>{{ 'SETTING.ACTIONS.CLOSE' | translate}}</button>
+</div> -->
 <h1 mat-dialog-title>{{ 'SETTING.TITLE' | translate}}</h1>
 <div mat-dialog-content class="settings-main">
     <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
@@ -30,9 +33,9 @@
                 <mat-icon class="example-tab-icon">keyboard</mat-icon>
                 {{ 'SETTING.KEYBOARD.TAB_NAME' | translate}}
             </ng-template>
-            <div class="tab-content">
+            <!-- <div class="tab-content"> -->
                 <app-settings-keyboard></app-settings-keyboard>
-            </div>
+            <!-- </div> -->
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
@@ -44,7 +47,4 @@
             </div>
         </mat-tab>
     </mat-tab-group>
-</div>
-<div mat-dialog-actions>
-    <button mat-button cdkFocusInitial mat-dialog-close>{{ 'SETTING.ACTIONS.CLOSE' | translate}}</button>
 </div>

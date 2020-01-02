@@ -10,13 +10,26 @@
     <!-- Position Column -->
     <ng-container matColumnDef="key">
         <th mat-header-cell *matHeaderCellDef> Key </th>
-        <td mat-cell *matCellDef="let element"> {{stringify(element.key)}} </td>
+        <td mat-cell *matCellDef="let element"> 
+            <span *ngIf="keyEditOnAction==element.action; else keyEdit">
+                {{keyboardTranslation(element.key)}} 
+            </span>
+            <ng-template #keyEdit>
+                <span class="enter-key">Press key</span>
+            </ng-template>
+            <!-- <span [ngSwitch]="showKeyState(element)">
+                <button *ngSwitchCase="0" mat-raised-button  (click)="updateKey(element)">
+                    {{keyboardTranslation(element.key)}} 
+                </button>
+                <span *ngSwitchCase="1" class="enter-key">Enter Key</span>
+            </span> -->
+        </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Action </th>
-        <td mat-cell *matCellDef="let element"> {{element.action}} </td>
+        <td mat-cell *matCellDef="let element"> {{actionToString(element.action)}} </td>
     </ng-container>
 
     <!-- Weight Column -->
