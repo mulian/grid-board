@@ -26,24 +26,24 @@ export class LoadKeyboards implements Action {
   constructor(public payload: { keyboards: KeyboardModel[] }) {}
 }
 
-export class AddPage implements Action {
+export class AddKeyboard implements Action {
   readonly type = KeyboardActionTypes.AddKeyboard;
 
   /**
-   * Add one Page
-   * @param payload.keyboard the page for add
+   * Add one Keyboard
+   * @param payload.keyboard the Keyboard for add
    */
   constructor(public payload: { keyboard: KeyboardModel }) {
     // this.payload.keyboard.id = uuid.v4()
   }
 }
 
-export class UpsertPage implements Action {
+export class UpsertKeyboard implements Action {
   readonly type = KeyboardActionTypes.UpsertKeyboard;
 
   /**
-   * Add or update a page
-   * @param payload.keyboard the added or updated page
+   * Add or update a Keyboard
+   * @param payload.keyboard the added or updated Keyboard
    */
   constructor(public payload: { keyboard: KeyboardModel }) {}
 }
@@ -52,8 +52,8 @@ export class AddKeyboards implements Action {
   readonly type = KeyboardActionTypes.AddKeyboards;
 
   /**
-   * Add Pages and set uuid
-   * @param payload.keyboards the added pages
+   * Add Keyboards and set uuid
+   * @param payload.keyboards the added Keyboards
    */
   constructor(public payload: { keyboards: KeyboardModel[] }) {
     // for(let tab of this.payload.keyboards) {
@@ -66,8 +66,8 @@ export class UpsertKeyboards implements Action {
   readonly type = KeyboardActionTypes.UpsertKeyboards;
 
   /**
-   * Add or update Pages
-   * @param payload.keyboards the add or update pages
+   * Add or update Keyboards
+   * @param payload.keyboards the add or update Keyboards
    */
   constructor(public payload: { keyboards: KeyboardModel[] }) {}
 }
@@ -76,8 +76,8 @@ export class UpdateKeyboard implements Action {
   readonly type = KeyboardActionTypes.UpdateKeyboard;
 
   /**
-   * Update one Page
-   * @param payload.keyboard the update page
+   * Update one Keyboard
+   * @param payload.keyboard the update Keyboard
    */
   constructor(public payload: { keyboard: Update<KeyboardModel> }) {}
 }
@@ -86,8 +86,8 @@ export class UpdateKeyboards implements Action {
   readonly type = KeyboardActionTypes.UpdateKeyboards;
 
   /**
-   * Update pages
-   * @param payload.keyboards the updated pages
+   * Update Keyboards
+   * @param payload.keyboards the updated Keyboards
    */
   constructor(public payload: { keyboards: Update<KeyboardModel>[] }) {}
 }
@@ -96,8 +96,8 @@ export class DeleteKeyboard implements Action {
   readonly type = KeyboardActionTypes.DeleteKeyboard;
 
   /**
-   * Delete page
-   * @param payload.id delete the page with id
+   * Delete Keyboard
+   * @param payload.id delete the Keyboard with id
    */
   constructor(public payload: { id: string }) {}
 }
@@ -106,24 +106,24 @@ export class DeleteKeyboards implements Action {
   readonly type = KeyboardActionTypes.DeleteKeyboards;
 
   /**
-   * Delete pages
-   * @param payload.ids delete the pages with ids
+   * Delete Keyboards
+   * @param payload.ids delete the Keyboards with ids
    */
   constructor(public payload: { ids: string[] }) {}
 }
 
 /**
- * Clear all Pages
+ * Clear all Keyboards
  */
 export class ClearKeyboards implements Action {
   readonly type = KeyboardActionTypes.ClearKeyboards;
 }
 
-/** The PageActions for reducer */
-export type PageActions =
+/** The KeyboardActions for reducer */
+export type KeyboardActions =
  LoadKeyboards
- | AddPage
- | UpsertPage
+ | AddKeyboard
+ | UpsertKeyboard
  | AddKeyboards
  | UpsertKeyboards
  | UpdateKeyboard

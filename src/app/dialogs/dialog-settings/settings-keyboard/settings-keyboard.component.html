@@ -1,38 +1,30 @@
-<button mat-button (click)="addNewKey()">
-    Add new key action
-</button>
-
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- Position Column -->
+    <!-- key Column -->
     <ng-container matColumnDef="key">
         <th mat-header-cell *matHeaderCellDef> Key </th>
-        <td mat-cell *matCellDef="let element"> 
-            <span *ngIf="keyEditOnAction==element.action; else keyEdit">
-                {{keyboardTranslation(element.key)}} 
-            </span>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button *ngIf="keyEditOnAction!=element.action; else keyEdit"
+                (click)="activateKeyRec(element.action)">
+                <span *ngIf="element.key==null; else showKey">
+                    Set Key
+                </span>
+                <ng-template #showKey>
+                    {{keyboardTranslation(element.key)}}
+                </ng-template>
+            </button>
             <ng-template #keyEdit>
-                <span class="enter-key">Press key</span>
+                <button mat-raised-button class="enter-key" color="primary" disabled>Press key now</button>
             </ng-template>
-            <!-- <span [ngSwitch]="showKeyState(element)">
-                <button *ngSwitchCase="0" mat-raised-button  (click)="updateKey(element)">
-                    {{keyboardTranslation(element.key)}} 
-                </button>
-                <span *ngSwitchCase="1" class="enter-key">Enter Key</span>
-            </span> -->
         </td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- action Column -->
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Action </th>
         <td mat-cell *matCellDef="let element"> {{actionToString(element.action)}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
+    <!-- is active Column -->
     <ng-container matColumnDef="active">
         <th mat-header-cell *matHeaderCellDef> Active </th>
         <td mat-cell *matCellDef="let element"> {{element.active}} </td>

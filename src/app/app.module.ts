@@ -72,10 +72,12 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatTableModule} from '@angular/material/table';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent, AddressbarComponent, MenuComponent, HelpComponent, SlideProgressComponent, DialogSettingsComponent, SettingsGeneralComponent, SettingsSlideComponent, SettingsHistoryComponent, SettingsKeyboardComponent, SettingsJsinjectionsComponent],
   imports: [
+    ScrollingModule,
     MatTableModule,
     MatTreeModule,
     MatExpansionModule,

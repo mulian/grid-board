@@ -1,10 +1,11 @@
 import { TabState } from './tab.state'
-import { TabSlideActions, TabSlideActionTypes } from './tab.actions.slide'
+import { TabSlideActionTypes } from './tab.actions.slide'
 import { tabInitialState } from './tab.initial.state'
+import { TabActions } from './tab.actions.main'
 
 export function tabSlideReducer(
     state:TabState = tabInitialState,
-    action: TabSlideActions
+    action: TabActions
   ): TabState {
     switch (action.type) {
         case TabSlideActionTypes.TriggerSlideBreak: {

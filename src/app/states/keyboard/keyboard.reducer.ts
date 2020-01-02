@@ -1,4 +1,4 @@
-import { PageActions, KeyboardActionTypes } from './keyboard.actions';
+import { KeyboardActions, KeyboardActionTypes } from './keyboard.actions';
 import { KeyboardState } from './keyboard.state'
 import { keyboardAdapter } from './keyboard.adapter';
 import { keyboardInitialState } from './keyboard.initial.state';
@@ -6,7 +6,7 @@ import { keyboardInitialState } from './keyboard.initial.state';
 /** The Page reducer */
 export function keyboardReducer(
   state = keyboardInitialState,
-  action: PageActions
+  action: KeyboardActions
 ): KeyboardState {
   switch (action.type) {
     case KeyboardActionTypes.AddKeyboard: { //Add Page

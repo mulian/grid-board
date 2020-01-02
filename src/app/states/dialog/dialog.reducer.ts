@@ -33,6 +33,16 @@ export function dialogReducer(
                 default: return state
             }
         }
+        case DialogActionTypes.ToggleDialog: {
+            switch(action.payload.dialog) {
+                case DialogType.SETTINGS: {
+                    return { ...state, settings: { ...state.settings, isShow: !state.settings.isShow }}
+                }
+                case DialogType.HELP: {
+                    return { ...state, isHelpShow: !state.isHelpShow }
+                }
+            }
+        }
         default: return state
     }
 }

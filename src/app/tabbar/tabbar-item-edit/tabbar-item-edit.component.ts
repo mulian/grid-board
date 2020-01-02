@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { TabModel, UpdateTab, DeleteTab, EditTab } from '../../states/tab';
+import { TabModel, UpdateTab, DeleteTab, EditTab, RenameTab } from '../../states/tab';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../states/reducers';
 import { Update } from '@ngrx/entity';
@@ -20,14 +20,7 @@ export class TabbarItemEditComponent implements OnInit {
   }
 
   changeName(name: string) {
-      const update: Update<TabModel> = {
-        id: this.tabItem.id,
-        changes: {
-          name: name,
-        }
-      }
-      this.store.dispatch(new UpdateTab({ tab: update }))
-      this.store.dispatch(new EditTab({tabId:null}))
+      this.store.dispatch(new RenameTab({ tabId: null, newName: name}))
   }
 
   //Booth onEnter and onBlur will be fired with this function

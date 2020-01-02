@@ -7,6 +7,7 @@ import { SettingsTab } from './dialog.model';
 export enum DialogActionTypes {
   ShowDialog = '[Dialog] Show Dialog',
   CloseDialog = "[Dialog] Close Dialog",
+  ToggleDialog = "[Dialog] Toggle Dialog",
 
   SelectSettingsTab = "[Dialog] Select Settings Tab"
 }
@@ -16,6 +17,16 @@ export enum DialogActionTypes {
  */
 export enum DialogType {
     SETTINGS, HELP
+}
+
+export class ToggleDialog implements Action {
+  readonly type = DialogActionTypes.ToggleDialog;
+
+  /**
+   * Show Dialog
+   * @param payload.dialog the dialog how will be displayed
+   */
+  constructor(public payload: { dialog: DialogType }) {}
 }
 
 export class SelectSettingsTab implements Action {
@@ -50,4 +61,5 @@ export class CloseDialog implements Action {
 export type DialogActions =
    ShowDialog
  | CloseDialog
+ | ToggleDialog
  | SelectSettingsTab;

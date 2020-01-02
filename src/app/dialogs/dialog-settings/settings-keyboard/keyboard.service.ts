@@ -6,7 +6,8 @@ import { Dictionary } from '@ngrx/entity';
 import { TranslateService } from '@ngx-translate/core';
 import { IpcService } from '../settings-history/ipc.service';
 import { KeyboardActions } from './keyboard.actions';
-
+import { keypressEventToTypeInput } from './keyboard.translation'
+import * as _ from 'lodash-es'
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import { KeyboardActions } from './keyboard.actions';
 export class KeyboardService implements AfterContentInit {
   keyboardData: Dictionary<KeyboardModel>= {}
   keyboardAction: KeyboardActions;
-  
+  isPause: boolean = false
 
   constructor(private store: Store<AppState>,private translate: TranslateService,private ipcRenderer:IpcService) { 
     document.addEventListener("DOMContentLoaded", (event) => this.ngAfterContentInit()) //Own AfterContentInit hook
@@ -26,41 +27,31 @@ export class KeyboardService implements AfterContentInit {
     this.keyboardAction = new KeyboardActions(store,translate,ipcRenderer)
   }
 
+  pause() {
+    this.isPause = true
+  }
+  resume() {
+    this.isPause = false
+  }
+
   ngAfterContentInit(): void {
     document.addEventListener("keydown", event => this.keyDownListener(event))
   }
 
-  /**
-   * Retern key in well structured format
-   * 
-   * @param event the dom event
-   * @param isAllKeyPress if true return on every press except meta keys if false return null on meta keys
-   */
-  toTypeInput(event,isAllKeyPress:boolean=false):TypeInput {
-    if(event.key.length==1 || isAllKeyPress) {
-      return {
-        key: event.key.toLowerCase(),
-        isAlt: event.altKey,
-        isCtrl: event.ctrlKey,
-        isMeta: event.metaKey,
-        isShift: event.shiftKey
-      }
-    }
-    else return null
-  }
-
   keyDownListener(event) {
-    let typeInput:TypeInput = this.toTypeInput(event)
-    if(typeInput!=null) { //dont use meta/alt/ctrl/shift key
-      console.log(typeInput);
-      for(let keyboardKey in this.keyboardData) {
-        let keyboard:KeyboardModel = this.keyboardData[keyboardKey]
-
-        if(keyboard.key==typeInput) {
-          console.log("match", keyboard.key,"fire",keyboard.action);
-          this.keyboardAction.fire(keyboard.action)
+    if(!this.isPause) {
+      let typeInput:TypeInput = keypressEventToTypeInput(event)
+      if(typeInput!=null) { //dont use meta/alt/ctrl/shift key
+        console.log(typeInput);
+        for(let keyboardKey in this.keyboardData) {
+          let keyboard:KeyboardModel = this.keyboardData[keyboardKey]
+  
+          if(_.isEqual(keyboard.key,typeInput)) {
+            console.log("match", keyboard.key,"fire",keyboard.action);
+            this.keyboardAction.fire(keyboard.action)
+          }
         }
       }
     }
-  }
+    }
 }

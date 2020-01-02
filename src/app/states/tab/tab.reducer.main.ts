@@ -160,7 +160,11 @@ export function tabReducer(
       return { ...state, options: { ...state.options, selectedTab: action.payload.tabId } }
     }
     case TabActionTypes.EditTab: {
-      return { ...state, options: { ...state.options, editTab: action.payload.tabId } }
+      let tabId:string = action.payload.tabId
+      if(tabId==null) {
+        tabId = state.options.selectedTab
+      }
+      return { ...state, options: { ...state.options, editTab: tabId } }
     }
 
     case TabActionTypes.AddTab: {
@@ -208,6 +212,13 @@ export function tabReducer(
     }
     case TabActionTypes.ClearTabs: {
       return adapter.removeAll(state);
+    }
+    case TabActionTypes.RenameTab: {
+      let tabId:string = action.payload.tabId
+      if(tabId==null) tabId = state.options.selectedTab
+      return adapter.updateOne({id: tabId,changes: {
+        name: action.payload.newName
+      }},{...state, options: { ...state.options, editTab: null }})
     }
     default: {
       return tabSlideReducer(state,action);

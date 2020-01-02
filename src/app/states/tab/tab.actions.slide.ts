@@ -60,11 +60,3 @@ export class TriggerSlides implements Action {
    */
   constructor(public payload:{activate:boolean}) {}
 }
-
-/** The Action for redcuer */
-export type TabSlideActions = 
-TriggerSlides
-| TriggerBarSlides
-| SetNextSlideTime
-| SetStartAfterInactiveTime
-| TriggerSlideBreak

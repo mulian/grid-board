@@ -12,6 +12,9 @@ export class WebviewDirective implements OnInit, OnChanges {
     }
     @Input()
     src:string
+    @Input()
+    useragent:string
+
     constructor(private el: ElementRef<any>) {
         
     }
@@ -20,5 +23,6 @@ export class WebviewDirective implements OnInit, OnChanges {
         console.log("set src:",this.src);
         
         this.el.nativeElement.src = this.src;
+        if(this.el.nativeElement.useragent!=null) this.el.nativeElement.useragent = this.useragent;
     }
 }

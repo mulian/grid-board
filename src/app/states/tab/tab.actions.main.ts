@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { TabModel } from './tab.model';
 import * as uuid from 'uuid';
-import { TranslateService } from '@ngx-translate/core';
+import { TriggerSlides, TriggerBarSlides, SetNextSlideTime, SetStartAfterInactiveTime, TriggerSlideBreak } from './tab.actions.slide'
 
 /** The ActionTypes for Tab */
 export enum TabActionTypes {
@@ -23,7 +23,6 @@ export enum TabActionTypes {
   SelectTab = '[Tab] Select Tab',
   RenameTab = '[Tab] Rename Tab',
   EditTab = "[Tab] Edit Tab",
-  NoEditTab = "[Tab] No Edit Tab",
   SortTab = "[Tab] Sort Tab",
 
   NavigateSelectTab = "[Tab] Navigate select Tab"
@@ -40,10 +39,22 @@ export class SortTab implements Action {
    * @param payload.targetIndex - the target tab / the moved tab will replace the source tab
    */
   constructor(public payload: { sourceIndex: number, targetIndex: number }) {
-    if(payload.sourceIndex==null || payload.targetIndex==null) {
+    if (payload.sourceIndex == null || payload.targetIndex == null) {
       console.error("The source-/target-index have to be not null");
     }
-   }
+  }
+}
+
+export class RenameTab implements Action {
+  readonly type = TabActionTypes.RenameTab
+
+  /**
+   * Rename the Tab with new Name
+   * There could be only one tab in edit mode.
+   * @param payload.tabId - if null use current selected Tab, else edit tabId
+   * @param payload.newName - new name string
+   */
+  constructor(public payload: { tabId: string, newName: string }) { }
 }
 
 export class EditTab implements Action {
@@ -75,7 +86,7 @@ export class NavigateSelectTab implements Action {
    * @param payload.navigationType - Set the Navigation type
    * @param payload.sortOrder - Have to set if navigationType is BySortNumber, the given sortOrder number will be selected
    */
-  constructor(public payload: { navigationType: NavigationSelectTabType, sortOrder?: number, exceptSlideNotConsidered:boolean }) {}
+  constructor(public payload: { navigationType: NavigationSelectTabType, sortOrder?: number, exceptSlideNotConsidered: boolean }) { }
 }
 
 export class SelectTab implements Action {
@@ -85,7 +96,7 @@ export class SelectTab implements Action {
    * Select a Tab directly
    * @param payload.tabId - The Selected tabId
    */
-  constructor(public payload: { tabId?: string }) {}
+  constructor(public payload: { tabId?: string }) { }
 }
 
 export class AddTab implements Action {
@@ -136,7 +147,7 @@ export class ClearTabs implements Action {
 }
 
 export type TabActions =
-AddTab
+  AddTab
   | UpdateTab
   | UpdateTabs
   | DeleteTab
@@ -145,4 +156,10 @@ AddTab
   | SelectTab
   | EditTab
   | SortTab
-  | NavigateSelectTab;
+  | NavigateSelectTab
+  | RenameTab
+  | TriggerSlides
+  | TriggerBarSlides
+  | SetNextSlideTime
+  | SetStartAfterInactiveTime
+  | TriggerSlideBreak;
