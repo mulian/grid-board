@@ -70,8 +70,8 @@ export class AddressbarComponent implements OnInit {
         id: this.item.id,
         changes: {
           webviewData: {
-            zoomFactor: 1,
-            zoomLevel: 1,
+            zoomFactor: 0,
+            zoomLevel: 0,
           }
         }
       }

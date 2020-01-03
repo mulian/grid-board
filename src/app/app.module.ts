@@ -14,8 +14,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HomeModule } from './home/home.module';
-
 import { AppComponent } from './app.component';
 import { TabbarComponent } from './tabbar/tabbar.component';
 import { StoreModule } from '@ngrx/store';
@@ -49,30 +47,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddressbarComponent } from './content/addressbar/addressbar.component';
 import { MenuComponent } from './menu/menu.component';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatInputModule} from '@angular/material/input';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 import { HelpComponent } from './dialogs/help/help.component';
 import { SlideProgressComponent } from './slide/slide-progress/slide-progress.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SlideService } from './slide/slide.service';
 import { DialogSettingsComponent } from './dialogs/dialog-settings/dialog-settings.component';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { SettingsGeneralComponent } from './dialogs/dialog-settings/settings-general/settings-general.component';
 import { SettingsSlideComponent } from './dialogs/dialog-settings/settings-slide/settings-slide.component';
 import { SettingsHistoryComponent } from './dialogs/dialog-settings/settings-history/settings-history.component';
 import { SettingsKeyboardComponent } from './dialogs/dialog-settings/settings-keyboard/settings-keyboard.component';
 import { SettingsJsinjectionsComponent } from './dialogs/dialog-settings/settings-jsinjections/settings-jsinjections.component';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCardModule} from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatTreeModule} from '@angular/material/tree';
-import {MatTableModule} from '@angular/material/table';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatTableModule } from '@angular/material/table';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [AppComponent, TabbarListComponent, TabbarComponent, MainComponent, WebviewDirective, ContentComponent, TabbarItemComponent, TabbarItemEditComponent, GridsComponent, GridItemComponent, AddressbarComponent, MenuComponent, HelpComponent, SlideProgressComponent, DialogSettingsComponent, SettingsGeneralComponent, SettingsSlideComponent, SettingsHistoryComponent, SettingsKeyboardComponent, SettingsJsinjectionsComponent],
@@ -103,7 +101,6 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     HttpClientModule,
     CoreModule,
     SharedModule,
-    HomeModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
