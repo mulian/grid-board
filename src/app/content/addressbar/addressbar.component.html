@@ -26,10 +26,10 @@
             <button mat-icon-button (click)="showAdditionalOptions()" aria-label="Show additional options">
                 <mat-icon>more_vert</mat-icon>
             </button>
-            <button (click)="back()" mat-icon-button aria-label="Example icon-button with a heart icon">
+            <button [disabled]="!item.webviewData.isBackAvailable" (click)="back()" mat-icon-button aria-label="Example icon-button with a heart icon">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            <button (click)="forward()" mat-icon-button aria-label="Example icon-button with a heart icon">
+            <button [disabled]="!item.webviewData.isForwardAvailable" (click)="forward()" mat-icon-button aria-label="Example icon-button with a heart icon">
                 <mat-icon>arrow_forward</mat-icon>
             </button>
             <button (click)="reloadPage()" mat-icon-button aria-label="Example icon-button with a heart icon">

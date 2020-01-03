@@ -19,6 +19,8 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   item: PageCheck
 
+  // firstUrl: string
+
   @ViewChild("webview", { read: false, static: false }) webview: ElementRef;
   @ViewChild("container", { read: false, static: false }) container: ElementRef;
 
@@ -35,7 +37,6 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptionWebviewData = this.store.pipe(select(selectAllPagesState))
       .pipe(map((pageState: PageState) => pageState.entities[this.item.id].webviewData))
       .subscribe((webviewData: WebviewData) => {
-        console.log("set zoomlevel,", webviewData);
         if (!this.isLoading) {
           let webviewDom = this.webview.nativeElement
           webviewDom.setZoomLevel(webviewData.zoomLevel)
@@ -43,9 +44,17 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.item.webviewData.isDeveloperConsoleVisible) webviewDom.openDevTools()
           else webviewDom.closeDevTools()
         }
-        console.log("set zoomlevel end");
-
       })
+
+      // this.store.pipe(select(selectAllPagesState))
+      // .pipe(map((pageState: PageState) => pageState.entities[this.item.id]))
+      // .subscribe((page: PageModel) => {
+      //   if (!this.isLoading) {
+      //     let webviewDom = this.webview.nativeElement
+      //     if(this.item.url!=page.url) webviewDom.
+      //   }
+      // })
+    // this.firstUrl = this.item.url
   }
 
   ngAfterViewInit(): void {
@@ -56,6 +65,12 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
         urlChangeFromWebview: false
       })
     })
+
+    webviewDom.addEventListener('page-title-updated', (event) => {
+      console.log("page-title-update",event.title);
+      
+      this.updatePage({ name: event.title })
+    })
     webviewDom.addEventListener('did-finish-load', () => {
       console.log("did finish loading");
 
@@ -65,13 +80,16 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
       webviewDom.setZoomFactor(this.item.webviewData.zoomFactor)
 
       if (this.item.webviewData.isDeveloperConsoleVisible) webviewDom.openDevTools()
+      
     })
 
     this.container.nativeElement.addEventListener("mouseenter", (event) => this.onMouseOver(event))
     this.container.nativeElement.addEventListener("mouseleave", (event) => this.onMouseOut(event))
 
-    webviewDom.addEventListener('did-stop-loading', () => {
-      console.log("did-stop-loading", this.item.webviewData);
+    webviewDom.addEventListener('did-stop-loading', (event) => {
+      
+
+      this.checkBackAndForwardAvailable()
     })
 
     webviewDom.addEventListener("devtools-closed", () => {
@@ -80,7 +98,7 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
     webviewDom.addEventListener("dom-ready", () => {
       console.log("dom ready");
-      this.updatePage({ name: webviewDom.getTitle() })
+      this.checkBackAndForwardAvailable()
     })
   }
 
@@ -93,6 +111,16 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store.dispatch(new UpdatePageWebviewData({
       pageWebview: { id: this.item.id, changes }
     }))
+  }
+
+  checkBackAndForwardAvailable() {
+    if(!this.isLoading) {
+      let webviewDom = this.webview.nativeElement
+      this.updatePageWebviewData({ 
+        isBackAvailable: webviewDom.canGoBack(),
+        isForwardAvailable: webviewDom.canGoForward(),
+      })
+    }
   }
 
   onMouseOver(event) {

@@ -50,7 +50,9 @@ export class MenuComponent implements OnInit {
             webviewData: {
               zoomFactor: 0,
               zoomLevel: 0,
-              isDeveloperConsoleVisible: false
+              isDeveloperConsoleVisible: false,
+              isBackAvailable: false,
+              isForwardAvailable: false
             }
           }
         }))

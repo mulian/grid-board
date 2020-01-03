@@ -1,8 +1,9 @@
 <div class="invisibleFullScreen" *ngIf="item.setDrag"></div>
 <div #container class="pageView">
     <app-addressbar [item]=item [callbacks]=webvieCallbacks [webview]=webview></app-addressbar>
-    <webview id="wv-{{item.id}}" src='{{item.url}}' autosize="on" style="height: 100%;" #webview useragent="{{useragent}}"></webview>
+    <webview id="wv-{{item.id}}" src='{{item.url}}' autosize="on" style="height: 100%;" #webview useragent="{{useragent}}" ></webview>
 
+    <!-- TODO: this to subscription! -->
     <span *ngIf="item.reload">
         {{reload()}}
     </span>

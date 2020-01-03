@@ -4,6 +4,8 @@ export interface WebviewData {
   zoomLevel: number
   zoomFactor: number
   isDeveloperConsoleVisible: boolean
+  isBackAvailable: boolean
+  isForwardAvailable: boolean
 }
 
 /** The Page information with GridsterItem cause every page is a gridster item */
