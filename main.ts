@@ -24,6 +24,19 @@ function createWindow() {
     app.exit(0)
   })
 
+  ipcMain.on("dev-tools",(event,activate:boolean) => {
+    if(activate==null) { //toggle
+      if(win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
+      else win.webContents.openDevTools()
+    }
+    else if(activate) win.webContents.openDevTools()
+    else win.webContents.closeDevTools()
+  })
+
+  ipcMain.on("reload",(event) => {
+    win.webContents.reload()
+  })
+
   ipcMain.on("save-json",(event,arg) => {
     console.log(arg);
     dialog.showSaveDialog(win,{

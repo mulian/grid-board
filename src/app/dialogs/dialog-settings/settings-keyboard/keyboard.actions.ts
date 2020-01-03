@@ -109,6 +109,12 @@ export class KeyboardActions {
                 this.store.dispatch(new ToggleDialog({ dialog: DialogType.HELP }))
                 return true
             }
+            case KeyboardAction.DEV_TOOLS_TOOGLE: {
+                this.ipcRenderer.send("dev-tools",null)
+            }
+            case KeyboardAction.RELOAD_MAIN: {
+                this.ipcRenderer.send("reload",null)
+            }
             default: return false
         }
     }
