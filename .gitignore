@@ -10,6 +10,7 @@
 main.js
 src/**/*.js
 !src/karma.conf.js
+!src/assets/webview/webview.preinjection.js
 *.js.map
 
 # dependencies
