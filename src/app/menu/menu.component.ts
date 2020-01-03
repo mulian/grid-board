@@ -49,7 +49,8 @@ export class MenuComponent implements OnInit {
             isAdditionAddressbarOptionsOpen: false,
             webviewData: {
               zoomFactor: 0,
-              zoomLevel: 0
+              zoomLevel: 0,
+              isDeveloperConsoleVisible: false
             }
           }
         }))

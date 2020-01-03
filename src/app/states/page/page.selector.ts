@@ -1,7 +1,8 @@
 import { pageAdapter } from "./page.adapter";
 import { PageState } from "./page.state";
-import { PageModel } from "./page.model"
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { PageModel, WebviewData } from "./page.model"
+import { createFeatureSelector } from "@ngrx/store";
+import { createSelector } from 'reselect'
 
 /** Select Page Entity */
 const {
@@ -20,8 +21,13 @@ export const selectAllPagesState = createFeatureSelector<PageState>("pages");
 
 export const selectActivePage = createSelector(selectAllPagesState, (pageState:PageState) => pageState.options.activePage)
 
-export const selectWebviewDataFromPage = function(pageId:string) {
-    return createSelector(selectAllPagesState, (pageState:PageState) => pageState.entities[pageId].webviewData)
+// export const selectWebviewDataFromPage = createSelector(selectAllPagesState, (pageState:PageState):WebviewData => pageState.entities[prop.pageId].webviewData )
+
+export const selectWebviewDataFromPage = (pageId:string) => {
+    return createSelector(selectAllPagesState, (pageState:PageState):WebviewData => {
+        console.log("check page ",pageId,pageState.entities[pageId].webviewData);
+        return pageState.entities[pageId].webviewData
+    })
 }
 
 export const selectAllPagesEntities = createSelector(

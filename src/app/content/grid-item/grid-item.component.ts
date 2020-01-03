@@ -1,17 +1,19 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { PageModel, UpdatePage, DeletePage, SetActivePage, WebviewData, selectWebviewDataFromPage } from '../../states/page';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { PageModel, UpdatePage, DeletePage, SetActivePage, WebviewData, selectWebviewDataFromPage, UpdatePageWebviewData, selectAllPagesState, PageState } from '../../states/page';
 import { WebviewTag } from 'electron';
 import { Store, select } from '@ngrx/store';
 import { AppState, selectPagesById } from '../../states/reducers';
-import { Update } from '@ngrx/entity';
+import { Update, Dictionary } from '@ngrx/entity';
 import { PageCheck } from '../grids/grids.component';
+import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-grid-item',
   templateUrl: './grid-item.component.html',
   styleUrls: ['./grid-item.component.scss']
 })
-export class GridItemComponent implements OnInit, AfterViewInit {
+export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
   useragent: string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
   webvieCallbacks: any = {}
   @Input()
@@ -20,83 +22,79 @@ export class GridItemComponent implements OnInit, AfterViewInit {
   @ViewChild("webview", { read: false, static: false }) webview: ElementRef;
   @ViewChild("container", { read: false, static: false }) container: ElementRef;
 
-  webviewDom:any
-  isLoading:boolean=true
+  webviewDom: any
+  isLoading: boolean = true
+
+  subscriptionWebviewData: Subscription = null
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    
+    console.log("Init zoom check");
+
+    this.subscriptionWebviewData = this.store.pipe(select(selectAllPagesState))
+      .pipe(map((pageState: PageState) => pageState.entities[this.item.id].webviewData))
+      .subscribe((webviewData: WebviewData) => {
+        console.log("set zoomlevel,", webviewData);
+        if (!this.isLoading) {
+          let webviewDom = this.webview.nativeElement
+          webviewDom.setZoomLevel(webviewData.zoomLevel)
+          webviewDom.setZoomFactor(webviewData.zoomFactor)
+          if (this.item.webviewData.isDeveloperConsoleVisible) webviewDom.openDevTools()
+          else webviewDom.closeDevTools()
+        }
+        console.log("set zoomlevel end");
+
+      })
   }
 
-  ngAfterViewInit(): void {    
-    this.webview.nativeElement.addEventListener('will-navigate', (event) => {
-      
-      let update: Update<PageModel> = {
-        id: this.item.id,
-        changes: {
-          url: event.url,
-          urlChangeFromWebview: false
-        }
-      }
-      this.store.dispatch(new UpdatePage({ page: update }))
+  ngAfterViewInit(): void {
+    let webviewDom = this.webview.nativeElement
+    webviewDom.addEventListener('will-navigate', (event) => {
+      this.updatePage({
+        url: event.url,
+        urlChangeFromWebview: false
+      })
     })
-    this.webview.nativeElement.addEventListener('did-finish-load', () => {
+    webviewDom.addEventListener('did-finish-load', () => {
       console.log("did finish loading");
-      
-      this.isLoading=false
-      console.log("title: ", this.webview.nativeElement.getTitle());
 
-      this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
+      this.isLoading = false
 
-      if(this.item.webviewData.isDeveloperConsoleVisible) this.webview.nativeElement.openDevTools()
+      webviewDom.setZoomLevel(this.item.webviewData.zoomLevel)
+      webviewDom.setZoomFactor(this.item.webviewData.zoomFactor)
+
+      if (this.item.webviewData.isDeveloperConsoleVisible) webviewDom.openDevTools()
     })
 
     this.container.nativeElement.addEventListener("mouseenter", (event) => this.onMouseOver(event))
     this.container.nativeElement.addEventListener("mouseleave", (event) => this.onMouseOut(event))
 
-    this.webview.nativeElement.addEventListener('did-stop-loading', () => {
-      console.log("did-stop-loading",this.item.webviewData);
+    webviewDom.addEventListener('did-stop-loading', () => {
+      console.log("did-stop-loading", this.item.webviewData);
     })
 
-    this.webview.nativeElement.addEventListener("devtools-closed",() => {
-      this.store.dispatch(new UpdatePage({
-        page: {
-          id: this.item.id,
-          changes: {
-            webviewData: {
-              isDeveloperConsoleVisible: false,
-              zoomFactor: this.item.webviewData.zoomFactor,
-              zoomLevel: this.item.webviewData.zoomLevel,
-            }
-          }
-        }
-      })
-      )
+    webviewDom.addEventListener("devtools-closed", () => {
+      this.updatePageWebviewData({ isDeveloperConsoleVisible: false })
     })
 
-    this.webview.nativeElement.addEventListener("dom-ready",() => {
+    webviewDom.addEventListener("dom-ready", () => {
       console.log("dom ready");
-      
-      this.store.dispatch(new UpdatePage({
-        page: {
-          id: this.item.id,
-          changes: {
-            name: this.webview.nativeElement.getTitle()
-          }
-        }
-      })
-      )
-    })
-    this.store.pipe(select(selectWebviewDataFromPage(this.item.id))).subscribe((webviewData:WebviewData) => {
-      if(!this.isLoading) {
-        this.webview.nativeElement.setZoomLevel(webviewData.zoomLevel)
-
-        if(this.item.webviewData.isDeveloperConsoleVisible) this.webview.nativeElement.openDevTools()
-        else this.webview.nativeElement.closeDevTools()
-      }
+      this.updatePage({ name: webviewDom.getTitle() })
     })
   }
+
+  updatePage(changes: Partial<PageModel>) {
+    this.store.dispatch(new UpdatePage({
+      page: { id: this.item.id, changes }
+    }))
+  }
+  updatePageWebviewData(changes: Partial<WebviewData>) {
+    this.store.dispatch(new UpdatePageWebviewData({
+      pageWebview: { id: this.item.id, changes }
+    }))
+  }
+
   onMouseOver(event) {
     this.store.dispatch(new SetActivePage({ pageId: this.item.id, active: true }))
   }
@@ -105,39 +103,19 @@ export class GridItemComponent implements OnInit, AfterViewInit {
   }
 
   reload() {
-    console.log("reload?");
-
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        reload: false
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ reload: false })
     this.webview.nativeElement.reload()
   }
   back() {
-    console.log("back?");
-
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        back: false
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ back: false })
     this.webview.nativeElement.goBack()
   }
   forward() {
-    console.log("forward?");
-
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        forward: false
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ forward: false })
     this.webview.nativeElement.goForward()
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionWebviewData.unsubscribe()
   }
 }

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { PageModel } from './page.model';
+import { PageModel, WebviewData } from './page.model';
 import * as uuid from 'uuid';
 
 /** The PageActionTypes */
@@ -15,6 +15,8 @@ export enum PageActionTypes {
   DeletePage = '[Page] Delete Page',
   DeletePages = '[Page] Delete Pages',
   ClearPages = '[Page] Clear Pages',
+
+  UpdatePageWebviewData = '[Page] Update Page Webview Data',
 
   SetActivePage = "[Page] Set Page Activ State",
 }
@@ -86,6 +88,16 @@ export class UpsertPages implements Action {
   constructor(public payload: { pages: PageModel[] }) {}
 }
 
+export class UpdatePageWebviewData implements Action {
+  readonly type = PageActionTypes.UpdatePageWebviewData;
+
+  /**
+   * Update one pageWebview
+   * @param payload.pageWebview the update pageWebview
+   */
+  constructor(public payload: { pageWebview: Update<WebviewData> }) {}
+}
+
 export class UpdatePage implements Action {
   readonly type = PageActionTypes.UpdatePage;
 
@@ -141,6 +153,7 @@ export type PageActions =
  | AddPages
  | UpsertPages
  | UpdatePage
+ | UpdatePageWebviewData
  | UpdatePages
  | DeletePage
  | DeletePages

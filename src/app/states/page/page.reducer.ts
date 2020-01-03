@@ -2,6 +2,8 @@ import { PageActions, PageActionTypes } from './page.actions';
 import { PageState } from './page.state'
 import { pageAdapter } from './page.adapter';
 import { pageInitialState } from './page.initial.state';
+import { PageModel, WebviewData } from './page.model';
+import { Update } from '@ngrx/entity';
 
 /** The Page reducer */
 export function pageReducer(
@@ -24,6 +26,20 @@ export function pageReducer(
     case PageActionTypes.UpdatePage: {
       //TODO: Check, get current page check if x,y or tab ref. was changed and check
       return pageAdapter.updateOne(action.payload.page, state);
+    }
+    case PageActionTypes.UpdatePageWebviewData: {
+      let pageId:string | number = action.payload.pageWebview.id
+      let webviewData:WebviewData = state.entities[pageId].webviewData //init data from state
+      for(let itemKey in action.payload.pageWebview.changes) { //update with update-data
+        webviewData[itemKey] = action.payload.pageWebview.changes[itemKey]
+      }
+      let update:Update<PageModel> = { //set new main update for webviewdata
+        id: pageId as string,
+        changes: {
+          webviewData
+        }
+      }
+      return pageAdapter.updateOne(update, state);
     }
     case PageActionTypes.UpdatePages: {
       //TODO: Check, get current page check if x,y or tab ref. was changed and check multiple

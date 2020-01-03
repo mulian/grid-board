@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Update } from '@ngrx/entity';
-import { UpdatePage, PageModel, DeletePage, selectActivePage } from '../../states/page';
+import { UpdatePage, PageModel, DeletePage, selectActivePage, WebviewData, UpdatePageWebviewData } from '../../states/page';
 import { AppState } from '../../states/reducers';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash-es'
@@ -37,49 +37,36 @@ export class AddressbarComponent implements OnInit {
 
   updatePage(changes: Partial<PageModel>) {
     this.store.dispatch(new UpdatePage({
-      page: {
-        id: this.item.id,
-        changes
-      }
+      page: { id: this.item.id, changes }
+    }))
+  }
+  updatePageWebviewData(changes: Partial<WebviewData>) {
+    this.store.dispatch(new UpdatePageWebviewData({
+      pageWebview: { id: this.item.id, changes }
     }))
   }
 
   zoomIn() {
-    this.updatePage({
-      webviewData: {
-        zoomFactor: 1,
-        zoomLevel: this.item.webviewData.zoomLevel + 0.2,
-        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
-      }
-    })
+    this.updatePageWebviewData({ 
+      zoomLevel: this.item.webviewData.zoomLevel + 0.2,
+      zoomFactor: this.item.webviewData.zoomFactor + 0.1
+     })
   }
   zoomOut() {
-    this.updatePage({
-      webviewData: {
-        zoomFactor: 1,
-        zoomLevel: this.item.webviewData.zoomLevel - 0.2,
-        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
-      }
-    })
+    this.updatePageWebviewData({ 
+      zoomLevel: this.item.webviewData.zoomLevel - 0.2,
+      zoomFactor: this.item.webviewData.zoomFactor - 0.1
+     })
   }
   zoomReset() {
-    this.updatePage({
-      webviewData: {
-        zoomFactor: 0,
-        zoomLevel: 0,
-        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
-      }
+    this.updatePageWebviewData({ 
+      zoomFactor: 1,
+      zoomLevel: 1,
     })
   }
 
   openDevToggle() {
-    this.updatePage({
-      webviewData: {
-        zoomFactor: this.item.webviewData.zoomFactor,
-        zoomLevel: this.item.webviewData.zoomLevel,
-        isDeveloperConsoleVisible: !this.item.webviewData.isDeveloperConsoleVisible,
-      }
-    })
+    this.updatePageWebviewData({ isDeveloperConsoleVisible: !this.item.webviewData.isDeveloperConsoleVisible })
   }
 
   reloadPage() {
