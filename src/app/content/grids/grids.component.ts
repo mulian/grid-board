@@ -62,7 +62,9 @@ export class GridsComponent implements OnInit {
           isDeveloperConsoleVisible: false,
           isBackAvailable: false,
           isForwardAvailable: false,
-          favicon: null
+          favicon: null,
+          scrollX: 0,
+          scrollY: 0
         }
       }
     }))

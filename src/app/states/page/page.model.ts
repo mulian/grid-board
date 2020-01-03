@@ -7,6 +7,8 @@ export interface WebviewData {
   isBackAvailable: boolean
   isForwardAvailable: boolean
   favicon: string
+  scrollX: number
+  scrollY: number
 }
 
 /** The Page information with GridsterItem cause every page is a gridster item */
