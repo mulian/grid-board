@@ -43,9 +43,9 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
         let webviewDom = this.webview.nativeElement
         if (this.currentTab != selectedTabId && selectedTabId == this.item.tab) {
           
-          webviewDom.send("show-tab")
+          webviewDom.send("tab-show")
         } else if(this.currentTab == this.item.tab && selectedTabId != this.item.tab) {
-          webviewDom.send("leave-tab")
+          webviewDom.send("tab-leave")
         }
       }
       this.currentTab = selectedTabId
@@ -54,8 +54,8 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.isLoading) {
         let webviewDom = this.webview.nativeElement
         if(this.item.tab==this.currentTab) {
-          if (this.item.id == currentActivePage) webviewDom.send("is-focus")
-          else if(this.currentPageId==this.item.id) webviewDom.send("leave-focus")
+          if (this.item.id == currentActivePage) webviewDom.send("page-focus")
+          else if(this.currentPageId==this.item.id) webviewDom.send("page-leave")
         }
       }
       this.currentPageId = currentActivePage
@@ -164,7 +164,7 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (this.currentTab == this.item.tab) {
         let webviewDom = this.webview.nativeElement
-        webviewDom.send("show-tab")
+        webviewDom.send("tab-show")
       }
 
       webviewDom.send("webviewdata", this.item.webviewData)
