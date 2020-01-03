@@ -43,15 +43,18 @@ export class KeyboardService implements AfterContentInit {
       let typeInput:TypeInput = keypressEventToTypeInput(event)
       if(typeInput!=null) { //dont use meta/alt/ctrl/shift key
         console.log(typeInput);
-        for(let keyboardKey in this.keyboardData) {
-          let keyboard:KeyboardModel = this.keyboardData[keyboardKey]
-  
-          if(_.isEqual(keyboard.key,typeInput)) {
-            console.log("match", keyboard.key,"fire",keyboard.action);
-            this.keyboardAction.fire(keyboard.action)
-          }
-        }
+        this.checkTypeInput(typeInput)
       }
     }
     }
+  checkTypeInput(typeInput:TypeInput) {
+    for(let keyboardKey in this.keyboardData) {
+      let keyboard:KeyboardModel = this.keyboardData[keyboardKey]
+
+      if(_.isEqual(keyboard.key,typeInput)) {
+        console.log("match", keyboard.key,"fire",keyboard.action);
+        this.keyboardAction.fire(keyboard.action)
+      }
+    }
+  }
 }

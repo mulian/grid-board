@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ipcRenderer } from 'electron'
+import { KeyboardService } from '../../dialogs/dialog-settings/settings-keyboard/keyboard.service'
 
 @Component({
   selector: 'app-grid-item',
@@ -33,7 +34,7 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscriptionWebviewData: Subscription = null
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private keyboardService:KeyboardService) { }
   currentPageId:string = null
   ngOnInit() {
     console.log("Init zoom check");
@@ -173,6 +174,10 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('ipc-message', event);
         if (event.channel == "change_scroll") {
           this.updatePageWebviewData(event.args[0])
+        } else if(event.channel == "keydown-client") {
+          this.keyboardService.checkTypeInput(event.args[0])
+          console.log(event.args[0]);
+          //TODO: Check keydown
         }
       })
     })
