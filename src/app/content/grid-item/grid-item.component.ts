@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { PageModel, UpdatePage, DeletePage, SetActivePage, WebviewData, selectWebviewDataFromPage, UpdatePageWebviewData, selectAllPagesState, PageState } from '../../states/page';
+import { PageModel, UpdatePage, DeletePage, SetActivePage, WebviewData, selectWebviewDataFromPage, UpdatePageWebviewData, selectAllPagesState, PageState, AddPage } from '../../states/page';
 import { WebviewTag } from 'electron';
 import { Store, select } from '@ngrx/store';
-import { AppState, selectPagesById } from '../../states/reducers';
+import { AppState, selectPagesById, selectTabOptionsSelectTab } from '../../states/reducers';
 import { Update, Dictionary } from '@ngrx/entity';
 import { PageCheck } from '../grids/grids.component';
 import { Subscription } from 'rxjs';
@@ -19,6 +19,8 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   item: PageCheck
 
+  currentTab: string
+
   // firstUrl: string
 
   @ViewChild("webview", { read: false, static: false }) webview: ElementRef;
@@ -33,7 +35,7 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     console.log("Init zoom check");
-
+    this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((selectedTabId:string) => this.currentTab = selectedTabId )
     this.subscriptionWebviewData = this.store.pipe(select(selectAllPagesState))
       .pipe(map((pageState: PageState) => pageState.entities[this.item.id].webviewData))
       .subscribe((webviewData: WebviewData) => {
@@ -85,6 +87,36 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.container.nativeElement.addEventListener("mouseenter", (event) => this.onMouseOver(event))
     this.container.nativeElement.addEventListener("mouseleave", (event) => this.onMouseOut(event))
+
+    webviewDom.addEventListener('new-window', (event) => {
+      console.log('new-window',event);
+      
+      this.store.dispatch(new AddPage({
+        page: {
+          cols: 1,
+          rows: 1,
+          x: 0,
+          y: 0,
+          url: event.url,
+          tab: this.currentTab,
+          addressbarOpen: true,
+          isAdditionAddressbarOptionsOpen: false,
+          webviewData: {
+            zoomFactor: 1,
+            zoomLevel: 1,
+            isDeveloperConsoleVisible: false,
+            isBackAvailable: false,
+            isForwardAvailable: false,
+            favicon: null
+          }
+        }
+      }))
+    } )
+
+    webviewDom.addEventListener('page-favicon-updated',(event) => {
+      console.log("page-favicon-update ", event.favicons);
+      this.updatePageWebviewData({ favicon: event.favicons[0] })
+    })
 
     webviewDom.addEventListener('did-stop-loading', (event) => {
       

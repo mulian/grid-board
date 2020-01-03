@@ -6,6 +6,7 @@ export interface WebviewData {
   isDeveloperConsoleVisible: boolean
   isBackAvailable: boolean
   isForwardAvailable: boolean
+  favicon: string
 }
 
 /** The Page information with GridsterItem cause every page is a gridster item */

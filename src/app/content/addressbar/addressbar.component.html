@@ -3,7 +3,10 @@
     <div class="controlls">
         <div class="controlls-left">
             <button mat-icon-button class="drag-handle" aria-label="Drag this page.">
-                <mat-icon>drag_indicator</mat-icon>
+                <mat-icon *ngIf="item.webviewData.favicon==null; else favicon">drag_indicator</mat-icon>
+                <ng-template #favicon>
+                    <img class="favicon" src="{{item.webviewData.favicon}}">
+                </ng-template>
             </button>
             <button mat-icon-button class="showbar" (click)="toggleAddressbar()" aria-label="Show Addressbar." [ngClass]="{'show':item.addressbarOpen}">
                 <mat-icon>arrow_drop_down</mat-icon>
