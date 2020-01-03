@@ -3,6 +3,7 @@ import { GridsterItem } from "angular-gridster2";
 export interface WebviewData {
   zoomLevel: number
   zoomFactor: number
+  isDeveloperConsoleVisible: boolean
 }
 
 /** The Page information with GridsterItem cause every page is a gridster item */

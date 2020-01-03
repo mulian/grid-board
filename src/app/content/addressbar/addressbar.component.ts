@@ -16,13 +16,13 @@ export class AddressbarComponent implements OnInit {
   @Input() callbacks
   @Input() webview
 
-  isPageActiv:boolean = false
+  isPageActiv: boolean = false
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.store.pipe(select(selectActivePage)).subscribe((currentActivePage:string) => {
-      if(this.item.id == currentActivePage) this.isPageActiv = true
+    this.store.pipe(select(selectActivePage)).subscribe((currentActivePage: string) => {
+      if (this.item.id == currentActivePage) this.isPageActiv = true
       else this.isPageActiv = false
     })
   }
@@ -35,97 +35,69 @@ export class AddressbarComponent implements OnInit {
     selection.addRange(range);
   }
 
-  zoomIn() {
-    console.log("zoomIn");
+  updatePage(changes: Partial<PageModel>) {
     this.store.dispatch(new UpdatePage({
       page: {
         id: this.item.id,
-        changes: {
-          webviewData: {
-            zoomFactor: 1,
-            zoomLevel: this.item.webviewData.zoomLevel + 0.2,
-          }
-        }
+        changes
       }
     }))
+  }
+
+  zoomIn() {
+    this.updatePage({
+      webviewData: {
+        zoomFactor: 1,
+        zoomLevel: this.item.webviewData.zoomLevel + 0.2,
+        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
+      }
+    })
   }
   zoomOut() {
-    console.log("zoomOut");
-    
-    this.store.dispatch(new UpdatePage({
-      page: {
-        id: this.item.id,
-        changes: {
-          webviewData: {
-            zoomFactor: 1,
-            zoomLevel: this.item.webviewData.zoomLevel - 0.2,
-          }
-        }
+    this.updatePage({
+      webviewData: {
+        zoomFactor: 1,
+        zoomLevel: this.item.webviewData.zoomLevel - 0.2,
+        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
       }
-    }))
+    })
   }
   zoomReset() {
-    this.store.dispatch(new UpdatePage({
-      page: {
-        id: this.item.id,
-        changes: {
-          webviewData: {
-            zoomFactor: 0,
-            zoomLevel: 0,
-          }
-        }
+    this.updatePage({
+      webviewData: {
+        zoomFactor: 0,
+        zoomLevel: 0,
+        isDeveloperConsoleVisible: this.item.webviewData.isDeveloperConsoleVisible
       }
-    }))
+    })
+  }
+
+  openDevToggle() {
+    this.updatePage({
+      webviewData: {
+        zoomFactor: this.item.webviewData.zoomFactor,
+        zoomLevel: this.item.webviewData.zoomLevel,
+        isDeveloperConsoleVisible: !this.item.webviewData.isDeveloperConsoleVisible,
+      }
+    })
   }
 
   reloadPage() {
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        reload: true
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ reload: true })
   }
   back() {
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        back: true
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ back: true })
   }
   forward() {
-    let update: Update<PageModel> = {
-      id: this.item.id,
-      changes: {
-        forward: true
-      }
-    }
-    this.store.dispatch(new UpdatePage({ page: update }))
+    this.updatePage({ forward: true })
   }
 
   toggleAddressbar() {
-    this.store.dispatch(new UpdatePage({
-      page: {
-        id: this.item.id,
-        changes: {
-          addressbarOpen: !this.item.addressbarOpen
-        }
-      }
-    }))
+    this.updatePage({ addressbarOpen: !this.item.addressbarOpen })
   }
 
   showAdditionalOptions() {
-    this.store.dispatch(new UpdatePage({
-      page: {
-        id: this.item.id,
-        changes: {
-          isAdditionAddressbarOptionsOpen: !this.item.isAdditionAddressbarOptionsOpen
-        }
-      }
-    }))
+    this.updatePage({ isAdditionAddressbarOptionsOpen: !this.item.isAdditionAddressbarOptionsOpen })
   }
 
   private urlPrefix: RegExp = /^https?:\/\//
@@ -143,14 +115,11 @@ export class AddressbarComponent implements OnInit {
   changePage(url: string) {
     if (url != this.item.url) {
       url = this.autoUpdateUrl(url)
-      let update: Update<PageModel> = {
-        id: this.item.id,
-        changes: {
-          url: url,
-          urlChangeFromWebview: false
-        }
-      }
-      this.store.dispatch(new UpdatePage({ page: update }))
+
+      this.updatePage({
+        url: url,
+        urlChangeFromWebview: false
+      })
     }
   }
   changePageWithEvent(value: string, event) {

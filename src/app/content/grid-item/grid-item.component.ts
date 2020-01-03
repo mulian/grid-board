@@ -29,11 +29,7 @@ export class GridItemComponent implements OnInit, AfterViewInit {
     
   }
 
-  ngAfterViewInit(): void {
-    //this.webviewDom = document.getElementById("wv-"+this.item.id)
-    //this.webviewDom.openDevTools()
-    //console.log(this.webviewDom);
-    
+  ngAfterViewInit(): void {    
     this.webview.nativeElement.addEventListener('will-navigate', (event) => {
       
       let update: Update<PageModel> = {
@@ -52,6 +48,8 @@ export class GridItemComponent implements OnInit, AfterViewInit {
       console.log("title: ", this.webview.nativeElement.getTitle());
 
       this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
+
+      if(this.item.webviewData.isDeveloperConsoleVisible) this.webview.nativeElement.openDevTools()
     })
 
     this.container.nativeElement.addEventListener("mouseenter", (event) => this.onMouseOver(event))
@@ -59,15 +57,26 @@ export class GridItemComponent implements OnInit, AfterViewInit {
 
     this.webview.nativeElement.addEventListener('did-stop-loading', () => {
       console.log("did-stop-loading",this.item.webviewData);
-      //this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
+    })
+
+    this.webview.nativeElement.addEventListener("devtools-closed",() => {
+      this.store.dispatch(new UpdatePage({
+        page: {
+          id: this.item.id,
+          changes: {
+            webviewData: {
+              isDeveloperConsoleVisible: false,
+              zoomFactor: this.item.webviewData.zoomFactor,
+              zoomLevel: this.item.webviewData.zoomLevel,
+            }
+          }
+        }
+      })
+      )
     })
 
     this.webview.nativeElement.addEventListener("dom-ready",() => {
-
       console.log("dom ready");
-      
-      
-      //this.webview.nativeElement.openDevTools()
       
       this.store.dispatch(new UpdatePage({
         page: {
@@ -78,27 +87,13 @@ export class GridItemComponent implements OnInit, AfterViewInit {
         }
       })
       )
-      //this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
-      
-      // setTimeout(() => {
-      //   console.log("set zoom factro",this.item.webviewData);
-        
-      //   this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
-      //   this.webview.nativeElement.setZoomLevel(this.item.webviewData.zoomLevel)
-      //   this.webview.nativeElement.setZoomFactor(this.item.webviewData.zoomFactor)
-
-      //   //console.log(this.webview.nativeElement.getZoomLevel());
-        
-      // },5000)
     })
     this.store.pipe(select(selectWebviewDataFromPage(this.item.id))).subscribe((webviewData:WebviewData) => {
-      
-      console.log("jo start",webviewData,this.isLoading);
       if(!this.isLoading) {
         this.webview.nativeElement.setZoomLevel(webviewData.zoomLevel)
-        // wView.setZoomLevel(webviewData.zoomLevel)
-        // wView.setZoomFactor(webviewData.zoomFactor)
-        console.log("jo",webviewData,this.isLoading);
+
+        if(this.item.webviewData.isDeveloperConsoleVisible) this.webview.nativeElement.openDevTools()
+        else this.webview.nativeElement.closeDevTools()
       }
     })
   }
