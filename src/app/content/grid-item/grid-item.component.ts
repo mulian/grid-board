@@ -10,6 +10,9 @@ import { filter, map } from 'rxjs/operators';
 
 import { ipcRenderer } from 'electron'
 import { KeyboardService } from '../../dialogs/dialog-settings/settings-keyboard/keyboard.service'
+import * as path from 'path'
+
+import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'app-grid-item',
@@ -84,10 +87,26 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.firstUrl = this.item.url
   }
 
+  getPreinjectionFile():string {
+    if(isDevMode) {
+      switch(window.navigator.platform) {
+        case "MacIntel": {
+          return path.join( "file://" , __dirname, '../../app.asar/src/assets/webview/webview.preinjection.js')
+        }
+      }
+    } else {
+      return path.join( "file://" , __dirname, '../../app.asar/src/assets/webview/webview.preinjection.js')
+    }
+  }
+
   ngAfterViewInit(): void {
     let webviewDom = this.webview.nativeElement
     console.log(__dirname);
-
+    console.log(window.navigator.platform);
+    
+    console.log(path.join(__dirname + '/assets/webview/webview.preinjection.js'));
+    
+    // webviewDom.setAttribute("preload", path.join( "file://" + __dirname + '/src/assets/webview/webview.preinjection.js'))
     webviewDom.setAttribute("preload", "file://" + __dirname + "/../../../../../../src/assets/webview/webview.preinjection.js")
     // preload="file://"+${__dirname}+"/assets/webview/webview.preinjection.js"
     webviewDom.addEventListener('will-navigate', (event) => {
@@ -212,16 +231,16 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   reload() {
-    this.updatePage({ reload: false })
     this.webview.nativeElement.reload()
+    this.updatePage({ reload: false })
   }
   back() {
-    this.updatePage({ back: false })
     this.webview.nativeElement.goBack()
+    this.updatePage({ back: false })
   }
   forward() {
-    this.updatePage({ forward: false })
     this.webview.nativeElement.goForward()
+    this.updatePage({ forward: false })
   }
 
   ngOnDestroy(): void {
