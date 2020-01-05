@@ -36,6 +36,9 @@ function createWindow() {
   ipcMain.on("reload",(event) => {
     win.webContents.reload()
   })
+  ipcMain.on("isServ",(event) => {
+    event.returnValue=serve
+  })
 
   ipcMain.on("save-json",(event,arg) => {
     console.log(arg);

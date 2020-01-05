@@ -8,6 +8,7 @@ import { GeneralModel, generalInitialState, generalReducer } from './general';
 import { KeyboardModel, KeyboardState } from './keyboard';
 import { keyboardInitialState } from './keyboard/keyboard.initial.state'
 import { keyboardReducer } from './keyboard/keyboard.reducer'
+import { JSInjectionState, jSInjectionInitialState, jSInjectionReducer } from './jsinjections';
 
 export interface AppState {
   tabs: TabState
@@ -15,6 +16,7 @@ export interface AppState {
   dialog: DialogModel
   general: GeneralModel
   keyboard: KeyboardState
+  jsInjection: JSInjectionState
 }
 
 export const initialState: AppState = {
@@ -22,7 +24,8 @@ export const initialState: AppState = {
   pages: pageInitialState,
   dialog: dialogInitialState,
   general: generalInitialState,
-  keyboard: keyboardInitialState
+  keyboard: keyboardInitialState,
+  jsInjection: jSInjectionInitialState,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -30,7 +33,8 @@ export const reducers: ActionReducerMap<AppState> = {
   pages: pageReducer,
   dialog: dialogReducer,
   general: generalReducer,
-  keyboard: keyboardReducer
+  keyboard: keyboardReducer,
+  jsInjection: jSInjectionReducer,
 }
 
 //Page select

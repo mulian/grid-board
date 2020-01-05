@@ -13,6 +13,7 @@ import { KeyboardService } from '../../dialogs/dialog-settings/settings-keyboard
 import * as path from 'path'
 
 import { isDevMode } from '@angular/core';
+import { IpcService } from '../../dialogs/dialog-settings/settings-history/ipc.service';
 
 @Component({
   selector: 'app-grid-item',
@@ -37,13 +38,11 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscriptionWebviewData: Subscription = null
 
-  constructor(private store: Store<AppState>, private keyboardService:KeyboardService) { }
+  constructor(private store: Store<AppState>, private keyboardService:KeyboardService, private ipcService:IpcService) { }
   currentPageId:string = null
   ngOnInit() {
-    console.log("Init zoom check");
     this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((selectedTabId: string) => {
       if (!this.isLoading) {
-        console.log(this.currentTab, selectedTabId, this.item.tab);
         let webviewDom = this.webview.nativeElement
         if (this.currentTab != selectedTabId && selectedTabId == this.item.tab) {
           
@@ -75,39 +74,31 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
           else webviewDom.closeDevTools()
         }
       })
-
-    // this.store.pipe(select(selectAllPagesState))
-    // .pipe(map((pageState: PageState) => pageState.entities[this.item.id]))
-    // .subscribe((page: PageModel) => {
-    //   if (!this.isLoading) {
-    //     let webviewDom = this.webview.nativeElement
-    //     if(this.item.url!=page.url) webviewDom.
-    //   }
-    // })
-    // this.firstUrl = this.item.url
   }
 
-  getPreinjectionFile():string {
-    if(isDevMode) {
+  getPreinjectionFile() {
+    let isServ:boolean = this.ipcService.sendSync("isServ",null)
+    if(isServ) {
       switch(window.navigator.platform) {
         case "MacIntel": {
-          return path.join( "file://" , __dirname, '../../app.asar/src/assets/webview/webview.preinjection.js')
+          let electronAppResourcesPath = __dirname.substr(0,__dirname.length-22) //cause asar is a file for node file
+          console.log("jo: ",electronAppResourcesPath);
+          return path.join( "file://" , electronAppResourcesPath, '../../../../../../src/assets/webview/webview.preinjection.js')
         }
       }
     } else {
-      return path.join( "file://" , __dirname, '../../app.asar/src/assets/webview/webview.preinjection.js')
+      console.log("__dirname",__dirname);
+      return path.join( "file://" , __dirname, './assets/webview/webview.preinjection.js')
     }
   }
 
   ngAfterViewInit(): void {
     let webviewDom = this.webview.nativeElement
-    console.log(__dirname);
-    console.log(window.navigator.platform);
-    
-    console.log(path.join(__dirname + '/assets/webview/webview.preinjection.js'));
     
     // webviewDom.setAttribute("preload", path.join( "file://" + __dirname + '/src/assets/webview/webview.preinjection.js'))
-    webviewDom.setAttribute("preload", "file://" + __dirname + "/../../../../../../src/assets/webview/webview.preinjection.js")
+    console.log("jsfile:",this.getPreinjectionFile());
+    
+    webviewDom.setAttribute("preload", this.getPreinjectionFile() )
     // preload="file://"+${__dirname}+"/assets/webview/webview.preinjection.js"
     webviewDom.addEventListener('will-navigate', (event) => {
       this.updatePage({
