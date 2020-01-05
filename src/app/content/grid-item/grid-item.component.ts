@@ -78,13 +78,17 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getPreinjectionFile() {
     let isServ:boolean = this.ipcService.sendSync("isServ",null)
-    if(isServ) {
+    if(isServ) { //is dev mode
       switch(window.navigator.platform) {
         case "MacIntel": {
           let electronAppResourcesPath = __dirname.substr(0,__dirname.length-22) //cause asar is a file for node file
           console.log("jo: ",electronAppResourcesPath);
           return path.join( "file://" , electronAppResourcesPath, '../../../../../../src/assets/webview/webview.preinjection.js')
         }
+        case "Win32": {
+          return "file://" + __dirname + "/../../../../../../src/assets/webview/webview.preinjection.js"
+        }
+        default: return ""
       }
     } else {
       console.log("__dirname",__dirname);

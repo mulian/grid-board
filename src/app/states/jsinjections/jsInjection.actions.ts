@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { JSInjectionModel } from './jsInjection.model';
+import * as uuid from 'uuid';
 
 /** The JSInjectionActionTypes */
 export enum JSInjectionActionTypes {
@@ -34,7 +35,7 @@ export class AddJSInjection implements Action {
    * @param payload.jSInjection the JSInjection for add
    */
   constructor(public payload: { jSInjection: JSInjectionModel }) {
-    // this.payload.jSInjection.id = uuid.v4()
+    this.payload.jSInjection.id = uuid.v4()
   }
 }
 
@@ -56,9 +57,9 @@ export class AddJSInjections implements Action {
    * @param payload.jSInjections the added JSInjections
    */
   constructor(public payload: { jSInjections: JSInjectionModel[] }) {
-    // for(let tab of this.payload.jSInjections) {
-    //   tab.id = uuid.v4()
-    // }
+    for(let tab of this.payload.jSInjections) {
+      tab.id = uuid.v4()
+    }
   }
 }
 
