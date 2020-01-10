@@ -5,15 +5,16 @@ import * as url from 'url';
 
 import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
-installExtension(REDUX_DEVTOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
-
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
 function createWindow() {
+
+  installExtension(REDUX_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
+    
   session.defaultSession.allowNTLMCredentialsForDomains('*')
   Menu.setApplicationMenu(null)
 
@@ -41,11 +42,9 @@ function createWindow() {
   })
 
   ipcMain.on("save-json",(event,arg) => {
-    console.log(arg);
     dialog.showSaveDialog(win,{
       
     }).then((value) => {
-      console.log(value);
       if(!value.canceled) {
         fs.writeFile(value.filePath,JSON.stringify(arg),(err) => {
           if(err) {

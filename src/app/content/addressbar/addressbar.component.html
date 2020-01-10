@@ -48,10 +48,10 @@
     </div>
     <div class="controlls" *ngIf="item.addressbarOpen && item.isAdditionAddressbarOptionsOpen">
         <div class="controlls-left">
-            <button mat-icon-button class="zoom-in" (click)="zoomIn()">
+            <button mat-icon-button class="zoom-in" (click)="zoomIn()" [disabled]="item.webviewData.zoomLevel==zoomMax">
                 <mat-icon>zoom_in</mat-icon>
             </button>
-            <button mat-icon-button class="zoom-out" (click)="zoomOut()">
+            <button mat-icon-button class="zoom-out" (click)="zoomOut()" [disabled]="item.webviewData.zoomLevel==zoomMin">
                 <mat-icon>zoom_out</mat-icon>
             </button>
             <button mat-icon-button class="zoom-reset" (click)="zoomReset()">

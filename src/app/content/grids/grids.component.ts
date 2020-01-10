@@ -65,7 +65,8 @@ export class GridsComponent implements OnInit {
           favicon: null,
           scrollX: 0,
           scrollY: 0
-        }
+        },
+        isDrag: false
       }
     }))
   }
@@ -93,22 +94,33 @@ export class GridsComponent implements OnInit {
 
   }
 
+  setDrag(itemId:string, isDrag:boolean) {
+    const updatedPage: Update<PageModel> = {
+      id: itemId,
+      changes: {
+        isDrag
+      }
+    }
+
+    this.store.dispatch(new UpdatePage({ page: updatedPage }))
+  }
+
   dragStart(item, gridsterItem, event) {
     console.log("start drag", item, gridsterItem, event);
-    item.setDrag = true
+    this.setDrag(item.id,true)
   }
   dragStop(item, gridsterItem, event) {
     console.log("stop drag", item, gridsterItem, event);
-    item.setDrag = false
+    this.setDrag(item.id,false)
   }
 
   resizeStart(item, gridsterItem, event) {
     console.log("start drag", item, gridsterItem, event);
-    item.setDrag = true
+    this.setDrag(item.id,true)
   }
   resizeStop(item, gridsterItem, event) {
     console.log("stop drag", item, gridsterItem, event);
-    item.setDrag = false
+    this.setDrag(item.id,false)
   }
 
   options: { [key: string]: GridsterConfig } = {}
@@ -168,13 +180,13 @@ export class GridsComponent implements OnInit {
           enabled: true,
           dragHandleClass: "drag-handle",
           ignoreContent: true,
-          start: this.dragStart,
-          stop: this.dragStop,
+          start: (item, gridsterItem, event) => this.dragStart(item, gridsterItem, event),
+          stop: (item, gridsterItem, event) => this.dragStop(item, gridsterItem, event),
         },
         resizable: {
           enabled: true,
-          start: this.resizeStart,
-          stop: this.resizeStop,
+          start: (item, gridsterItem, event) => this.resizeStart(item, gridsterItem, event),
+          stop: (item, gridsterItem, event) => this.resizeStop(item, gridsterItem, event),
         },
         swap: false,
         pushItems: true,

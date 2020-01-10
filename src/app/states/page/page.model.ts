@@ -24,4 +24,5 @@ export interface PageModel extends GridsterItem {
   isAdditionAddressbarOptionsOpen: boolean
   webviewData: WebviewData
   urlChangeFromWebview?: boolean
+  isDrag: boolean
 }

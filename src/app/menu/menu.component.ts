@@ -56,7 +56,8 @@ export class MenuComponent implements OnInit {
               favicon: null,
               scrollX: 0,
               scrollY: 0
-            }
+            },
+            isDrag: false
           }
         }))
         subscribe.unsubscribe();

@@ -46,22 +46,30 @@ export class AddressbarComponent implements OnInit {
     }))
   }
 
+  zoomMax:number = 5
+  zoomMin:number = -2
+  zoomItteration: number = 0.4
   zoomIn() {
-    this.updatePageWebviewData({ 
-      zoomLevel: this.item.webviewData.zoomLevel + 0.2,
-      zoomFactor: this.item.webviewData.zoomFactor + 0.1
-     })
+    if(this.item.webviewData.zoomLevel!=this.zoomMax) {
+      let newZoomLevel:number = this.item.webviewData.zoomLevel + this.zoomItteration
+      if(newZoomLevel>this.zoomMax) newZoomLevel=this.zoomMax
+      this.updatePageWebviewData({ 
+        zoomLevel: newZoomLevel
+       })
+    }
   }
   zoomOut() {
-    this.updatePageWebviewData({ 
-      zoomLevel: this.item.webviewData.zoomLevel - 0.2,
-      zoomFactor: this.item.webviewData.zoomFactor - 0.1
-     })
+    if(this.item.webviewData.zoomLevel!=this.zoomMin) {
+      let newZoomLevel:number = this.item.webviewData.zoomLevel - this.zoomItteration
+      if(newZoomLevel<this.zoomMin) newZoomLevel=this.zoomMin
+      this.updatePageWebviewData({ 
+        zoomLevel: newZoomLevel,
+       })
+    }
   }
   zoomReset() {
     this.updatePageWebviewData({ 
-      zoomFactor: 1,
-      zoomLevel: 1,
+      zoomLevel: 0,
     })
   }
 
@@ -87,7 +95,7 @@ export class AddressbarComponent implements OnInit {
     this.updatePage({ isAdditionAddressbarOptionsOpen: !this.item.isAdditionAddressbarOptionsOpen })
   }
 
-  private urlPrefix: RegExp = /^https?:\/\//
+  private urlPrefix: RegExp = /^(file)|(https?):\/\//
   private urlPostFix: RegExp = /\.[a-zA-Z]{2,3}/
   private autoUpdateUrl(url: string): string {
     if (!this.urlPrefix.test(url)) {
