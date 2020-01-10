@@ -7,6 +7,8 @@ import { Update } from '@ngrx/entity';
 
 function resetScrollWhenNavigate(page:Update<PageModel>):Update<PageModel> {
   if(page.changes.url!=null) {
+
+    
     let webviewChanges: Partial<WebviewData> = {
         scrollX: 0,
         scrollY: 0,
@@ -36,7 +38,7 @@ export function pageReducer(
     }
     case PageActionTypes.UpdatePage: {
       //TODO: Check, get current page check if x,y or tab ref. was changed and check
-      let page:Update<PageModel> = resetScrollWhenNavigate(action.payload.page)
+      let page:Update<PageModel> = action.payload.page
       return pageAdapter.updateOne(page, state);
     }
     case PageActionTypes.UpdatePageWebviewData: {

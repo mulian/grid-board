@@ -28,6 +28,8 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.primaryValueBar = this.progressbar._primaryValueBar
     this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
+      console.log("set slide",slide);
+      
       this.setSlideOptions(slide)
     })
   }

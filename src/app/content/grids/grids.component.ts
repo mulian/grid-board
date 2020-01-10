@@ -58,7 +58,7 @@ export class GridsComponent implements OnInit {
         isAdditionAddressbarOptionsOpen: false,
         webviewData: {
           zoomFactor: 1,
-          zoomLevel: 1,
+          zoomLevel: 0,
           isDeveloperConsoleVisible: false,
           isBackAvailable: false,
           isForwardAvailable: false,

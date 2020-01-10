@@ -102,7 +102,7 @@ export class GridWebview {
       
       this.updatePage({
         url: event.url,
-        urlChangeFromWebview: false
+        urlChangeFromWebview: true
       })
     })
 
@@ -137,7 +137,7 @@ export class GridWebview {
           isAdditionAddressbarOptionsOpen: false,
           webviewData: {
             zoomFactor: 1,
-            zoomLevel: 1,
+            zoomLevel: 0,
             isDeveloperConsoleVisible: false,
             isBackAvailable: false,
             isForwardAvailable: false,
@@ -168,7 +168,13 @@ export class GridWebview {
 
     webviewDom.addEventListener("dom-ready", (event) => {
       console.log("dom ready",event);
-      
+      //additional check for url change / cause i dont find any event for navigate back ....
+      if(this.item.url!=webviewDom.getURL()) {
+        this.updatePage({
+          url: webviewDom.getURL(),
+          urlChangeFromWebview: true
+        })
+      }
 
       this.checkBackAndForwardAvailable()
 
