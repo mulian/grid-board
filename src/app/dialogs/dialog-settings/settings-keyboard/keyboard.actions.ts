@@ -115,6 +115,9 @@ export class KeyboardActions {
             case KeyboardAction.RELOAD_MAIN: {
                 this.ipcRenderer.send("reload",null)
             }
+            case KeyboardAction.TOGGLE_FULLSCREEN: {
+                this.ipcRenderer.send("setFullscreen",null)
+            }
             default: return false
         }
     }

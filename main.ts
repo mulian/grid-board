@@ -14,7 +14,7 @@ function createWindow() {
   installExtension(REDUX_DEVTOOLS)
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log('An error occurred: ', err));
-    
+
   session.defaultSession.allowNTLMCredentialsForDomains('*')
   Menu.setApplicationMenu(null)
 
@@ -39,6 +39,20 @@ function createWindow() {
   })
   ipcMain.on("isServ",(event) => {
     event.returnValue=serve
+  })
+
+  /**
+   * @param setFullscreenBool if null toggle, true maximize, false unmaximize
+   */
+  ipcMain.on("setFullscreen",(event,setFullscreenBool) => {
+    if(setFullscreenBool==null) {
+      setFullscreenBool = !win.isFullScreen()
+    }
+    win.setFullScreen(setFullscreenBool)
+    event.returnValue=serve
+  })
+  ipcMain.on("isMaximized",(event) => {
+    event.returnValue=win.isMaximized()
   })
 
   ipcMain.on("save-json",(event,arg) => {
@@ -121,6 +135,13 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  win.on("enter-full-screen",() => {
+    ipcMain.emit("enter-full-screen")
+  })
+  win.on("leave-full-screen",() => {
+    ipcMain.emit("leave-full-screen")
+  })
 
 }
 
