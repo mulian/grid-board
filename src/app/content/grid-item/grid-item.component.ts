@@ -67,7 +67,17 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.currentPageId = currentActivePage
     })
+
+    this.store.pipe(select(selectAllPagesState))
+    .pipe(map((pageState: PageState) => pageState.entities[this.item.id]))
+    .subscribe((page: PageModel) => {
+      if(!page.urlChangeFromWebview) this.url = this.item.url
+      
+    })
+    this.url = this.item.url
   }
+
+  url:string
 
   ngAfterViewInit(): void {
     this.gridWebview.domReady(this.webview)

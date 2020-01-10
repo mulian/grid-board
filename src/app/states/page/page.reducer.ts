@@ -5,6 +5,17 @@ import { pageInitialState } from './page.initial.state';
 import { PageModel, WebviewData } from './page.model';
 import { Update } from '@ngrx/entity';
 
+function resetScrollWhenNavigate(page:Update<PageModel>):Update<PageModel> {
+  if(page.changes.url!=null) {
+    let webviewChanges: Partial<WebviewData> = {
+        scrollX: 0,
+        scrollY: 0,
+    }
+    page.changes.webviewData = webviewChanges as WebviewData
+  }
+  return page
+}
+
 /** The Page reducer */
 export function pageReducer(
   state = pageInitialState,
@@ -25,7 +36,8 @@ export function pageReducer(
     }
     case PageActionTypes.UpdatePage: {
       //TODO: Check, get current page check if x,y or tab ref. was changed and check
-      return pageAdapter.updateOne(action.payload.page, state);
+      let page:Update<PageModel> = resetScrollWhenNavigate(action.payload.page)
+      return pageAdapter.updateOne(page, state);
     }
     case PageActionTypes.UpdatePageWebviewData: {
       let pageId:string | number = action.payload.pageWebview.id

@@ -84,11 +84,22 @@ export class GridWebview {
   initEventListener() {
     let webviewDom = this.webview.nativeElement
 
-    // webviewDom.setAttribute("preload", path.join( "file://" + __dirname + '/src/assets/webview/webview.preinjection.js'))
     console.log("jsfile:", this.getPreinjectionFile());
 
     webviewDom.setAttribute("preload", this.getPreinjectionFile())
+
+    webviewDom.addEventListener('did-navigate-in-page', (event) => { //e.g. on click on hash
+      console.log("did-navigate-in-page",event);
+      if(event.isMainFrame) {
+        this.updatePage({
+          url: event.url,
+          urlChangeFromWebview: true
+        })
+      }
+    })
     webviewDom.addEventListener('will-navigate', (event) => {
+      console.log("will-navigate");
+      
       this.updatePage({
         url: event.url,
         urlChangeFromWebview: false
@@ -96,7 +107,7 @@ export class GridWebview {
     })
 
     webviewDom.addEventListener('page-title-updated', (event) => {
-      console.log("page-title-update", event.title);
+      console.log("page-title-update", event.title,event);
 
       this.updatePage({ name: event.title })
     })
@@ -145,7 +156,8 @@ export class GridWebview {
     })
 
     webviewDom.addEventListener('did-stop-loading', (event) => {
-
+      console.log("did stop loading");
+      
 
       this.checkBackAndForwardAvailable()
     })
@@ -154,8 +166,10 @@ export class GridWebview {
       this.updatePageWebviewData({ isDeveloperConsoleVisible: false })
     })
 
-    webviewDom.addEventListener("dom-ready", () => {
-      console.log("dom ready");
+    webviewDom.addEventListener("dom-ready", (event) => {
+      console.log("dom ready",event);
+      
+
       this.checkBackAndForwardAvailable()
 
       if (this._currentTab == this.item.tab) {
