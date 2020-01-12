@@ -38,8 +38,8 @@
         "SLIDE": {
             "TAB_NAME": "Slide",
             "SLIDE_MODE": "Slide mode",
-            "NEXT_SLIDE_TIME": "Next slide in ... minutes.",
-            "AFTER_INACTIVITY": "Activate slide mode after ... minutes inactivity.",
+            "NEXT_SLIDE_TIME": "Next slide in ... secounds.",
+            "AFTER_INACTIVITY": "Activate slide mode after ... secounds inactivity.",
             "SLIDE_PROGRESS": "Show slide progress"
         },
         "HISTORY": {
