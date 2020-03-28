@@ -23,6 +23,7 @@ export function pageReducer(
   state = pageInitialState,
   action: PageActions
 ): PageState {
+  return state;
   switch (action.type) {
     case PageActionTypes.AddPage: { //Add Page
       return pageAdapter.addOne(action.payload.page, state);
