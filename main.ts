@@ -108,7 +108,7 @@ function createWindow() {
       nodeIntegration: true,
       webviewTag: true
     },
-    title: "Gridler"
+    title: "Grid Board"
   });
 
   if (serve) {

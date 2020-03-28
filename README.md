@@ -1,4 +1,4 @@
-# Gridler
+# Grid Board
 
 ## Included Commands
 
