@@ -12,7 +12,7 @@ import { tabSlideInitialState } from '../../states/tab/tab.initial.state'
   styleUrls: ['./slide-progress.component.scss']
 })
 export class SlideProgressComponent implements OnInit, AfterViewInit {
-  @ViewChild("progressbar", { read: false, static: false }) progressbar: MatProgressBar;
+  @ViewChild("progressbar") progressbar: MatProgressBar;
   primaryValueBar: ElementRef;
   progressValue: number = 0
   sumTime: number;
@@ -27,10 +27,12 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.primaryValueBar = this.progressbar._primaryValueBar
+    console.log(this.progressbar);
+    
     this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
       console.log("set slide",slide);
       
-      this.setSlideOptions(slide)
+      // this.setSlideOptions(slide)
     })
   }
 

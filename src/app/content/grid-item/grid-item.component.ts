@@ -31,8 +31,8 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // firstUrl: string
 
-  @ViewChild("webview", { read: false, static: false }) webview: ElementRef;
-  @ViewChild("container", { read: false, static: false }) container: ElementRef;
+  @ViewChild("webview") webview: ElementRef;
+  @ViewChild("container") container: ElementRef;
 
   webviewDom: any
   gridWebview: GridWebview;

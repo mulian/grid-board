@@ -52,7 +52,7 @@ export class TabbarListComponent implements OnInit {
 
   contextMenuPosition = { x: '0px', y: '0px' };
   
-  @ViewChild(MatMenuTrigger,{static:false,read:false}) contextMenu: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
   maxSortNumber:number=0
   setMaxSortNumber(newSortNumber) {

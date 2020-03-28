@@ -170,9 +170,11 @@ export function tabReducer(
     case TabActionTypes.AddTab: {
       let tab:TabModel = action.payload.tab
       if(tab.sortNumber==null) { //When  sortNumber is null add to last right tab sortNumber
-        tab.sortNumber = state.ids.length //_.reduce(state.entities,(sum, entity) => sum+1,0)
+        //tab.sortNumber = state.ids.length //_.reduce(state.entities,(sum, entity) => sum+1,0)
+        return adapter.addOne({...tab, sortNumber: state.ids.length}, { ...state, options: { ...state.options, editTab: tab.id, selectedTab: tab.id } });  
+      } else {
+        return adapter.addOne(tab, { ...state, options: { ...state.options, editTab: tab.id, selectedTab: tab.id } });
       }
-      return adapter.addOne(tab, { ...state, options: { ...state.options, editTab: tab.id, selectedTab: tab.id } });
     }
     case TabActionTypes.UpdateTab: {
       return adapter.updateOne(action.payload.tab, state);
