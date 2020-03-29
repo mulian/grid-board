@@ -1,17 +1,9 @@
 /**
  * Tab reducer
  */
-import {
-  EntityState,
-  EntityAdapter,
-  createEntityAdapter,
-  Update,
-  Dictionary
-} from "@ngrx/entity";
+import { Update, Dictionary } from "@ngrx/entity";
 import { TabModel } from "./tab.model";
 import {
-  TabActions,
-  TabActionTypes,
   NavigationSelectTabType,
   navigateSelectTab,
   addTab,
@@ -23,17 +15,17 @@ import {
   clearTabs,
   updateTab
 } from "./tab.actions.main";
-import {
-  createSelector,
-  createFeatureSelector,
-  createReducer,
-  on
-} from "@ngrx/store";
+import { createReducer, on, Action } from "@ngrx/store";
 import * as _ from "lodash-es";
-import { TabState } from "./tab.state";
 import { tabInitialState } from "./tab.initial.state";
 import { adapter, sortBySortNumber } from "./tab.adapter";
-import { tabSlideReducer } from "./tab.reducer.slide";
+import {
+  triggerSlides,
+  triggerBarSlides,
+  setNextSlideTime,
+  setStartAfterInactiveTime,
+  triggerSlideBreak
+} from "./tab.actions.slide";
 
 function getAllTabsWithIsSlideConsidered(
   tabEntitys: Dictionary<TabModel>
@@ -51,8 +43,61 @@ function getTabWithSortNumber(
   return _.find(tabEntitys, { sortNumber });
 }
 
+export function reducer(state = tabInitialState, action: Action) {
+  return tabReducer(state, action);
+}
+
 export const tabReducer = createReducer(
   tabInitialState,
+
+  //For Slides
+  on(triggerSlideBreak, (state, { isBreak }) => {
+    return {
+      ...state,
+      slide: {
+        ...state.slide,
+        isSlideBreak: isBreak
+      }
+    };
+  }),
+  on(setStartAfterInactiveTime, (state, { timeInSec }) => {
+    return {
+      ...state,
+      slide: {
+        ...state.slide,
+        startAfterInactiveTimeInSec: timeInSec
+      }
+    };
+  }),
+  on(setNextSlideTime, (state, { timeInSec }) => {
+    return {
+      ...state,
+      slide: {
+        ...state.slide,
+        nextSlideInSec: timeInSec
+      }
+    };
+  }),
+  on(triggerSlides, (state, { activate }) => {
+    return {
+      ...state,
+      slide: {
+        ...state.slide,
+        isShowProgress: activate
+      }
+    };
+  }),
+  on(triggerBarSlides, (state, { activate }) => {
+    return {
+      ...state,
+      slide: {
+        ...state.slide,
+        isActive: activate
+      }
+    };
+  }),
+
+  //For Main Tab
   on(updateTab, (state, { updateTab }) => {
     if (updateTab.changes.sortNumber != null) {
       console.error(

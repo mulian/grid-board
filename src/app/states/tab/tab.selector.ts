@@ -4,10 +4,10 @@
 import { adapter } from "./tab.adapter";
 
 const {
-    selectIds,
-    selectEntities,
-    selectAll,
-    selectTotal,
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal
 } = adapter.getSelectors();
 
 export const tabSelectedIds = selectIds;

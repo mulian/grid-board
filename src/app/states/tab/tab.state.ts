@@ -4,9 +4,9 @@
 import { EntityState } from "@ngrx/entity";
 import { TabModel } from "./tab.model";
 import { TabSlide } from "./tab.slide.model";
-import { TabOptions } from "./tab.options.model"
+import { TabOptions } from "./tab.options.model";
 
 export interface TabState extends EntityState<TabModel> {
-    options: TabOptions,
-    slide: TabSlide
-  }
+  options: TabOptions;
+  slide: TabSlide;
+}

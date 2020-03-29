@@ -1,14 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
-import {
-  TabModel,
-  updateTab,
-  deleteTab,
-  selectTab,
-  editTab
-} from "../../states/tab";
-import { Store, select } from "@ngrx/store";
+import { TabModel, deleteTab, selectTab, editTab } from "../../states/tab";
+import { Store } from "@ngrx/store";
 import { AppState } from "../../states/reducers";
-import { Update } from "@ngrx/entity";
 
 @Component({
   selector: "app-tabbar-item",
@@ -24,7 +17,7 @@ export class TabbarItemComponent implements OnInit {
   ngOnInit() {}
 
   clickRemoveTab() {
-    this.store.dispatch(deleteTab({ id: this.tabItem.id }));
+    this.store.dispatch(deleteTab({ tabId: this.tabItem.id }));
   }
 
   editTab() {

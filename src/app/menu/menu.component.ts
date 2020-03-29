@@ -74,11 +74,9 @@ export class MenuComponent implements OnInit {
   addTab() {
     this.store.dispatch(
       addTab({
-        tab: {
-          name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"),
-          sortNumber: null,
-          isSlideConsidered: true
-        }
+        name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"),
+        sortNumber: null,
+        isSlideConsidered: true
       })
     );
   }
@@ -86,7 +84,7 @@ export class MenuComponent implements OnInit {
   removeTab() {
     this.store.dispatch(
       deleteTab({
-        id: null
+        tabId: null
       })
     );
   }

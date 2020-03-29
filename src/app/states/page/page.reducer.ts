@@ -1,21 +1,19 @@
-import { PageActions, PageActionTypes } from './page.actions';
-import { PageState } from './page.state'
-import { pageAdapter } from './page.adapter';
-import { pageInitialState } from './page.initial.state';
-import { PageModel, WebviewData } from './page.model';
-import { Update } from '@ngrx/entity';
+import { PageActions, PageActionTypes } from "./page.actions";
+import { PageState } from "./page.state";
+import { pageAdapter } from "./page.adapter";
+import { pageInitialState } from "./page.initial.state";
+import { PageModel, WebviewData } from "./page.model";
+import { Update } from "@ngrx/entity";
 
-function resetScrollWhenNavigate(page:Update<PageModel>):Update<PageModel> {
-  if(page.changes.url!=null) {
-
-    
+function resetScrollWhenNavigate(page: Update<PageModel>): Update<PageModel> {
+  if (page.changes.url != null) {
     let webviewChanges: Partial<WebviewData> = {
-        scrollX: 0,
-        scrollY: 0,
-    }
-    page.changes.webviewData = webviewChanges as WebviewData
+      scrollX: 0,
+      scrollY: 0
+    };
+    page.changes.webviewData = webviewChanges as WebviewData;
   }
-  return page
+  return page;
 }
 
 /** The Page reducer */
@@ -24,6 +22,7 @@ export function pageReducer(
   action: PageActions
 ): PageState {
   return state;
+  /*
   switch (action.type) {
     case PageActionTypes.AddPage: { //Add Page
       return pageAdapter.addOne(action.payload.page, state);
@@ -88,4 +87,5 @@ export function pageReducer(
       return state;
     }
   }
+  */
 }

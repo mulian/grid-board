@@ -5,34 +5,6 @@ import { Action, createAction, props } from "@ngrx/store";
 import { Update } from "@ngrx/entity";
 import { TabModel } from "./tab.model";
 import * as uuid from "uuid";
-import {
-  TriggerSlides,
-  TriggerBarSlides,
-  SetNextSlideTime,
-  SetStartAfterInactiveTime,
-  TriggerSlideBreak
-} from "./tab.actions.slide";
-
-/** The ActionTypes for Tab */
-export enum TabActionTypes {
-  LoadTabs = "[Tab] Load Tabs",
-  AddTab = "[Tab] Add Tab", //
-  UpsertTab = "[Tab] Upsert Tab",
-  AddTabs = "[Tab] Add Tabs",
-  UpsertTabs = "[Tab] Upsert Tabs",
-  UpdateTab = "[Tab] Update Tab",
-  UpdateTabs = "[Tab] Update Tabs",
-  DeleteTab = "[Tab] Delete Tab",
-  DeleteTabs = "[Tab] Delete Tabs",
-  ClearTabs = "[Tab] Clear Tabs",
-
-  SelectTab = "[Tab] Select Tab", //done
-  RenameTab = "[Tab] Rename Tab", //
-  EditTab = "[Tab] Edit Tab", //
-  SortTab = "[Tab] Sort Tab", //
-
-  NavigateSelectTab = "[Tab] Navigate select Tab" //
-}
 
 export const clearTabs = createAction("[Tab] Clear all Tabs");
 

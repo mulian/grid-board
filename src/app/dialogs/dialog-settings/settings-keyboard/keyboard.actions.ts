@@ -4,7 +4,8 @@ import {
   addTab,
   navigateSelectTab,
   NavigationSelectTabType,
-  editTab
+  editTab,
+  deleteTab
 } from "../../../states/tab";
 import { TranslateService } from "@ngx-translate/core";
 import { IpcService } from "../settings-history/ipc.service";
@@ -43,17 +44,15 @@ export class KeyboardActions {
       case KeyboardAction.NEW_TAB: {
         this.store.dispatch(
           addTab({
-            tab: {
-              name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"),
-              sortNumber: null,
-              isSlideConsidered: true
-            }
+            name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"),
+            sortNumber: null,
+            isSlideConsidered: true
           })
         );
         return true;
       }
       case KeyboardAction.CLOSE_TAB: {
-        this.store.dispatch(deleteTab({ id: null }));
+        this.store.dispatch(deleteTab({ tabId: null }));
         return true;
       }
       case KeyboardAction.RENAME_CURRENT_TAB: {

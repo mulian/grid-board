@@ -8,12 +8,8 @@ import { Store, select } from "@ngrx/store";
 import { Observable } from "rxjs";
 import {
   AppState,
-  selectAllTabs,
   selectTabOptions,
-  selectTabOptionsSelectTab,
-  selectTabOptionsEditTab,
-  selectAllTabsEntitys,
-  selectAllTabsEntities
+  selectAllTabsEntitys
 } from "../../states/reducers";
 import {
   addTab,
@@ -21,9 +17,10 @@ import {
   deleteTab,
   sortTab,
   editTab,
-  selectTab
+  selectTab,
+  TabModel
 } from "../../states/tab";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { CdkDragDrop } from "@angular/cdk/drag-drop";
 
 import ClickHandler from "./click-handler";
 import NgrxEntitySync from "../../ngrx-entity-sync";
@@ -110,7 +107,7 @@ export class TabbarListComponent implements OnInit {
         isSlideConsidered
       }
     };
-    this.store.dispatch(updateTab({ tab: update }));
+    this.store.dispatch(updateTab({ updateTab: update }));
   }
 
   addToSlide(tab: TabModel) {

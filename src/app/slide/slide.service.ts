@@ -2,7 +2,7 @@ import { Injectable, AfterViewInit, AfterContentInit } from "@angular/core";
 import { AppState, selectTabSlide, selectTabOptions } from "../states/reducers";
 import { Store, select } from "@ngrx/store";
 import { TabSlide } from "../states/tab/tab.slide.model";
-import { TriggerSlideBreak } from "../states/tab/tab.actions.slide";
+import { triggerSlideBreak } from "../states/tab/tab.actions.slide";
 import { NavigationSelectTabType, navigateSelectTab } from "../states/tab";
 
 @Injectable({
@@ -80,7 +80,7 @@ export class SlideService implements AfterContentInit {
 
   private setBreakTimeout() {
     this.breakTimer = setTimeout(() => {
-      this.store.dispatch(new TriggerSlideBreak({ isBreak: false }));
+      this.store.dispatch(triggerSlideBreak({ isBreak: false }));
     }, this.slideOptions.startAfterInactiveTimeInSec * 1000);
   }
   breakTimer = null;
@@ -99,7 +99,7 @@ export class SlideService implements AfterContentInit {
         //break is not known
         console.log("once", this.slideOptions);
 
-        this.store.dispatch(new TriggerSlideBreak({ isBreak: true }));
+        this.store.dispatch(triggerSlideBreak({ isBreak: true }));
       } else {
         this.itterateBreakTimer();
       }
