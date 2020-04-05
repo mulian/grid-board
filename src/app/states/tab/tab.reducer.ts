@@ -48,51 +48,41 @@ export const tabReducer = createReducer(
     tabInitialState,
 
     //For Slides
-    on(triggerSlideBreak, (state, { isBreak }) => {
-        return {
-            ...state,
-            slide: {
-                ...state.slide,
-                isSlideBreak: isBreak,
-            },
-        }
-    }),
-    on(setStartAfterInactiveTime, (state, { timeInSec }) => {
-        return {
-            ...state,
-            slide: {
-                ...state.slide,
-                startAfterInactiveTimeInSec: timeInSec,
-            },
-        }
-    }),
-    on(setNextSlideTime, (state, { timeInSec }) => {
-        return {
-            ...state,
-            slide: {
-                ...state.slide,
-                nextSlideInSec: timeInSec,
-            },
-        }
-    }),
-    on(triggerSlides, (state, { activate }) => {
-        return {
-            ...state,
-            slide: {
-                ...state.slide,
-                isShowProgress: activate,
-            },
-        }
-    }),
-    on(triggerBarSlides, (state, { activate }) => {
-        return {
-            ...state,
-            slide: {
-                ...state.slide,
-                isActive: activate,
-            },
-        }
-    }),
+    on(triggerSlideBreak, (state, { isBreak }) => ({
+        ...state,
+        slide: {
+            ...state.slide,
+            isSlideBreak: isBreak,
+        },
+    })),
+    on(setStartAfterInactiveTime, (state, { timeInSec }) => ({
+        ...state,
+        slide: {
+            ...state.slide,
+            startAfterInactiveTimeInSec: timeInSec,
+        },
+    })),
+    on(setNextSlideTime, (state, { timeInSec }) => ({
+        ...state,
+        slide: {
+            ...state.slide,
+            nextSlideInSec: timeInSec,
+        },
+    })),
+    on(triggerSlides, (state, { activate }) => ({
+        ...state,
+        slide: {
+            ...state.slide,
+            isShowProgress: activate,
+        },
+    })),
+    on(triggerBarSlides, (state, { activate }) => ({
+        ...state,
+        slide: {
+            ...state.slide,
+            isActive: activate,
+        },
+    })),
 
     //For Main Tab
     on(updateTab, (state, { updateTab }) => {
@@ -111,9 +101,7 @@ export const tabReducer = createReducer(
             })
         }
     }),
-    on(clearTabs, state => {
-        return adapter.removeAll(state)
-    }),
+    on(clearTabs, state => adapter.removeAll({ ...state, options: { selectedTab: null, editTab: null } })),
     on(deleteTab, (state, { tabId }) => {
         if (tabId == null) tabId = state.options.selectedTab //When delete without tab id, delete current selected tab
         return adapter.updateMany(
@@ -145,7 +133,7 @@ export const tabReducer = createReducer(
         )
     }),
     on(selectTab, (state, { tabId }) => {
-        if ((tabId = null)) {
+        if (tabId == null) {
             console.info("could not select a tab without tab id")
             return state
         } else {
@@ -156,19 +144,17 @@ export const tabReducer = createReducer(
         }
     }),
     on(sortTab, (state, { sourceIndex, targetIndex }) => {
-        let sourceTabUpdate: Update<TabModel> = {
-            id: state.entities[state.ids[sourceIndex]].id,
-            changes: {
-                sortNumber: state.entities[state.ids[targetIndex]].sortNumber,
-            },
-        }
         let updates: Update<TabModel>[] = getUpdatesForAllAffectedEntitiesWithNewSortNumber(
             state.entities[state.ids[sourceIndex]],
             state.entities[state.ids[targetIndex]],
             state.entities
         )
-        updates.push(sourceTabUpdate)
-        console.log(updates)
+        updates.push({
+            id: state.entities[state.ids[sourceIndex]].id,
+            changes: {
+                sortNumber: state.entities[state.ids[targetIndex]].sortNumber,
+            },
+        })
 
         return adapter.updateMany(updates, state)
     }),

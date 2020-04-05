@@ -1,32 +1,29 @@
 /**
  * Tab Action Types
  */
-import { Action, createAction, props } from "@ngrx/store";
-import { Update } from "@ngrx/entity";
-import { TabModel } from "./tab.model";
-import * as uuid from "uuid";
+import { Action, createAction, props } from "@ngrx/store"
+import { Update } from "@ngrx/entity"
+import { TabModel } from "./tab.model"
+import * as uuid from "uuid"
+import { actionStringCreator } from "../state.utils"
 
-export const clearTabs = createAction("[Tab] Clear all Tabs");
+const actionStr = actionStringCreator("Tab")
 
-export const updateTab = createAction(
-  "[Tab] Update Tab",
-  props<{ updateTab: Update<TabModel> }>()
-);
+export const clearTabs = createAction(actionStr("Clear all Tabs"))
 
-export const deleteTab = createAction(
-  "[Tab] Delete Tab",
-  props<{ tabId: string }>()
-);
+export const updateTab = createAction(actionStr("Update Tab"), props<{ updateTab: Update<TabModel> }>())
+
+export const deleteTab = createAction(actionStr("Delete Tab"), props<{ tabId: string }>())
 
 export enum NavigationSelectTabType {
-  Left = "Select Tab left from current selected Tab",
-  Right = "Select Tab right from current selected Tab",
-  First = "Select first Tab from all Tabs",
-  Last = "Select last Tab from all Tabs",
-  BySortNumber = "Select tab with sort Number",
+    Left = "Select Tab left from current selected Tab",
+    Right = "Select Tab right from current selected Tab",
+    First = "Select first Tab from all Tabs",
+    Last = "Select last Tab from all Tabs",
+    BySortNumber = "Select tab with sort Number",
 
-  TabRotationRight = "Select Tab right from current, if there is no next select first tab",
-  TabRotationLeft = "Select Tab left from current, if there is no next select last tab"
+    TabRotationRight = "Select Tab right from current, if there is no next select first tab",
+    TabRotationLeft = "Select Tab left from current, if there is no next select last tab",
 }
 
 /**
@@ -35,13 +32,13 @@ export enum NavigationSelectTabType {
  * @param payload.sortOrder - Have to set if navigationType is BySortNumber, the given sortOrder number will be selected
  */
 export const navigateSelectTab = createAction(
-  "[Tab] Navigate select Tab",
-  props<{
-    navigationType: NavigationSelectTabType;
-    sortOrder?: number;
-    exceptSlideNotConsidered: boolean;
-  }>()
-);
+    actionStr("Navigate select Tab"),
+    props<{
+        navigationType: NavigationSelectTabType
+        sortOrder?: number
+        exceptSlideNotConsidered: boolean
+    }>()
+)
 
 /**
  * Add Tab and also set Edit same tab
@@ -50,12 +47,12 @@ export const navigateSelectTab = createAction(
  * @param payload.tab.name - If null use default name, else use given name
  * @param payload.tab.sortNumber if null it will be automaticly set
  */
-export const addTab = createAction("[Tab] Add Tab", (tab: TabModel): {
-  tab: TabModel;
+export const addTab = createAction(actionStr("Add Tab"), (tab: TabModel): {
+    tab: TabModel
 } => {
-  if (tab.id == null) return { tab: { ...tab, id: uuid.v4() } };
-  else return { tab };
-});
+    if (tab.id == null) return { tab: { ...tab, id: uuid.v4() } }
+    else return { tab }
+})
 
 /**
  * Replacement strategie like normal Browser.
@@ -64,19 +61,13 @@ export const addTab = createAction("[Tab] Add Tab", (tab: TabModel): {
  * @param payload.sourceIndex - the source tab / the tab how is moved
  * @param payload.targetIndex - the target tab / the moved tab will replace the source tab
  */
-export const sortTab = createAction(
-  "[Tab] Sort Tab",
-  props<{ sourceIndex: number; targetIndex: number }>()
-);
+export const sortTab = createAction(actionStr("Sort Tab"), props<{ sourceIndex: number; targetIndex: number }>())
 
 /**
  * Select a Tab directly
  * @param payload.tabId - The Selected tabId
  */
-export const selectTab = createAction(
-  "[Tab] Select Tab",
-  props<{ tabId: string }>()
-);
+export const selectTab = createAction(actionStr("Select Tab"), props<{ tabId: string }>())
 
 /**
  * Rename the Tab with new Name
@@ -84,12 +75,6 @@ export const selectTab = createAction(
  * @param payload.tabId - if null use current selected Tab, else edit tabId
  * @param payload.newName - new name string
  */
-export const renameTab = createAction(
-  "[Tab] Rename Tab",
-  props<{ tabId: string; newName: string }>()
-);
+export const renameTab = createAction(actionStr("Rename Tab"), props<{ tabId: string; newName: string }>())
 
-export const editTab = createAction(
-  "[Tab] Edit Tab",
-  props<{ tabId: string }>()
-);
+export const editTab = createAction(actionStr("Edit Tab"), props<{ tabId: string }>())

@@ -1,19 +1,25 @@
 <div class="background" *ngIf="isPageActiv"></div>
-<div class="addressbarContainer" *ngIf="isPageActiv" [ngClass]="{'hideAdressbar':!item.addressbarOpen}">
+<div class="addressbarContainer" *ngIf="isPageActiv" [ngClass]="{ hideAdressbar: !item.addressbarOpen }">
     <div class="controlls">
         <div class="controlls-left">
             <button mat-icon-button class="drag-handle" aria-label="Drag this page.">
-                <mat-icon *ngIf="item.webviewData.favicon==null; else favicon">drag_indicator</mat-icon>
+                <mat-icon *ngIf="item.favicon == null; else favicon">drag_indicator</mat-icon>
                 <ng-template #favicon>
-                    <img class="favicon" src="{{item.webviewData.favicon}}">
+                    <img class="favicon" src="{{ item.favicon }}" />
                 </ng-template>
             </button>
-            <button mat-icon-button class="showbar" (click)="toggleAddressbar()" aria-label="Show Addressbar." [ngClass]="{'show':item.addressbarOpen}">
+            <button
+                mat-icon-button
+                class="showbar"
+                (click)="toggleAddressbar()"
+                aria-label="Show Addressbar."
+                [ngClass]="{ show: item.addressbarOpen }"
+            >
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
         </div>
         <div class="title">
-            {{item.name}}
+            {{ item.name }}
         </div>
         <div class="controlls-right">
             <button mat-icon-button (click)="removePage($event)" aria-label="Remove Page.">
@@ -29,10 +35,20 @@
             <button mat-icon-button (click)="showAdditionalOptions()" aria-label="Show additional options">
                 <mat-icon>more_vert</mat-icon>
             </button>
-            <button [disabled]="!item.webviewData.isBackAvailable" (click)="back()" mat-icon-button aria-label="Example icon-button with a heart icon">
+            <button
+                [disabled]="!item.isBackAvailable"
+                (click)="back()"
+                mat-icon-button
+                aria-label="Example icon-button with a heart icon"
+            >
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            <button [disabled]="!item.webviewData.isForwardAvailable" (click)="forward()" mat-icon-button aria-label="Example icon-button with a heart icon">
+            <button
+                [disabled]="!item.isForwardAvailable"
+                (click)="forward()"
+                mat-icon-button
+                aria-label="Example icon-button with a heart icon"
+            >
                 <mat-icon>arrow_forward</mat-icon>
             </button>
             <button (click)="reloadPage()" mat-icon-button aria-label="Example icon-button with a heart icon">
@@ -41,26 +57,32 @@
         </div>
         <div class="adressWrapper">
             <div class="urlField">
-                <div contenteditable="true" class="adresse" #box (keydown.enter)="changePageWithEvent($event.target.innerHTML,$event)"
-                    (blur)="changePageWithEvent($event.target.innerHTML,$event)" (focus)="selectAll($event.target)">{{item.url}}</div>
+                <div
+                    contenteditable="true"
+                    class="adresse"
+                    #box
+                    (keydown.enter)="changePageWithEvent($event.target.innerHTML, $event)"
+                    (blur)="changePageWithEvent($event.target.innerHTML, $event)"
+                    (focus)="selectAll($event.target)"
+                >
+                    {{ item.url }}
+                </div>
             </div>
         </div>
     </div>
     <div class="controlls" *ngIf="item.addressbarOpen && item.isAdditionAddressbarOptionsOpen">
         <div class="controlls-left">
-            <button mat-icon-button class="zoom-in" (click)="zoomIn()" [disabled]="item.webviewData.zoomLevel==zoomMax">
+            <button mat-icon-button class="zoom-in" (click)="zoomIn()" [disabled]="item.zoomLevel == zoomMax">
                 <mat-icon>zoom_in</mat-icon>
             </button>
-            <button mat-icon-button class="zoom-out" (click)="zoomOut()" [disabled]="item.webviewData.zoomLevel==zoomMin">
+            <button mat-icon-button class="zoom-out" (click)="zoomOut()" [disabled]="item.zoomLevel == zoomMin">
                 <mat-icon>zoom_out</mat-icon>
             </button>
             <button mat-icon-button class="zoom-reset" (click)="zoomReset()">
                 <mat-icon>settings_overscan</mat-icon>
             </button>
         </div>
-        <div class="title">
-            
-        </div>
+        <div class="title"></div>
         <div class="controlls-right">
             <button mat-icon-button (click)="openDevToggle()">
                 <mat-icon>developer_board</mat-icon>

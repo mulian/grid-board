@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core'
-import { TabModel, deleteTab, selectTab, editTab } from '../../states/tab'
-import { Store } from '@ngrx/store'
-import { AppState } from '../../states/reducers'
+import { Component, OnInit, Input } from "@angular/core"
+import { TabModel, deleteTab, selectTab, editTab } from "../../states/tab"
+import { Store } from "@ngrx/store"
+import { AppState } from "../../states/reducers"
 
 @Component({
-    selector: 'app-tabbar-item',
-    templateUrl: './tabbar-item.component.html',
-    styleUrls: ['./tabbar-item.component.scss'],
+    selector: "app-tabbar-item",
+    templateUrl: "./tabbar-item.component.html",
+    styleUrls: ["./tabbar-item.component.scss"],
 })
 export class TabbarItemComponent implements OnInit {
     @Input()
@@ -25,6 +25,8 @@ export class TabbarItemComponent implements OnInit {
     }
 
     showTab() {
+        console.log("show tab", this.tabItem.id)
+
         this.store.dispatch(selectTab({ tabId: this.tabItem.id }))
     }
 

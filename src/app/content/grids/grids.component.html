@@ -1,15 +1,12 @@
 <div class="content slideBarActive">
-    <gridster *ngFor="let tab of syncedTabData.getSyncedData()" [options]="getOption(tab.id)" [class.hide]="selectedTabId!=tab.id">
-        <!-- <div *ngIf="pages$[tabId] | async as pages">
-            {{log(pages)}}
-            <gridster-item *ngFor="let item of pages | keyvalue" [item]=item.value>
-                <app-grid-item [item]=item.value></app-grid-item>
-            </gridster-item>
-        </div> -->
-        <div *ngFor="let item of syncedPageData.getSyncedData()">
-            <gridster-item [item]="item" *ngIf="item.tab==tab.id">
-                <!-- <gridster-item *ngFor="let item of items[tabId]" [item]=item> -->
-                <app-grid-item [item]=item></app-grid-item>
+    <gridster
+        *ngFor="let tab of selectTabs$ | async; trackBy: trackByFn"
+        [options]="getOption(tab.id)"
+        [class.hide]="selectedTabId != tab.id"
+    >
+        <div *ngFor="let item of selectedPages$ | async; trackBy: trackByFn">
+            <gridster-item [item]="item" *ngIf="item.tab == tab.id">
+                <app-grid-item [item]="item"></app-grid-item>
             </gridster-item>
         </div>
     </gridster>
