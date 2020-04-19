@@ -3,8 +3,7 @@ import { MatProgressBar } from "@angular/material/progress-bar"
 import { SlideService } from "../slide.service"
 import { Store, select } from "@ngrx/store"
 import { AppState, selectTabSlide } from "../../stores/reducers"
-import { TabSlide } from "../../stores/tab/tab.slide.model"
-import { tabSlideInitialState } from "../../stores/tab/tab.initial.state"
+import { slideInitialState, SlideState } from "../../stores/slide/slide.reducer"
 
 @Component({
     selector: "app-slide-progress",
@@ -19,7 +18,7 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
     color: string = "primary"
     isSlideModeVisible: boolean = true
 
-    slideOptions: TabSlide = tabSlideInitialState
+    slideOptions: SlideState = slideInitialState
 
     constructor(private store: Store<AppState>) {}
 
@@ -28,14 +27,14 @@ export class SlideProgressComponent implements OnInit, AfterViewInit {
         this.primaryValueBar = this.progressbar._primaryValueBar
         console.log(this.progressbar)
 
-        this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
+        this.store.pipe(select(selectTabSlide)).subscribe((slide: SlideState) => {
             console.log("set slide", slide)
 
-            // this.setSlideOptions(slide)
+            this.setSlideOptions(slide)
         })
     }
 
-    setSlideOptions(newSlideOptions: TabSlide) {
+    setSlideOptions(newSlideOptions: SlideState) {
         if (this.slideOptions == null) {
             if (newSlideOptions.isActive && !newSlideOptions.isSlideBreak) {
                 this.setTime(newSlideOptions.nextSlideInSec)

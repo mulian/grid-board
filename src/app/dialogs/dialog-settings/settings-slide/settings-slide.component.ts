@@ -1,14 +1,14 @@
 import { Component, OnInit } from "@angular/core"
 import { AppState, selectTabSlide } from "../../../stores/reducers"
 import { Store, select } from "@ngrx/store"
-import { TabSlide } from "../../../stores/tab/tab.slide.model"
 import { TranslateService } from "@ngx-translate/core"
+import { SlideState } from "../../../stores/slide/slide.reducer"
 import {
     setStartAfterInactiveTime,
     setNextSlideTime,
     triggerSlides,
     triggerBarSlides,
-} from "../../../stores/tab/tab.actions.slide"
+} from "../../../stores/slide/slide.actions"
 
 @Component({
     selector: "app-settings-slide",
@@ -16,7 +16,7 @@ import {
     styleUrls: ["./settings-slide.component.scss"],
 })
 export class SettingsSlideComponent implements OnInit {
-    slideOptions: TabSlide
+    slideOptions: SlideState
     constructor(private store: Store<AppState>, public translate: TranslateService) {}
 
     setAfterInactivity(time: number, event) {
@@ -29,7 +29,7 @@ export class SettingsSlideComponent implements OnInit {
     }
 
     setSlide(event) {
-        if (event.checked != this.slideOptions.isActive) this.store.dispatch(triggerSlides({ activate: event.checked }))
+        this.store.dispatch(triggerSlides({ activate: event.checked }))
     }
 
     setSlideProgress(event) {
@@ -38,7 +38,7 @@ export class SettingsSlideComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.store.pipe(select(selectTabSlide)).subscribe((slideOption: TabSlide) => {
+        this.store.pipe(select(selectTabSlide)).subscribe((slideOption: SlideState) => {
             this.slideOptions = slideOption
         })
     }

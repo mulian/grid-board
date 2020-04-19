@@ -1,9 +1,9 @@
 import { Injectable, AfterViewInit, AfterContentInit } from "@angular/core"
-import { AppState, selectTabSlide, selectTabOptions } from "../stores/reducers"
 import { Store, select } from "@ngrx/store"
-import { TabSlide } from "../stores/tab/tab.slide.model"
-import { triggerSlideBreak } from "../stores/tab/tab.actions.slide"
 import { NavigationSelectTabType, navigateSelectTab } from "../stores/tab"
+import { SlideState } from "../stores/slide/slide.reducer"
+import { AppState, selectTabSlide } from "../stores/reducers"
+import { triggerSlideBreak } from "../stores/slide/slide.actions"
 
 @Injectable({
     providedIn: "root",
@@ -11,18 +11,17 @@ import { NavigationSelectTabType, navigateSelectTab } from "../stores/tab"
 export class SlideService implements AfterContentInit {
     breakTime: number = 10 * 1000
     timeout: NodeJS.Timeout = null
-    public slideOptions: TabSlide = null
+    public slideOptions: SlideState = null
 
     constructor(private store: Store<AppState>) {
-        document.addEventListener("DOMContentLoaded", event => this.ngAfterContentInit()) //Own AfterContentInit hook
-        this.store.pipe(select(selectTabSlide)).subscribe((slide: TabSlide) => {
-            console.log("new slide options", slide)
-
-            this.setNewSlideOptions(slide)
-        })
+        // document.addEventListener("DOMContentLoaded", event => this.ngAfterContentInit()) //Own AfterContentInit hook
+        // this.store.pipe(select(selectTabSlide)).subscribe((slide: SlideState) => {
+        //     console.log("new slide options", slide)
+        //     this.setNewSlideOptions(slide)
+        // })
     }
 
-    private setNewSlideOptions(slideOptions: TabSlide) {
+    private setNewSlideOptions(slideOptions: SlideState) {
         let activateNextSlideTimer: boolean = false
         if (slideOptions.isActive && (this.slideOptions == null || !this.slideOptions.isActive)) {
             activateNextSlideTimer = true

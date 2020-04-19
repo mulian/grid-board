@@ -1,11 +1,11 @@
-/**
- * Tab slide Action
- * Slide is a seperation of tab, cause it manipulates the Tab.
- */
-import { props, createAction } from "@ngrx/store"
+import { createAction, props } from "@ngrx/store"
 import { actionStringCreator } from "../state.utils"
 
-const actionStr = actionStringCreator("Tab.Slide")
+const actionStr = actionStringCreator("Slide")
+
+export const startSlideShow = createAction(actionStr("Start slide show"))
+export const stopSlideShow = createAction(actionStr("Stop slide show"))
+export const nextSlide = createAction(actionStr("Trigger next Slide"))
 
 /**
  * En-/disalbe slide mode

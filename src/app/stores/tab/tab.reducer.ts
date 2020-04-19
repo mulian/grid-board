@@ -20,13 +20,6 @@ import * as _ from "lodash-es"
 import { tabInitialState } from "./tab.initial.state"
 import { adapter, sortBySortNumber } from "./tab.adapter"
 import {
-    triggerSlides,
-    triggerBarSlides,
-    setNextSlideTime,
-    setStartAfterInactiveTime,
-    triggerSlideBreak,
-} from "./tab.actions.slide"
-import {
     getUpdatesForAllAffectedEntitiesWithNewSortNumber,
     getUpdatesForTabsAfterDeletedTabsWithDecrementedSortNumber,
     getNextSelectedTabId,
@@ -46,43 +39,6 @@ export function reducer(state = tabInitialState, action: Action) {
 
 export const tabReducer = createReducer(
     tabInitialState,
-
-    //For Slides
-    on(triggerSlideBreak, (state, { isBreak }) => ({
-        ...state,
-        slide: {
-            ...state.slide,
-            isSlideBreak: isBreak,
-        },
-    })),
-    on(setStartAfterInactiveTime, (state, { timeInSec }) => ({
-        ...state,
-        slide: {
-            ...state.slide,
-            startAfterInactiveTimeInSec: timeInSec,
-        },
-    })),
-    on(setNextSlideTime, (state, { timeInSec }) => ({
-        ...state,
-        slide: {
-            ...state.slide,
-            nextSlideInSec: timeInSec,
-        },
-    })),
-    on(triggerSlides, (state, { activate }) => ({
-        ...state,
-        slide: {
-            ...state.slide,
-            isShowProgress: activate,
-        },
-    })),
-    on(triggerBarSlides, (state, { activate }) => ({
-        ...state,
-        slide: {
-            ...state.slide,
-            isActive: activate,
-        },
-    })),
 
     //For Main Tab
     on(updateTab, (state, { updateTab }) => {

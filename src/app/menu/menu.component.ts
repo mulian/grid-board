@@ -6,9 +6,9 @@ import { addTab, deleteTab } from "../stores/tab"
 import { TranslateService } from "@ngx-translate/core"
 import { SlideService } from "../slide/slide.service"
 import { Observable } from "rxjs"
-import { TabSlide } from "../stores/tab/tab.slide.model"
 import { ShowDialog, DialogType } from "../stores/dialog"
 import { IpcService } from "../dialogs/dialog-settings/settings-history/ipc.service"
+import { SlideState } from "../stores/slide/slide.reducer"
 
 @Component({
     selector: "app-menu",
@@ -16,7 +16,7 @@ import { IpcService } from "../dialogs/dialog-settings/settings-history/ipc.serv
     styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit {
-    slideOptions: TabSlide
+    slideOptions: SlideState
 
     constructor(private store: Store<AppState>, public translate: TranslateService, private ipcRenderer: IpcService) {}
 

@@ -10,8 +10,10 @@ import { keyboardInitialState } from "./keyboard/keyboard.initial.state"
 import { keyboardReducer } from "./keyboard/keyboard.reducer"
 import { JSInjectionState, jSInjectionInitialState, jSInjectionReducer } from "./jsinjections"
 import * as _ from "lodash-es"
+import { slideReducer, SlideState, slideInitialState } from "./slide/slide.reducer"
 
 export interface AppState {
+    slide: SlideState
     tabs: TabState
     pages: PageState
     dialog: DialogModel
@@ -21,6 +23,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
+    slide: slideInitialState,
     tabs: tabInitialState,
     pages: pageInitialState,
     dialog: dialogInitialState,
@@ -30,6 +33,7 @@ export const initialState: AppState = {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
+    slide: slideReducer,
     tabs: tabReducer,
     pages: pageReducer,
     dialog: dialogReducer,
@@ -73,7 +77,10 @@ export const selectTabOptions = createSelector(selectAllTabsState, tabs => tabs.
 export const selectTabOptionsSelectTab = createSelector(selectAllTabsState, tabs => tabs.options.selectedTab)
 export const selectTabOptionsEditTab = createSelector(selectAllTabsState, tabs => tabs.options.editTab)
 
-export const selectTabSlide = createSelector(selectAllTabsState, tabs => tabs.slide)
+export const selectAllTabState = createFeatureSelector<SlideState>("slide")
+export const selectTabSlide = createSelector(selectAllTabState, tabs => tabs)
+export const selectSlideInactiveTime = createSelector(selectAllTabState, tabs => tabs.startAfterInactiveTimeInSec)
+export const selectSlideIsActive = createSelector(selectAllTabState, tabs => tabs.isActive)
 
 export const selectAllTabsEntities = createSelector(selectAllTabsState, tabSelectedEntities)
 export const selectAllTabsEntitys = createSelector(selectAllTabsState, tabSelectedAll)

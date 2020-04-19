@@ -88,22 +88,22 @@ export function reduceWithStore(reducer: ActionReducer<any>): ActionReducer<any>
     return function (state, action) {
         let nextState = reducer(state, action)
         if (action.type == ReducerStoreActionTypes.SetState) {
-            console.log("set state")
+            // console.log("set state")
 
             let action_: SetState = action as SetState
             nextState = action_.payload.state
         }
         if (action.type == "@ngrx/store/init") {
-            console.log("restore last state")
+            // console.log("restore last state")
             let savedState: AppState = reducerStoreInstance.getCurrentState() //getSavedState();
-            console.log(savedState)
+            // console.log(savedState)
             if (savedState) {
                 nextState = savedState
             }
             reducerStoreInstance.maxLength = nextState.general.historyLimit
             return nextState
         } else {
-            console.log("save state", nextState)
+            // console.log("save state", nextState)
             if (action.type == GeneralActionTypes.ChangeHistoryLimit) {
                 let action_: ChangeHistoryLimit = action as ChangeHistoryLimit
                 reducerStoreInstance.maxLength = action_.payload.historyLimit

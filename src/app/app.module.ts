@@ -71,6 +71,9 @@ import { MatExpansionModule } from "@angular/material/expansion"
 import { MatTreeModule } from "@angular/material/tree"
 import { MatTableModule } from "@angular/material/table"
 import { ScrollingModule } from "@angular/cdk/scrolling"
+import * as fromSlide from "./stores/slide/slide.reducer"
+import { EffectsModule } from "@ngrx/effects"
+import { SlideEffects } from "./stores/slide/slide.effects"
 
 @NgModule({
     declarations: [
@@ -136,6 +139,9 @@ import { ScrollingModule } from "@angular/cdk/scrolling"
             maxAge: 25, // Track history for 25 actions
         }),
         BrowserAnimationsModule,
+        // StoreModule.forFeature(fromSlide.slideFeatureKey, fromSlide.reducer),
+        EffectsModule.forFeature([SlideEffects]),
+        EffectsModule.forRoot([]),
         // StoreModule.forRoot(reducers, {
         //   metaReducers,
         //   runtimeChecks: {
