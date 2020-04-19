@@ -1,5 +1,5 @@
 import { Store, select } from "@ngrx/store"
-import { AppState } from "./states/reducers"
+import { AppState } from "./stores/reducers"
 import * as _ from "lodash-es"
 
 export default class NgrxEntitySync<EntityClass> {

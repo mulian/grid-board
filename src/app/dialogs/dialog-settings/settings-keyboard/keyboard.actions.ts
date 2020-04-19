@@ -1,10 +1,10 @@
-import { AppState } from '../../../states/reducers'
-import { Store, createAction, createReducer } from '@ngrx/store'
-import { addTab, navigateSelectTab, NavigationSelectTabType, editTab, deleteTab } from '../../../states/tab'
-import { TranslateService } from '@ngx-translate/core'
-import { IpcService } from '../settings-history/ipc.service'
-import { KeyboardAction } from '../../../states/keyboard/keyboard.model'
-import { ToggleDialog, DialogType } from '../../../states/dialog'
+import { AppState } from "../../../stores/reducers"
+import { Store, createAction, createReducer } from "@ngrx/store"
+import { addTab, navigateSelectTab, NavigationSelectTabType, editTab, deleteTab } from "../../../stores/tab"
+import { TranslateService } from "@ngx-translate/core"
+import { IpcService } from "../settings-history/ipc.service"
+import { KeyboardAction } from "../../../stores/keyboard/keyboard.model"
+import { ToggleDialog, DialogType } from "../../../stores/dialog"
 
 export class KeyboardActions {
     /**
@@ -19,11 +19,11 @@ export class KeyboardActions {
         private ipcRenderer: IpcService = null
     ) {
         if (this.store == null) {
-            console.error('fireKeyboardAction: there is no keyboardAction or store')
+            console.error("fireKeyboardAction: there is no keyboardAction or store")
         }
         if (this.translate == null || this.ipcRenderer == null) {
             console.warn(
-                'fireKeyboardAction: the translate is not set, this could cause a problem if the action need the translate service.'
+                "fireKeyboardAction: the translate is not set, this could cause a problem if the action need the translate service."
             )
         }
     }
@@ -38,7 +38,7 @@ export class KeyboardActions {
             case KeyboardAction.NEW_TAB: {
                 this.store.dispatch(
                     addTab({
-                        name: this.translate.instant('TAB.NEW_TAB_PLACE_HOLDER'),
+                        name: this.translate.instant("TAB.NEW_TAB_PLACE_HOLDER"),
                         sortNumber: null,
                         isSlideConsidered: true,
                     })
@@ -54,7 +54,7 @@ export class KeyboardActions {
                 return true
             }
             case KeyboardAction.CLOSE_APP: {
-                this.ipcRenderer.send('close-app', null)
+                this.ipcRenderer.send("close-app", null)
                 return true
             }
             case KeyboardAction.NEXT_TAB_RIGHT: {
@@ -202,13 +202,13 @@ export class KeyboardActions {
                 return true
             }
             case KeyboardAction.DEV_TOOLS_TOOGLE: {
-                this.ipcRenderer.send('dev-tools', null)
+                this.ipcRenderer.send("dev-tools", null)
             }
             case KeyboardAction.RELOAD_MAIN: {
-                this.ipcRenderer.send('reload', null)
+                this.ipcRenderer.send("reload", null)
             }
             case KeyboardAction.TOGGLE_FULLSCREEN: {
-                this.ipcRenderer.send('setFullscreen', null)
+                this.ipcRenderer.send("setFullscreen", null)
             }
             default:
                 return false

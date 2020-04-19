@@ -1,6 +1,6 @@
 import { ElementRef } from "@angular/core"
 import { Store, select } from "@ngrx/store"
-import { AppState } from "../../states/reducers"
+import { AppState } from "../../stores/reducers"
 import { IpcService } from "../../dialogs/dialog-settings/settings-history/ipc.service"
 import {
     updatePage,
@@ -10,7 +10,7 @@ import {
     PageState,
     selectAllPagesState,
     selectAllPagesEntities,
-} from "../../states/page"
+} from "../../stores/page"
 import * as path from "path"
 import { PageCheck } from "../grids/grids.component"
 import { KeyboardService } from "../../dialogs/dialog-settings/settings-keyboard/keyboard.service"

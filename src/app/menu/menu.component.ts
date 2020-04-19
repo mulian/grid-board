@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core"
-import { AppState, selectTabSlide } from "../states/reducers"
+import { AppState, selectTabSlide } from "../stores/reducers"
 import { Store, select } from "@ngrx/store"
-import { addPage } from "../states/page"
-import { addTab, deleteTab } from "../states/tab"
+import { addPage } from "../stores/page"
+import { addTab, deleteTab } from "../stores/tab"
 import { TranslateService } from "@ngx-translate/core"
 import { SlideService } from "../slide/slide.service"
 import { Observable } from "rxjs"
-import { TabSlide } from "../states/tab/tab.slide.model"
-import { ShowDialog, DialogType } from "../states/dialog"
+import { TabSlide } from "../stores/tab/tab.slide.model"
+import { ShowDialog, DialogType } from "../stores/dialog"
 import { IpcService } from "../dialogs/dialog-settings/settings-history/ipc.service"
 
 @Component({

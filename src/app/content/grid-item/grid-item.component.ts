@@ -7,10 +7,10 @@ import {
     selectAllPagesState,
     PageState,
     selectActivePage,
-} from "../../states/page"
+} from "../../stores/page"
 import { WebviewTag } from "electron"
 import { Store, select } from "@ngrx/store"
-import { AppState, selectPagesById, selectTabOptionsSelectTab } from "../../states/reducers"
+import { AppState, selectPagesById, selectTabOptionsSelectTab } from "../../stores/reducers"
 import { Update, Dictionary } from "@ngrx/entity"
 import { PageCheck } from "../grids/grids.component"
 import { Subscription } from "rxjs"

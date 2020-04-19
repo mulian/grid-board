@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core"
-import { TabModel, deleteTab, selectTab, editTab } from "../../states/tab"
+import { TabModel, deleteTab, selectTab, editTab } from "../../stores/tab"
 import { Store } from "@ngrx/store"
-import { AppState } from "../../states/reducers"
+import { AppState } from "../../stores/reducers"
 
 @Component({
     selector: "app-tabbar-item",

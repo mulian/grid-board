@@ -11,7 +11,7 @@ import {
     selectAllTabsEntities,
     selectAllPagesEntititiesAsArray,
     selectAllTabsEntitiesAsArray,
-} from "../../states/reducers"
+} from "../../stores/reducers"
 import {
     GridsterConfig,
     GridType,
@@ -20,10 +20,10 @@ import {
     GridsterItem,
     GridsterItemComponentInterface,
 } from "angular-gridster2"
-import { addPage, PageModel, updatePage } from "../../states/page"
+import { addPage, PageModel, updatePage } from "../../stores/page"
 import { Update, Dictionary } from "@ngrx/entity"
 import NgrxEntitySync from "../../ngrx-entity-sync"
-import { TabModel } from "../../states/tab"
+import { TabModel } from "../../stores/tab"
 import * as _ from "lodash-es"
 
 export interface PageCheck extends PageModel {
@@ -60,9 +60,6 @@ export class GridsComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("init")
-
-        this.syncedTabData = new NgrxEntitySync<TabModel>(this.store, selectAllTabsEntities, tab => tab.id)
         this.selectTabs$ = this.store.select(selectAllTabsEntitiesAsArray)
         this.selectedPages$ = this.store.select(selectAllPagesEntititiesAsArray)
 

@@ -17,7 +17,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader"
 import { AppComponent } from "./app.component"
 import { TabbarComponent } from "./tabbar/tabbar.component"
 import { StoreModule } from "@ngrx/store"
-import { reducers } from "./states/reducers"
+import { reducers } from "./stores/reducers"
 import { StoreDevtoolsModule } from "@ngrx/store-devtools"
 import { MainComponent } from "./main/main.component"
 import { WebviewDirective } from "./webview.module"
@@ -33,7 +33,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fas } from "@fortawesome/free-solid-svg-icons"
-import { metaReducer } from "./states/reducer.store"
+import { metaReducer } from "./stores/reducer.store"
 library.add(fas)
 
 import { GridsterModule } from "angular-gridster2"
