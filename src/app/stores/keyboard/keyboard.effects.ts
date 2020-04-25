@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
-import { fromEvent, of, empty } from "rxjs"
-import { map, filter, mergeMap, switchMap, tap, take } from "rxjs/operators"
+import { fromEvent, of, empty, merge } from "rxjs"
+import { map, filter, mergeMap, switchMap, tap, take, debounceTime } from "rxjs/operators"
 import * as KeyCode from "keycode-js"
 import { AppState } from "../reducers"
 import { Store } from "@ngrx/store"
@@ -9,19 +9,33 @@ import { KeyboardState } from "./keyboard.state"
 import { selectKeyboardState, selectKeyboardIsRecord } from "./keyboard.selector"
 import { RelevantKeyboardEvent, KeyboardModel } from "./keyboard.model"
 import { getKeyId } from "./keyboard.adapter"
-import { recordKey, _upsertKey } from "./keyboard.actions"
+import { recordKey, _upsertKey, triggerKey } from "./keyboard.actions"
 import { navigateSelectTab, NavigationSelectTabType } from "../tab"
 
 @Injectable()
 export class KeyboardEffects {
     private currentKeyboardState: KeyboardState = null
 
+    onKeyPressEvents$ = merge(
+        fromEvent(document, "keydown").pipe(filter(this.isTargetNotTypeInField)),
+        this.actions$.pipe(
+            ofType(triggerKey),
+            map(payload => payload.event)
+        )
+    )
+        .pipe
+        // debounceTime(500) //debounce on slideInactiveTime * 100 to get secounds
+        ()
+
     onKeyPress$ = createEffect(() =>
-        fromEvent(document, "keydown").pipe(
+        this.onKeyPressEvents$.pipe(
             filter(() => !this.isKeyRecordActive()),
             map(event => event as KeyboardEvent),
             filter(this.isValidKeyPress),
-            filter(this.isTargetNotTypeInField),
+
+            tap(event => {
+                console.log("tap", event)
+            }),
             map(event => this.getKeyEntity(event)),
             filter(keyboardEntity => keyboardEntity != null),
             switchMap(event => event.actions)
@@ -67,8 +81,6 @@ export class KeyboardEffects {
 
     constructor(private actions$: Actions, private store: Store<AppState>) {
         this.store.select(selectKeyboardState).subscribe(keyboardState => {
-            console.log("set keyboard state", keyboardState)
-
             this.currentKeyboardState = keyboardState
         })
     }

@@ -12,7 +12,7 @@ export const _upsertKey = createAction(
 )
 
 //TODO: Catch in effects
-export const triggerKey = createAction(actionStr("Trigger press key"), props<{ key: RelevantKeyboardEvent }>())
+export const triggerKey = createAction(actionStr("Trigger press key"), props<{ event: KeyboardEvent }>())
 
 /**
  * isActive: default true

@@ -53,8 +53,29 @@ function isAvailableKey(key) {
     return key.length == 1 || _.includes(availableKeys, key)
 }
 
+function parseEvent({ altKey, metaKey, shiftKey, ctrlKey, key, keyCode, repeat, target }) {
+    return {
+        altKey,
+        metaKey,
+        shiftKey,
+        ctrlKey,
+        key,
+        keyCode,
+        repeat,
+    }
+}
+
 document.addEventListener("keydown", event => {
-    ipcRenderer.sendToHost("keydown-client", event)
+    let target = event.target
+    if (
+        //check is on editable content...
+        !(
+            target.closest("input") ||
+            (target.closest("div") != null && target.closest("div").getAttribute("contenteditable"))
+        )
+    ) {
+        ipcRenderer.sendToHost("keydown-client", parseEvent(event))
+    }
 })
 
 console.log("hallo")

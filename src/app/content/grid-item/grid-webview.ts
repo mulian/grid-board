@@ -195,9 +195,8 @@ export class GridWebview {
                 if (event.channel == "change_scroll") {
                     this.updatePage(event.args[0])
                 } else if (event.channel == "keydown-client") {
-                    this.store.dispatch(triggerKey({ key: event.args[0] as RelevantKeyboardEvent }))
-
-                    console.log(event.args[0])
+                    let key: KeyboardEvent = event.args[0] as KeyboardEvent
+                    this.store.dispatch(triggerKey({ event: key }))
                     //TODO: Check keydown
                 }
             })
