@@ -7,7 +7,7 @@ import * as SlideActions from "./slide.actions"
 import { Store } from "@ngrx/store"
 import { SlideState } from "./slide.reducer"
 import { selectSlideInactiveTime, selectSlideIsActive, selectTabSlide } from "../reducers"
-import { navigateSelectTab, NavigationSelectTabType } from "../tab/tab.actions.main"
+import { navigateSelectTab, NavigationSelectTabType } from "../tab/tab.actions"
 
 @Injectable()
 export class SlideEffects {

@@ -5,7 +5,6 @@ import { Store, select } from "@ngrx/store"
 import { AppState } from "../stores/reducers"
 import { selectGeneralLang } from "../stores/general"
 import { TranslateService } from "@ngx-translate/core"
-import { KeyboardService } from "../dialogs/dialog-settings/settings-keyboard/keyboard.service"
 
 @Component({
     selector: "app-main",
@@ -22,8 +21,7 @@ export class MainComponent implements OnInit {
         private slideService: SlideService,
         private dialogService: DialogService,
         private store: Store<AppState>,
-        public translate: TranslateService,
-        private keyboard: KeyboardService
+        public translate: TranslateService // private keyboard: KeyboardService
     ) {
         this.store.pipe(select(selectGeneralLang)).subscribe((lang: string) => {
             this.translate.setDefaultLang(lang)

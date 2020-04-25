@@ -13,9 +13,9 @@ import {
 } from "../../stores/page"
 import * as path from "path"
 import { PageCheck } from "../grids/grids.component"
-import { KeyboardService } from "../../dialogs/dialog-settings/settings-keyboard/keyboard.service"
 import { map } from "rxjs/operators"
 import { Subscription } from "rxjs"
+import { triggerKey, RelevantKeyboardEvent } from "../../stores/keyboard"
 
 export class GridWebview {
     _isLoading: boolean = true
@@ -24,12 +24,7 @@ export class GridWebview {
     subscriptionWebviewData: Subscription = null
     currentZoomLevel: number = null
 
-    constructor(
-        private store: Store<AppState>,
-        private ipcService: IpcService,
-        private item: PageCheck,
-        private keyboardService: KeyboardService
-    ) {
+    constructor(private store: Store<AppState>, private ipcService: IpcService, private item: PageCheck) {
         //Set zoom level
         console.log("check zoomlevel for ", this.item.id)
 
@@ -200,7 +195,8 @@ export class GridWebview {
                 if (event.channel == "change_scroll") {
                     this.updatePage(event.args[0])
                 } else if (event.channel == "keydown-client") {
-                    this.keyboardService.checkTypeInput(event.args[0])
+                    this.store.dispatch(triggerKey({ key: event.args[0] as RelevantKeyboardEvent }))
+
                     console.log(event.args[0])
                     //TODO: Check keydown
                 }

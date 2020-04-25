@@ -14,7 +14,7 @@ import {
     deleteTab,
     clearTabs,
     updateTab,
-} from "./tab.actions.main"
+} from "./tab.actions"
 import { createReducer, on, Action } from "@ngrx/store"
 import * as _ from "lodash-es"
 import { tabInitialState } from "./tab.initial.state"
@@ -76,7 +76,7 @@ export const tabReducer = createReducer(
         return { ...state, options: { ...state.options, editTab: tabId } }
     }),
     on(renameTab, (state, { tabId, newName }) => {
-        if (tabId == null) tabId = state.options.selectedTab //When there is no tabId given, rename current selected tab
+        if (tabId == null) tabId = state.options.editTab //When there is no tabId given, rename current selected tab
 
         return adapter.updateOne(
             {
@@ -140,81 +140,83 @@ export const tabReducer = createReducer(
         }
     }),
     on(navigateSelectTab, (state, { navigationType, sortOrder, exceptSlideNotConsidered }) => {
-        let currentTab: TabModel = state.entities[state.options.selectedTab]
-        let nextTab: string = null
+        if (state.options.editTab == null) {
+            let currentTab: TabModel = state.entities[state.options.selectedTab]
+            let nextTab: string = null
 
-        let possibleTabs: string[] = null //The possible tabs
-        if (exceptSlideNotConsidered) {
-            possibleTabs = getAllTabsWithIsSlideConsidered(state.entities)
-        } else {
-            possibleTabs = state.ids as string[]
-        }
-        let currentIndex: number = _.findIndex(possibleTabs, (id: string) => currentTab.id == id)
-        switch (navigationType) {
-            case NavigationSelectTabType.TabRotationRight: {
-                if (currentIndex == possibleTabs.length - 1) {
-                    //when current tab is last tab
+            let possibleTabs: string[] = null //The possible tabs
+            if (exceptSlideNotConsidered) {
+                possibleTabs = getAllTabsWithIsSlideConsidered(state.entities)
+            } else {
+                possibleTabs = state.ids as string[]
+            }
+            let currentIndex: number = _.findIndex(possibleTabs, (id: string) => currentTab.id == id)
+            switch (navigationType) {
+                case NavigationSelectTabType.TabRotationRight: {
+                    if (currentIndex == possibleTabs.length - 1) {
+                        //when current tab is last tab
+                        nextTab = possibleTabs[0]
+                    } else {
+                        //wehn curren tab is not last tab
+                        nextTab = possibleTabs[currentIndex + 1]
+                    }
+                    break
+                }
+                case NavigationSelectTabType.TabRotationLeft: {
+                    if (currentIndex == 0) {
+                        //when current tab is first tab
+                        nextTab = possibleTabs[possibleTabs.length - 1]
+                    } else {
+                        //wehn curren tab is not first tab
+                        nextTab = possibleTabs[currentIndex - 1]
+                    }
+                    break
+                }
+                case NavigationSelectTabType.Right: {
+                    if (currentIndex == possibleTabs.length - 1) {
+                        //when current tab is last tab
+                        nextTab = currentTab.id
+                    } else {
+                        //wehn curren tab is not last tab
+                        nextTab = possibleTabs[currentIndex + 1]
+                    }
+                    break
+                }
+                case NavigationSelectTabType.First: {
                     nextTab = possibleTabs[0]
-                } else {
-                    //wehn curren tab is not last tab
-                    nextTab = possibleTabs[currentIndex + 1]
+                    break
                 }
-                break
-            }
-            case NavigationSelectTabType.TabRotationLeft: {
-                if (currentIndex == 0) {
-                    //when current tab is first tab
+                case NavigationSelectTabType.Last: {
                     nextTab = possibleTabs[possibleTabs.length - 1]
-                } else {
-                    //wehn curren tab is not first tab
-                    nextTab = possibleTabs[currentIndex - 1]
+                    break
                 }
-                break
-            }
-            case NavigationSelectTabType.Right: {
-                if (currentIndex == possibleTabs.length - 1) {
-                    //when current tab is last tab
-                    nextTab = currentTab.id
-                } else {
-                    //wehn curren tab is not last tab
-                    nextTab = possibleTabs[currentIndex + 1]
+                case NavigationSelectTabType.Left: {
+                    if (currentIndex == 0) {
+                        //when current tab is first tab
+                        nextTab = currentTab.id //select first tab
+                    } else {
+                        //wehn curren tab is not first tab
+                        nextTab = possibleTabs[currentIndex - 1]
+                    }
+                    break
                 }
-                break
-            }
-            case NavigationSelectTabType.First: {
-                nextTab = possibleTabs[0]
-                break
-            }
-            case NavigationSelectTabType.Last: {
-                nextTab = possibleTabs[possibleTabs.length - 1]
-                break
-            }
-            case NavigationSelectTabType.Left: {
-                if (currentIndex == 0) {
-                    //when current tab is first tab
-                    nextTab = currentTab.id //select first tab
-                } else {
-                    //wehn curren tab is not first tab
-                    nextTab = possibleTabs[currentIndex - 1]
+                case NavigationSelectTabType.BySortNumber: {
+                    nextTab = getTabWithSortNumber(state.entities, sortOrder).id
+                    break
                 }
-                break
             }
-            case NavigationSelectTabType.BySortNumber: {
-                nextTab = getTabWithSortNumber(state.entities, sortOrder).id
-                break
+            if (nextTab == null) {
+                console.error("NavigationSelectTab: There is no next tab, do nothing")
+                return state
+            } else {
+                return {
+                    ...state,
+                    options: {
+                        ...state.options,
+                        selectedTab: nextTab,
+                    },
+                }
             }
-        }
-        if (nextTab == null) {
-            console.error("NavigationSelectTab: There is no next tab, do nothing")
-            return state
-        } else {
-            return {
-                ...state,
-                options: {
-                    ...state.options,
-                    selectedTab: nextTab,
-                },
-            }
-        }
+        } else return state
     })
 )

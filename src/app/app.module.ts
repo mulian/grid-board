@@ -74,6 +74,8 @@ import { ScrollingModule } from "@angular/cdk/scrolling"
 import * as fromSlide from "./stores/slide/slide.reducer"
 import { EffectsModule } from "@ngrx/effects"
 import { SlideEffects } from "./stores/slide/slide.effects"
+import { TabEffects } from "./stores/tab/tab.effects";
+import { KeyboardEffects } from './stores/keyboard/keyboard.effects'
 
 @NgModule({
     declarations: [
@@ -140,7 +142,7 @@ import { SlideEffects } from "./stores/slide/slide.effects"
         }),
         BrowserAnimationsModule,
         // StoreModule.forFeature(fromSlide.slideFeatureKey, fromSlide.reducer),
-        EffectsModule.forFeature([SlideEffects]),
+        EffectsModule.forFeature([SlideEffects, TabEffects, KeyboardEffects]),
         EffectsModule.forRoot([]),
         // StoreModule.forRoot(reducers, {
         //   metaReducers,

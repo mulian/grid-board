@@ -1,133 +1,29 @@
-import { Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
-import { KeyboardModel } from './keyboard.model';
+import { Action, props, createAction } from "@ngrx/store"
+import { RelevantKeyboardEvent } from "./keyboard.model"
+import { actionStringCreator } from "../state.utils"
 
-/** The KeyboardActionTypes */
-export enum KeyboardActionTypes {
-  LoadKeyboards = '[Keyboard] Load Keyboards',
-  AddKeyboard = '[Keyboard] Add Keyboard',
-  UpsertKeyboard = '[Keyboard] Upsert Keyboard',
-  AddKeyboards = '[Keyboard] Add Keyboards',
-  UpsertKeyboards = '[Keyboard] Upsert Keyboards',
-  UpdateKeyboard = '[Keyboard] Update Keyboard',
-  UpdateKeyboards = '[Keyboard] Update Keyboards',
-  DeleteKeyboard = '[Keyboard] Delete Keyboard',
-  DeleteKeyboards = '[Keyboard] Delete Keyboards',
-  ClearKeyboards = '[Keyboard] Clear Keyboards',
-}
+const actionStr = actionStringCreator("Keyboard")
 
-export class LoadKeyboards implements Action {
-  readonly type = KeyboardActionTypes.LoadKeyboards;
+export const recordKey = createAction(actionStr("Record Key "), props<{ withActions: Action[] }>())
 
-  /**
-   * Add more then one Keyboard
-   * @param payload.keyboards the keyboards for add
-   */
-  constructor(public payload: { keyboards: KeyboardModel[] }) {}
-}
+export const _upsertKey = createAction(
+    actionStr("Add Key"),
+    props<{ withActions: Action[]; key: RelevantKeyboardEvent }>()
+)
 
-export class AddKeyboard implements Action {
-  readonly type = KeyboardActionTypes.AddKeyboard;
-
-  /**
-   * Add one Keyboard
-   * @param payload.keyboard the Keyboard for add
-   */
-  constructor(public payload: { keyboard: KeyboardModel }) {
-    // this.payload.keyboard.id = uuid.v4()
-  }
-}
-
-export class UpsertKeyboard implements Action {
-  readonly type = KeyboardActionTypes.UpsertKeyboard;
-
-  /**
-   * Add or update a Keyboard
-   * @param payload.keyboard the added or updated Keyboard
-   */
-  constructor(public payload: { keyboard: KeyboardModel }) {}
-}
-
-export class AddKeyboards implements Action {
-  readonly type = KeyboardActionTypes.AddKeyboards;
-
-  /**
-   * Add Keyboards and set uuid
-   * @param payload.keyboards the added Keyboards
-   */
-  constructor(public payload: { keyboards: KeyboardModel[] }) {
-    // for(let tab of this.payload.keyboards) {
-    //   tab.id = uuid.v4()
-    // }
-  }
-}
-
-export class UpsertKeyboards implements Action {
-  readonly type = KeyboardActionTypes.UpsertKeyboards;
-
-  /**
-   * Add or update Keyboards
-   * @param payload.keyboards the add or update Keyboards
-   */
-  constructor(public payload: { keyboards: KeyboardModel[] }) {}
-}
-
-export class UpdateKeyboard implements Action {
-  readonly type = KeyboardActionTypes.UpdateKeyboard;
-
-  /**
-   * Update one Keyboard
-   * @param payload.keyboard the update Keyboard
-   */
-  constructor(public payload: { keyboard: Update<KeyboardModel> }) {}
-}
-
-export class UpdateKeyboards implements Action {
-  readonly type = KeyboardActionTypes.UpdateKeyboards;
-
-  /**
-   * Update Keyboards
-   * @param payload.keyboards the updated Keyboards
-   */
-  constructor(public payload: { keyboards: Update<KeyboardModel>[] }) {}
-}
-
-export class DeleteKeyboard implements Action {
-  readonly type = KeyboardActionTypes.DeleteKeyboard;
-
-  /**
-   * Delete Keyboard
-   * @param payload.id delete the Keyboard with id
-   */
-  constructor(public payload: { id: string }) {}
-}
-
-export class DeleteKeyboards implements Action {
-  readonly type = KeyboardActionTypes.DeleteKeyboards;
-
-  /**
-   * Delete Keyboards
-   * @param payload.ids delete the Keyboards with ids
-   */
-  constructor(public payload: { ids: string[] }) {}
-}
+//TODO: Catch in effects
+export const triggerKey = createAction(actionStr("Trigger press key"), props<{ key: RelevantKeyboardEvent }>())
 
 /**
- * Clear all Keyboards
+ * isActive: default true
  */
-export class ClearKeyboards implements Action {
-  readonly type = KeyboardActionTypes.ClearKeyboards;
-}
+export const setKeyIsActive = createAction(
+    actionStr("Set Key isActive attribute"),
+    props<{ key: RelevantKeyboardEvent; isActive?: boolean }>()
+)
 
-/** The KeyboardActions for reducer */
-export type KeyboardActions =
- LoadKeyboards
- | AddKeyboard
- | UpsertKeyboard
- | AddKeyboards
- | UpsertKeyboards
- | UpdateKeyboard
- | UpdateKeyboards
- | DeleteKeyboard
- | DeleteKeyboards
- | ClearKeyboards;
+export const removeKeyByKey = createAction(actionStr("Remove Key by key"), props<{ key: RelevantKeyboardEvent }>())
+
+export const removeKeyByActions = createAction(actionStr("Remove Key by key"), props<{ actions: Action[] }>())
+
+export const clearKeys = createAction(actionStr("Clear all Keys"))

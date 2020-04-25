@@ -20,7 +20,7 @@ export interface SlideState {
 }
 
 export const slideInitialState: SlideState = {
-    isEnabled: true,
+    isEnabled: false,
     isActive: true,
     isShowProgress: true,
     nextSlideInSec: 300,

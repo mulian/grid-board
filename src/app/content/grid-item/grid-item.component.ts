@@ -17,7 +17,6 @@ import { Subscription } from "rxjs"
 import { filter, map } from "rxjs/operators"
 
 import { ipcRenderer } from "electron"
-import { KeyboardService } from "../../dialogs/dialog-settings/settings-keyboard/keyboard.service"
 
 import { isDevMode } from "@angular/core"
 import { IpcService } from "../../dialogs/dialog-settings/settings-history/ipc.service"
@@ -45,14 +44,10 @@ export class GridItemComponent implements OnInit, AfterViewInit, OnDestroy {
     webviewDom: any
     gridWebview: GridWebview
 
-    constructor(
-        private store: Store<AppState>,
-        private keyboardService: KeyboardService,
-        private ipcService: IpcService
-    ) {}
+    constructor(private store: Store<AppState>, private ipcService: IpcService) {}
     currentPageId: string = null
     ngOnInit() {
-        this.gridWebview = new GridWebview(this.store, this.ipcService, this.item, this.keyboardService)
+        this.gridWebview = new GridWebview(this.store, this.ipcService, this.item)
 
         //Send tab-show and tab-leave to page
         this.store.pipe(select(selectTabOptionsSelectTab)).subscribe((selectedTabId: string) => {
