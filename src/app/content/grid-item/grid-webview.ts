@@ -197,7 +197,6 @@ export class GridWebview {
                 } else if (event.channel == "keydown-client") {
                     let key: KeyboardEvent = event.args[0] as KeyboardEvent
                     this.store.dispatch(triggerKey({ event: key }))
-                    //TODO: Check keydown
                 }
             })
         })
